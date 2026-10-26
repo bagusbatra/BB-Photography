@@ -970,10 +970,10 @@ html[data-theme='light'] .theme-toggle .icon-moon {
 @keyframes floatY {
   0%,
   100% {
-    transform: translateY(0);
+    translate: 0 0;
   }
   50% {
-    transform: translateY(-9px);
+    translate: 0 -9px;
   }
 }
 
@@ -2645,36 +2645,155 @@ html[data-theme='light'] .theme-toggle .icon-moon {
   padding-top: clamp(48px, 6vw, 78px);
 }
 
+/* ============ 18b. Jelajahi — Morphing Grid ============ */
 .explore-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+  min-height: 440px;
 }
 
 .explore-card {
-  display: flex;
-  flex-direction: column;
-  padding: 30px;
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 26px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: var(--surface);
-  transition: transform var(--transition), border-color var(--transition),
-    background-color var(--transition), box-shadow var(--transition);
+  background: #15151a;
+  color: #f6f3ec;
+  overflow: hidden;
+  isolation: isolate;
+  transition: opacity 0.8s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1),
+    flex-grow 0.85s cubic-bezier(0.25, 0.8, 0.25, 1),
+    border-color 0.45s ease, background-color 0.45s ease,
+    box-shadow 0.45s ease;
 }
 
-.explore-card:hover {
-  transform: translateY(-5px);
-  border-color: var(--accent);
+/* Foto latar kartu + lapisan gelap agar teks tetap terbaca */
+.explore-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: linear-gradient(
+      to top,
+      rgba(7, 7, 9, 0.86) 0%,
+      rgba(7, 7, 9, 0.5) 36%,
+      rgba(7, 7, 9, 0.1) 66%,
+      rgba(7, 7, 9, 0.48) 100%
+    ),
+    radial-gradient(
+      130% 80% at 0% 100%,
+      rgba(7, 7, 9, 0.7),
+      transparent 62%
+    ),
+    var(--explore-bg, none);
+  background-position: center, center, center;
+  background-size: cover, cover, cover;
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  filter: saturate(0.92) contrast(1.02);
+  transform: scale(1);
+  transition: transform 1.2s cubic-bezier(0.22, 0.61, 0.36, 1),
+    filter 0.6s ease;
+  pointer-events: none;
+}
+
+.explore-card:hover::after,
+.explore-card:focus-visible::after {
+  transform: scale(1.07);
+  filter: saturate(1.04) contrast(1.03);
+}
+
+.explore-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(
+    130% 100% at 100% 0%,
+    var(--accent-soft),
+    transparent 62%
+  );
+  opacity: 0;
+  transition: opacity 0.55s ease;
+  pointer-events: none;
+}
+
+.explore-card:hover,
+.explore-card:focus-visible {
+  flex-grow: 4;
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
   background: var(--surface-2);
   box-shadow: var(--shadow);
 }
 
+.explore-card:hover::before,
+.explore-card:focus-visible::before {
+  opacity: 1;
+}
+
+.explore-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
 .explore-num {
+  position: relative;
+  z-index: 2;
+  display: block;
   font-family: var(--font-display);
   font-size: 12px;
   font-style: italic;
   letter-spacing: 0.14em;
-  color: var(--accent);
+  color: #e6c76a;
+}
+
+/* Judul vertikal saat kartu menyempit */
+.explore-axis {
+  position: absolute;
+  z-index: 2;
+  left: 26px;
+  bottom: 26px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  line-height: 1;
+  color: #f6f3ec;
+  white-space: nowrap;
+  opacity: 0.78;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.55);
+  transition: opacity 0.3s ease,
+    transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.explore-card:hover .explore-axis,
+.explore-card:focus-visible .explore-axis {
+  opacity: 0;
+  transform: rotate(180deg) translateY(12px);
+}
+
+/* Konten lengkap saat kartu melebar */
+.explore-body {
+  position: absolute;
+  z-index: 2;
+  left: 26px;
+  right: 26px;
+  bottom: 26px;
+  opacity: 0;
+  transform: translateX(-14px);
+  pointer-events: none;
+  transition: opacity 0.4s ease 0.08s,
+    transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1) 0.08s;
+}
+
+.explore-card:hover .explore-body,
+.explore-card:focus-visible .explore-body {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
 }
 
 .explore-card h3 {
@@ -2683,27 +2802,33 @@ html[data-theme='light'] .theme-toggle .icon-moon {
   font-size: 1.35rem;
   font-weight: 500;
   line-height: 1.25;
+  color: #fbf8f1;
+  text-shadow: 0 1px 18px rgba(0, 0, 0, 0.5);
+}
+
+.explore-body h3 {
+  margin-top: 0;
 }
 
 .explore-card p {
-  flex: 1;
   margin-top: 9px;
-  color: var(--muted);
+  color: rgba(246, 243, 236, 0.78);
   font-size: 13.5px;
   font-weight: 300;
   line-height: 1.75;
+  text-shadow: 0 1px 14px rgba(0, 0, 0, 0.5);
 }
 
 .explore-link {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  margin-top: 22px;
+  margin-top: 18px;
   font-size: 10.5px;
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: #e6c76a;
 }
 
 .explore-link svg {
@@ -2744,9 +2869,65 @@ html[data-theme='light'] .theme-toggle .icon-moon {
   cursor: pointer;
 }
 
+/* Fallback: morphing dimatikan di tablet & mobile */
 @media (max-width: 1024px) {
   .explore-grid {
+    display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    min-height: 0;
+  }
+
+  .explore-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 40px;
+    min-height: 340px;
+    padding: 28px;
+  }
+
+  .explore-card::after {
+    background-image: linear-gradient(
+        to top,
+        rgba(7, 7, 9, 0.9) 0%,
+        rgba(7, 7, 9, 0.62) 45%,
+        rgba(7, 7, 9, 0.3) 78%,
+        rgba(7, 7, 9, 0.5) 100%
+      ),
+      radial-gradient(
+        140% 70% at 0% 100%,
+        rgba(7, 7, 9, 0.6),
+        transparent 60%
+      ),
+      var(--explore-bg, none);
+  }
+
+  .explore-card:hover::after,
+  .explore-card:focus-visible::after {
+    transform: scale(1.04);
+  }
+
+  .explore-card:hover,
+  .explore-card:focus-visible {
+    flex-grow: 0;
+    transform: translateY(-4px);
+  }
+
+  .explore-axis {
+    display: none;
+  }
+
+  .explore-body {
+    position: static;
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+    transition: none;
+  }
+
+  .explore-body h3 {
+    margin-top: 16px;
   }
 
   .prep-grid {
@@ -2780,11 +2961,45 @@ html[data-theme='light'] .theme-toggle .icon-moon {
   display: none;
 }
 
+/* Panggung animasi: semua elemen memusat lalu menyebar */
+.hero-stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: 50% 50%;
+  animation: heroStageBloom 8s cubic-bezier(0.22, 0.61, 0.36, 1) infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes heroStageBloom {
+  0%,
+  6% {
+    scale: 0.12;
+    opacity: 0;
+  }
+  14% {
+    opacity: 1;
+  }
+  26%,
+  74% {
+    scale: 1;
+    opacity: 1;
+  }
+  94%,
+  100% {
+    scale: 0.12;
+    opacity: 0;
+  }
+}
+
 .hero-orbit {
   position: relative;
   width: clamp(280px, 32vw, 380px);
   height: clamp(280px, 32vw, 380px);
   z-index: 1;
+  flex-shrink: 0;
 }
 
 .hero-orbit-ring {
@@ -3349,6 +3564,16 @@ html[data-theme='light'] .theme-toggle .icon-moon {
   }
 
   .hero-card {
+    animation: none;
+  }
+
+  .hero-stage {
+    animation: none;
+    scale: 1;
+    opacity: 1;
+  }
+
+  .hero-orbit-item {
     animation: none;
   }
 
