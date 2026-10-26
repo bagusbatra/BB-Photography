@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Gallery Showcase | BB Photography</title>
+  <meta name="description"
+    content="5 style tampilan galeri modern, dinamis, animatif & interaktif untuk BB Photography.">
+  <meta name="theme-color" content="#0b0b0d">
+  <link rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230b0b0d'/%3E%3Ctext x='50' y='68' font-size='44' font-family='Georgia,serif' fill='%23d4af37' text-anchor='middle'%3EBB%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/galeri-custom.css">
+  <script>
+    try {
+      var savedTheme = localStorage.getItem('bb-theme');
+      if (savedTheme) document.documentElement.dataset.theme = savedTheme;
+    } catch (e) { }
+  </script>
+</head>
+
+<body class="gallery-showcase">
+  <a class="skip-link" href="#main">Langsung ke konten</a>
+
+  <svg xmlns="http://www.w3.org/2000/svg" class="svg-sprite" aria-hidden="true" focusable="false">
+    <symbol id="icon-arrow-right" viewBox="0 0 24 24">
+      <path d="M4 12h15M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+        stroke-linejoin="round" />
+    </symbol>
+    <symbol id="icon-arrow-up-right" viewBox="0 0 24 24">
+      <path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+        stroke-linejoin="round" />
+    </symbol>
+    <symbol id="icon-grid" viewBox="0 0 24 24">
+      <rect x="3.5" y="3.5" width="7" height="7" rx="1.5" />
+      <rect x="13.5" y="3.5" width="7" height="7" rx="1.5" />
+      <rect x="3.5" y="13.5" width="7" height="7" rx="1.5" />
+      <rect x="13.5" y="13.5" width="7" height="7" rx="1.5" />
+    </symbol>
+    <symbol id="icon-move-horizontal" viewBox="0 0 24 24">
+      <path d="M5 12h14M9 8l-4 4 4 4M15 8l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.7"
+        stroke-linecap="round" stroke-linejoin="round" />
+    </symbol>
+    <symbol id="icon-layers" viewBox="0 0 24 24">
+      <path d="m12 3 8 4.5-8 4.5L4 7.5 12 3Z" />
+      <path d="m4 12 8 4.5 8-4.5" />
+      <path d="m4 16.5 8 4.5 8-4.5" />
+    </symbol>
+    <symbol id="icon-spark" viewBox="0 0 24 24">
+      <path
+        d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8" />
+    </symbol>
+    <symbol id="icon-cube" viewBox="0 0 24 24">
+      <path d="m12 3 8 4.2v9.6L12 21l-8-4.2V7.2L12 3Z" />
+      <path d="m12 11.4 8-4.2M12 11.4 4 7.2M12 11.4V21" />
+    </symbol>
+    <symbol id="icon-sun" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.6" />
+      <path
+        d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4"
+        fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+    </symbol>
+    <symbol id="icon-moon" viewBox="0 0 24 24">
+      <path d="M20 14.4A8.4 8.4 0 0 1 9.6 4a8.4 8.4 0 1 0 10.4 10.4Z" fill="none" stroke="currentColor" stroke-width="1.6"
+        stroke-linejoin="round" />
+    </symbol>
+  </svg>
+
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+  <header class="site-header is-scrolled" id="siteHeader">
+    <div class="container header-inner">
+      <a href="index.html" class="brand" aria-label="BB Photography — Beranda">
+        <span class="brand-mark">BB</span>
+        <span class="brand-text">
+          <span class="brand-name">BB <em>Photography</em></span>
+          <span class="brand-sub">Bali · Since 2014</span>
+        </span>
+      </a>
+
+      <nav class="nav" aria-label="Navigasi galeri">
+        <ul>
+          <li><a href="index.html" class="nav-link">Beranda</a></li>
+          <li><a href="portofolio.html" class="nav-link">Portofolio Biasa</a></li>
+          <li><a href="galeri-custom.html" class="nav-link is-active" aria-current="page">Galeri Custom</a></li>
+          <li><a href="kontak.html" class="nav-link">Kontak</a></li>
+        </ul>
+        <a href="kontak.html" class="btn btn-primary nav-cta">Booking Sesi</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="icon-btn theme-toggle" id="themeToggle" type="button" aria-label="Ganti mode">
+          <svg class="icon-sun" aria-hidden="true">
+            <use href="#icon-sun"></use>
+          </svg>
+          <svg class="icon-moon" aria-hidden="true">
+            <use href="#icon-moon"></use>
+          </svg>
+        </button>
+        <a href="index.html" class="btn btn-ghost header-cta">Kembali</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="showcase-hero">
+      <div class="container">
+        <div class="showcase-hero-grid">
+          <div class="showcase-hero-content">
+            <p class="eyebrow"><span></span>Custom Gallery Playground</p>
+            <h1>5 Style Galeri <em>Modern</em> & Interaktif</h1>
+            <p class="hero-lead">Eksperimen tampilan galeri dengan nuansa editorial untuk BB Photography. Cocok buat
+              highlight karya, lookbook, atau portofolio dengan kesan lebih dinamis.</p>
+            <div class="hero-pills">
+              <span class="pill">Animasi Scroll Reveal</span>
+              <span class="pill">3D Tilt</span>
+              <span class="pill">Horizontal Snap</span>
+              <span class="pill">Masonry Editorial</span>
+              <span class="pill">Cinematic Hover</span>
+            </div>
+          </div>
+          <div class="showcase-hero-preview" aria-hidden="true">
+            <div class="preview-orbit">
+              <div class="orbit-ring"></div>
+              <div class="orbit-item orbit-item-1"></div>
+              <div class="orbit-item orbit-item-2"></div>
+              <div class="orbit-item orbit-item-3"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="style-switcher">
+      <div class="container">
+        <div class="switcher-head">
+          <div>
+            <p class="eyebrow"><span></span>Pilih Style</p>
+            <h2 class="section-title">Switch antar <em>tampilan</em></h2>
+          </div>
+          <p class="switcher-sub">Klik salah satu tab untuk melihat perbedaan nuansa dan interaksinya.</p>
+        </div>
+        <div class="tabs" role="tablist" aria-label="Galeri style">
+          <button class="tab-btn is-active" role="tab" aria-selected="true" data-target="style-masonry">
+            <svg>
+              <use href="#icon-grid"></use>
+            </svg>
+            <span>01 · Editorial Masonry</span>
+          </button>
+          <button class="tab-btn" role="tab" aria-selected="false" data-target="style-tilt">
+            <svg>
+              <use href="#icon-layers"></use>
+            </svg>
+            <span>02 · Interactive Tilt</span>
+          </button>
+          <button class="tab-btn" role="tab" aria-selected="false" data-target="style-horizontal">
+            <svg>
+              <use href="#icon-move-horizontal"></use>
+            </svg>
+            <span>03 · Horizontal Cinematic</span>
+          </button>
+          <button class="tab-btn" role="tab" aria-selected="false" data-target="style-parallax">
+            <svg>
+              <use href="#icon-spark"></use>
+            </svg>
+            <span>04 · Parallax Reveal</span>
+          </button>
+          <button class="tab-btn" role="tab" aria-selected="false" data-target="style-morph">
+            <svg>
+              <use href="#icon-cube"></use>
+            </svg>
+            <span>05 · Morphing Grid</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery-panel is-active" id="style-masonry">
+      <div class="container">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow"><span></span>Style 01</p>
+            <h3 class="panel-title">Editorial <em>Masonry</em></h3>
+            <p class="panel-sub">Tata letak bertingkat seperti majalah. Elemen muncul bertahap dengan efek fade-up saat
+              di-scroll.</p>
+          </div>
+          <div class="filter-group" data-filter-group="masonry">
+            <button class="filter-pill is-active" data-filter="all">Semua</button>
+            <button class="filter-pill" data-filter="wedding">Wedding</button>
+            <button class="filter-pill" data-filter="portrait">Portrait</button>
+            <button class="filter-pill" data-filter="event">Event</button>
+          </div>
+        </div>
+        <div class="masonry-grid">
+          <article class="masonry-item reveal-up" data-category="wedding">
+            <figure class="masonry-figure">
+              <img
+                src="https://images.unsplash.com/photo-1529636798458-92182e662485?auto=format&fit=crop&w=1600&q=80"
+                alt="Pasangan pengantin di tepi pantai saat golden hour" loading="lazy">
+              <figcaption class="masonry-caption">
+                <div>
+                  <span class="cap-cat">Wedding</span>
+                  <p class="cap-title">Golden Vows</p>
+                </div>
+                <button class="cap-zoom" data-lightbox data-img="https://images.unsplash.com/photo-1529636798458-92182e662485?auto=format&fit=crop&w=2000&q=90" data-title="Golden Vows" data-meta="Wedding · Bali">
+                  <svg>
+                    <use href="#icon-arrow-up-right"></use>
+                  </svg>
+                </button>
+              </figcaption>
+            </figure>
+          </article>
+          <article class="masonry-item reveal-up" data-category="portrait">
+            <figure class="masonry-figure">
+              <img
+                src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1400&q=80"
+                alt="Potret wanita dengan cahaya jendela lembut" loading="lazy">
+              <figcaption class="masonry-caption">
+                <div>
+                  <span class="cap-cat">Portrait</span>
+                  <p class="cap-title">Soft Light</p>
+                </div>
+                <button class="cap-zoom" data-lightbox data-img="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=2000&q=90" data-title="Soft Light" data-meta="Portrait · Studio">
+                  <svg>
+                    <use href="#icon-arrow-up-right"></use>
+                  </svg>
+                </button>
+              </figcaption>
+            </figure>
+          </article>
+          <article class="masonry-item reveal-up" data-category="event">
+            <figure class="masonry-figure">
+              <img
+                src="https://images.unsplash.com/photo-1505236858219-8359eb29e329?auto=format&fit=crop&w=1500&q=80"
+                alt="Suasana pesta dengan pencahayaan hangat" loading="lazy">
+              <figcaption class="masonry-caption">
+                <div>
+                  <span class="cap-cat">Event</span>
+                  <p class="cap-title">Afterglow</p>
+                </div>
+                <button class="cap-zoom" data-lightbox data-img="https://images.unsplash.com/photo-1505236858219-8359eb29e329?auto=format&fit=crop&w=2000&q=90" data-title="Afterglow" data-meta="Event · Jakarta">
+                  <svg>
+                    <use href="#icon-arrow-up-right"></use>
+                  </svg>
+                </button>
+              </figcaption>
+            </figure>
+          </article>
+          <article class="masonry-item reveal-up" data-category="portrait">
+            <figure class="masonry-figure">
+              <img
+                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=1500&q=80"
+                alt="Potret close up dengan ekspresi natural" loading="lazy">
+              <figcaption class="masonry-caption">
+                <div>
+                  <span class="cap-cat">Portrait</span>
+                  <p class="cap-title">Unfiltered</p>
+                </div>
+                <button class="cap-zoom" data-lightbox data-img="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=2000&q=90" data-title="Unfiltered" data-meta="Portrait · Outdoor">
+                  <svg>
+                    <use href="#icon-arrow-up-right"></use>
+                  </svg>
+                </button>
+              </figcaption>
+            </figure>
+          </article>
+          <article class="masonry-item reveal-up" data-category="wedding">
+            <figure class="masonry-figure">
+              <img
+                src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1600&q=80"
+                alt="Detail cincin pernikahan" loading="lazy">
+              <figcaption class="masonry-caption">
+                <div>
+                  <span class="cap-cat">Wedding</span>
+                  <p class="cap-title">The Details</p>
+                </div>
+                <button class="cap-zoom" data-lightbox data-img="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=2000&q=90" data-title="The Details" data-meta="Wedding · Detail">
+                  <svg>
+                    <use href="#icon-arrow-up-right"></use>
+                  </svg>
+                </button>
+              </figcaption>
+            </figure>
+          </article>
+          <article class="masonry-item reveal-up" data-category="event">
+            <figure class="masonry-figure">
+              <img
+                src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1500&q=80"
+                alt="Penonton di acara konser" loading="lazy">
+              <figcaption class="masonry-caption">
+                <div>
+                  <span class="cap-cat">Event</span>
+                  <p class="cap-title">Neon Crowd</p>
+                </div>
+                <button class="cap-zoom" data-lightbox data-img="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=2000&q=90" data-title="Neon Crowd" data-meta="Event · Live">
+                  <svg>
+                    <use href="#icon-arrow-up-right"></use>
+                  </svg>
+                </button>
+              </figcaption>
+            </figure>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery-panel" id="style-tilt">
+      <div class="container">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow"><span></span>Style 02</p>
+            <h3 class="panel-title">Interactive <em>Tilt Grid</em></h3>
+            <p class="panel-sub">Geser kursor ke foto untuk merasakan efek 3D tilt yang halus & responsif. Sangat cocok
+              untuk menonjolkan tiap frame.</p>
+          </div>
+        </div>
+        <div class="tilt-grid">
+          <article class="tilt-card reveal-up">
+            <div class="tilt-inner">
+              <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1600&q=80"
+                alt="Pasangan pengantin pelukan saat sunset" loading="lazy">
+              <div class="tilt-overlay">
+                <span class="tilt-cat">Wedding</span>
+                <h4 class="tilt-title">Sunset Embrace</h4>
+                <button class="tilt-btn" data-lightbox data-img="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=2000&q=90" data-title="Sunset Embrace" data-meta="Wedding · Uluwatu">
+                  Lihat Detail
+                  <svg>
+                    <use href="#icon-arrow-up-right"></use>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </article>
+          <article class="tilt-card reveal-up">
+            <div class="tilt-inner">
+              <img src="https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=crop&w=1600&q=80"
+                alt="Model berdiri di jembatan dengan cahaya golden hour" loading="lazy">
+              <div class="tilt-overlay">
+                <span class="tilt-cat">Fashion</span>
+                <h4 class="tilt-title">Golden Avenue</h4>
+                <button class="tilt-btn" data-lightbox data-img="https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=crop&w=2000&q=90" data-title="Golden Avenue" data-meta="Fashion · Urban">
+                  Lihat Detail
+                  <svg>
+                    <use href="#icon-arrow-up-right"></use>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </article>
+          <article class="tilt-card reveal-up">
+            <div class="tilt-inner">
+              <img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=1600&q=80"
+                alt="Pengantin berjalan di taman" loading="lazy">
+              <div class="tilt-overlay">
+                <span class="tilt-cat">Prewedding</span>
+                <h4 class="tilt-title">Garden Walk</h4>
+                <button class="tilt-btn" data-lightbox data-img="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=2000&q=90" data-title="Garden Walk" data-meta="Prewedding · Ubud">
+                  Lihat Detail
+                  <svg>
+                    <use href="#icon-arrow-up-right"></use>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </article>
+          <article class="tilt-card reveal-up">
+            <div class="tilt-inner">
+              <img src="https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?auto=format&fit=crop&w=1600&q=80"
+                alt="Potret wanita dengan jaket di jalanan malam" loading="lazy">
+              <div class="tilt-overlay">
+                <span class="tilt-cat">Portrait</span>
+                <h4 class="tilt-title">Neon Muse</h4>
+                <button class="tilt-btn" data-lightbox data-img="https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?auto=format&fit=crop&w=2000&q=90" data-title="Neon Muse" data-meta="Portrait · Night">
+                  Lihat Detail
+                  <svg>
+                    <use href="#icon-arrow-up-right"></use>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </article>
+          <article class="tilt-card reveal-up">
+            <div class="tilt-inner">
+              <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1600&q=80"
+                alt="Tamu undangan di acara pernikahan" loading="lazy">
+              <div class="tilt-overlay">
+                <span class="tilt-cat">Event</span>
+                <h4 class="tilt-title">First Toast</h4>
+                <button class="tilt-btn" data-lightbox data-img="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=2000&q=90" data-title="First Toast" data-meta="Event · Reception">
+                  Lihat Detail
+                  <svg>
+                    <use href="#icon-arrow-up-right"></use>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </article>
+          <article class="tilt-card reveal-up">
+            <div class="tilt-inner">
+              <img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=1600&q=80"
+                alt="Potret grup teman dengan pencahayaan kreatif" loading="lazy">
+              <div class="tilt-overlay">
+                <span class="tilt-cat">Group</span>
+                <h4 class="tilt-title">Frame & Friends</h4>
+                <button class="tilt-btn" data-lightbox data-img="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=2000&q=90" data-title="Frame & Friends" data-meta="Portrait · Creative">
+                  Lihat Detail
+                  <svg>
+                    <use href="#icon-arrow-up-right"></use>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery-panel" id="style-horizontal">
+      <div class="container">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow"><span></span>Style 03</p>
+            <h3 class="panel-title">Horizontal <em>Cinematic</em> Scroll</h3>
+            <p class="panel-sub">Scrolling horizontal seperti galeri editorial film. Bisa digeser pakai mouse, trackpad,
+              atau sentuhan.</p>
+          </div>
+          <div class="hint-chip">
+            <span>← Geser horizontal →</span>
+          </div>
+        </div>
+      </div>
+      <div class="horizontal-wrap">
+        <div class="horizontal-track" id="horizontalTrack">
+          <article class="h-item">
+            <figure class="h-figure">
+              <img src="https://images.unsplash.com/photo-1500048993953-d23a436266cf?auto=format&fit=crop&w=2200&q=80"
+                alt="Lanskap jalan setapak dengan cahaya sore" loading="lazy">
+              <figcaption class="h-caption">
+                <div>
+                  <span class="h-cat">Travel</span>
+                  <p class="h-title">Golden Path</p>
+                </div>
+                <button class="h-zoom" data-lightbox data-img="https://images.unsplash.com/photo-1500048993953-d23a436266cf?auto=format&fit=crop&w=2400&q=90" data-title="Golden Path" data-meta="Travel · Bali">
+                  <svg>
+                    <use href="#icon-arrow-up-right"></use>
+                  </svg>
+                </button>
+              </figcaption>
+            </figure>
+          </article>
+          <article class="h-item">
+            <figure class="h-figure">
+              <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=2200&q=80"
+                alt="Pasangan berdansa di resepsi" loading="lazy">
+              <figcaption class="h-caption">
+                <div>
+                  <span class="h-cat">Wedding</span>
+                  <p class="h-title">First Dance</p>
+                </div>
+                <button class="h-zoom" data-lightbox data-img="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=2400&q=90" data-title="First Dance" data-meta="Wedding · Ubud">
+                  <svg>
+                    <use href="#icon-arrow-up-right"></use>
+                  </svg>
+                </button>
+              </figcaption>
+            </figure>
+          </article>
+          <article class="h-item">
+            <figure class="h-figure">
+              <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=2200&q=80"
+                alt="Potret wanita di rooftop dengan citylight" loading="lazy">
+              <figcaption class="h-caption">
+                <div>
+                  <span class="h-cat">Portrait</span>
+                  <p class="h-title">City After Dark</p>
+                </div>
+                <button class="h-zoom" data-lightbox data-img="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=2400&q=90" data-title="City After Dark" data-meta="Portrait · Jakarta">
+                  <svg>
+                    <use href="#icon-arrow-up-right"></use>
+                  </svg>
+                </button>
+              </figcaption>
+            </figure>
+          </article>
+          <article class="h-item">
+            <figure class="h-figure">
+              <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=2200&q=80"
+                alt="Dekorasi meja pernikahan minimalis" loading="lazy">
+              <figcaption class="h-caption">
+                <div>
+                  <span class="h-cat">Detail</span>
+                  <p class="h-title">Quiet Table</p>
+                </div>
+                <button class="h-zoom" data-lightbox data-img="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=2400&q=90" data-title="Quiet Table" data-meta="Wedding · Detail">
+                  <svg>
+                    <use href="#icon-arrow-up-right"></use>
+                  </svg>
+                </button>
+              </figcaption>
+            </figure>
+          </article>
+          <article class="h-item">
+            <figure class="h-figure">
+              <img src="https://images.unsplash.com/photo-1469371670807-013ccf25f16a?auto=format&fit=crop&w=2200&q=80"
+                alt="Pasangan berlari di pantai saat matahari terbenam" loading="lazy">
+              <figcaption class="h-caption">
+                <div>
+                  <span class="h-cat">Prewedding</span>
+                  <p class="h-title">Salt &amp; Sand</p>
+                </div>
+                <button class="h-zoom" data-lightbox data-img="https://images.unsplash.com/photo-1469371670807-013ccf25f16a?auto=format&fit=crop&w=2400&q=90" data-title="Salt &amp; Sand" data-meta="Prewedding · Beach">
+                  <svg>
+                    <use href="#icon-arrow-up-right"></use>
+                  </svg>
+                </button>
+              </figcaption>
+            </figure>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery-panel" id="style-parallax">
+      <div class="container">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow"><span></span>Style 04</p>
+            <h3 class="panel-title">Parallax <em>Reveal</em></h3>
+            <p class="panel-sub">Gambar bergerak sedikit berbeda dari scroll (parallax) saat masuk viewport, menciptakan
+              kesan kedalaman yang elegan.</p>
+          </div>
+        </div>
+        <div class="parallax-list">
+          <article class="parallax-item reveal-up">
+            <div class="parallax-media">
+              <img class="parallax-img"
+                src="https://images.unsplash.com/photo-1523438885200-e635ba2c371e?auto=format&fit=crop&w=2000&q=80"
+                alt="Pengantin wanita berjalan di koridor dengan cahaya natural" loading="lazy">
+            </div>
+            <div class="parallax-content">
+              <span class="parallax-num">01</span>
+              <h4 class="parallax-title">Aisle of Light</h4>
+              <p class="parallax-text">Momen tenang sebelum "I do", direkam dengan pendekatan dokumenter yang hangat.
+              </p>
+              <button class="link-arrow" data-lightbox data-img="https://images.unsplash.com/photo-1523438885200-e635ba2c371e?auto=format&fit=crop&w=2200&q=90" data-title="Aisle of Light" data-meta="Wedding · Ceremony">
+                Lihat full frame
+                <svg>
+                  <use href="#icon-arrow-up-right"></use>
+                </svg>
+              </button>
+            </div>
+          </article>
+          <article class="parallax-item reveal-up">
+            <div class="parallax-media">
+              <img class="parallax-img"
+                src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=2000&q=80"
+                alt="Potret wanita duduk di tangga dengan pencahayaan sisi" loading="lazy">
+            </div>
+            <div class="parallax-content">
+              <span class="parallax-num">02</span>
+              <h4 class="parallax-title">Side Story</h4>
+              <p class="parallax-text">Permainan cahaya dan bayangan untuk menghasilkan portrait dengan mood sinematik.
+              </p>
+              <button class="link-arrow" data-lightbox data-img="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=2200&q=90" data-title="Side Story" data-meta="Portrait · Editorial">
+                Lihat full frame
+                <svg>
+                  <use href="#icon-arrow-up-right"></use>
+                </svg>
+              </button>
+            </div>
+          </article>
+          <article class="parallax-item reveal-up">
+            <div class="parallax-media">
+              <img class="parallax-img"
+                src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=2000&q=80"
+                alt="Suasana pesta malam dengan lampu gantung" loading="lazy">
+            </div>
+            <div class="parallax-content">
+              <span class="parallax-num">03</span>
+              <h4 class="parallax-title">Lanterns</h4>
+              <p class="parallax-text">Atmosfer hangat dari penerangan dekorasi yang jadi bintang di tiap frame.</p>
+              <button class="link-arrow" data-lightbox data-img="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=2200&q=90" data-title="Lanterns" data-meta="Event · Night">
+                Lihat full frame
+                <svg>
+                  <use href="#icon-arrow-up-right"></use>
+                </svg>
+              </button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery-panel" id="style-morph">
+      <div class="container">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow"><span></span>Style 05</p>
+            <h3 class="panel-title">Morphing <em>Grid</em></h3>
+            <p class="panel-sub">Hover untuk memperluas gambar & menciutkan yang lain. Efek morphing halus dengan overlay
+              info yang muncul elegan.</p>
+          </div>
+        </div>
+        <div class="morph-grid">
+          <article class="morph-item">
+            <img src="https://images.unsplash.com/photo-1507504031003-b417219a0fde?auto=format&fit=crop&w=2000&q=80"
+              alt="Pasangan berjalan menyusuri sawah" loading="lazy">
+            <div class="morph-info">
+              <span class="morph-cat">Prewedding</span>
+              <h4 class="morph-title">Rice Fields</h4>
+              <button class="morph-link" data-lightbox data-img="https://images.unsplash.com/photo-1507504031003-b417219a0fde?auto=format&fit=crop&w=2200&q=90" data-title="Rice Fields" data-meta="Prewedding · Tegallalang">
+                <svg>
+                  <use href="#icon-arrow-up-right"></use>
+                </svg>
+              </button>
+            </div>
+          </article>
+          <article class="morph-item">
+            <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=2000&q=80"
+              alt="Detail bouquet pernikahan" loading="lazy">
+            <div class="morph-info">
+              <span class="morph-cat">Wedding</span>
+              <h4 class="morph-title">Bloom Detail</h4>
+              <button class="morph-link" data-lightbox data-img="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=2200&q=90" data-title="Bloom Detail" data-meta="Wedding · Florals">
+                <svg>
+                  <use href="#icon-arrow-up-right"></use>
+                </svg>
+              </button>
+            </div>
+          </article>
+          <article class="morph-item">
+            <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=2000&q=80"
+              alt="Potret wanita dengan rambut terurai di luar ruangan" loading="lazy">
+            <div class="morph-info">
+              <span class="morph-cat">Portrait</span>
+              <h4 class="morph-title">Golden Hour</h4>
+              <button class="morph-link" data-lightbox data-img="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=2200&q=90" data-title="Golden Hour" data-meta="Portrait · Natural Light">
+                <svg>
+                  <use href="#icon-arrow-up-right"></use>
+                </svg>
+              </button>
+            </div>
+          </article>
+          <article class="morph-item">
+            <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=2000&q=80"
+              alt="Tamu bersulang di resepsi" loading="lazy">
+            <div class="morph-info">
+              <span class="morph-cat">Event</span>
+              <h4 class="morph-title">Cheers</h4>
+              <button class="morph-link" data-lightbox data-img="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=2200&q=90" data-title="Cheers" data-meta="Event · Reception">
+                <svg>
+                  <use href="#icon-arrow-up-right"></use>
+                </svg>
+              </button>
+            </div>
+          </article>
+          <article class="morph-item">
+            <img src="https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?auto=format&fit=crop&w=2000&q=80"
+              alt="Potret pria dalam suit outdoor" loading="lazy">
+            <div class="morph-info">
+              <span class="morph-cat">Portrait</span>
+              <h4 class="morph-title">Timeless</h4>
+              <button class="morph-link" data-lightbox data-img="https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?auto=format&fit=crop&w=2200&q=90" data-title="Timeless" data-meta="Portrait · Editorial">
+                <svg>
+                  <use href="#icon-arrow-up-right"></use>
+                </svg>
+              </button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-band">
+      <div class="container cta-inner reveal">
+        <p class="eyebrow"><span aria-hidden="true"></span>Terinspirasi?</p>
+        <h2>Ingin galeri ini dipakai di <em>projek kamu</em>?</h2>
+        <p>Bisa disesuaikan dengan kategori, jumlah foto, maupun nuansa yang kamu inginkan.</p>
+        <div class="cta-actions">
+          <a href="kontak.html" class="btn btn-primary">
+            Diskusikan Ide
+            <svg aria-hidden="true">
+              <use href="#icon-arrow-right"></use>
+            </svg>
+          </a>
+          <a href="portofolio.html" class="btn btn-ghost">Kembali ke Portofolio</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-bottom">
+      <p>&copy; <span id="year">2026</span> BB Photography. Dibuat dengan nuansa galeri custom.</p>
+      <ul>
+        <li><a href="index.html">Beranda</a></li>
+        <li><a href="galeri-custom.html">Galeri Custom</a></li>
+        <li><a href="kontak.html">Kontak</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <button class="to-top" id="toTop" type="button" aria-label="Kembali ke atas">
+    <svg aria-hidden="true" style="transform: rotate(-90deg)">
+      <use href="#icon-arrow-right"></use>
+    </svg>
+  </button>
+
+  <div class="custom-lightbox" id="customLightbox" hidden>
+    <div class="cl-backdrop" data-cl-close></div>
+    <button class="cl-close" data-cl-close aria-label="Tutup">&times;</button>
+    <figure class="cl-figure">
+      <img id="clImg" alt="">
+      <figcaption>
+        <strong id="clTitle"></strong>
+        <span id="clMeta"></span>
+      </figcaption>
+    </figure>
+  </div>
+
+  <script src="js/main.js" defer></script>
+  <script src="js/galeri-custom.js" defer></script>
+</body>
+
+</html>

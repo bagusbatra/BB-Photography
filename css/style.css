@@ -853,19 +853,26 @@ html[data-theme='light'] .theme-toggle .icon-moon {
   }
 }
 
-.hero-card-icon {
-  display: grid;
-  place-items: center;
+.hero-card .hero-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 40px;
   height: 40px;
+  margin-top: 0;
   border-radius: 50%;
   background: var(--accent-soft);
   color: var(--accent);
+  flex-shrink: 0;
+  line-height: 1;
 }
 
-.hero-card-icon svg {
+.hero-card .hero-card-icon svg {
+  display: block;
   width: 19px;
   height: 19px;
+  margin: 0;
+  flex-shrink: 0;
 }
 
 .hero-card strong {
@@ -875,7 +882,7 @@ html[data-theme='light'] .theme-toggle .icon-moon {
   letter-spacing: 0.02em;
 }
 
-.hero-card span {
+.hero-card > div > span {
   display: block;
   margin-top: 2px;
   font-size: 11px;
@@ -2754,6 +2761,138 @@ html[data-theme='light'] .theme-toggle .icon-moon {
 
   .page-hero {
     padding-top: calc(var(--header-h) + 44px);
+  }
+}
+
+/* ============ Hero Visual Circular Orbit ============ */
+.hero-visual--circle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 460px;
+  justify-self: end;
+  aspect-ratio: 1 / 1;
+}
+
+.hero-visual--circle::after {
+  display: none;
+}
+
+.hero-orbit {
+  position: relative;
+  width: clamp(280px, 32vw, 380px);
+  height: clamp(280px, 32vw, 380px);
+  z-index: 1;
+}
+
+.hero-orbit-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+}
+
+.hero-orbit-ring::after {
+  content: '';
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--accent) 38%, transparent);
+}
+
+.hero-orbit-item {
+  position: absolute;
+  width: 48%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  box-shadow: 0 60px 80px -60px rgba(0, 0, 0, 0.9);
+  background-size: cover;
+  background-position: center;
+  filter: saturate(0.98);
+}
+
+.hero-orbit-item--1 {
+  top: -10%;
+  right: 4%;
+  transform: rotate(8deg);
+  background-image: url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=80');
+  animation: heroOrbitFloat 9s ease-in-out infinite;
+}
+
+.hero-orbit-item--2 {
+  bottom: -14%;
+  left: -6%;
+  transform: rotate(-12deg);
+  background-image: url('https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=900&q=80');
+  animation: heroOrbitFloat 9s ease-in-out infinite reverse;
+}
+
+.hero-orbit-item--3 {
+  top: 26%;
+  right: -16%;
+  width: 40%;
+  transform: rotate(14deg);
+  background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=900&q=80');
+  animation: heroOrbitFloat 11s ease-in-out infinite;
+}
+
+@keyframes heroOrbitFloat {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -10px;
+  }
+}
+
+.hero-visual--circle .hero-card {
+  left: 250px;
+  bottom: 26px;
+  z-index: 2;
+}
+
+.hero-visual--circle .hero-badge {
+  top: 4%;
+  right: 280px;
+  z-index: 2;
+}
+
+@media (max-width: 1024px) {
+  .hero-visual--circle {
+    justify-self: center;
+    margin-top: clamp(40px, 8vw, 70px);
+  }
+
+  .hero-visual--circle .hero-card {
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -18px;
+  }
+
+  .hero-visual--circle .hero-badge {
+    right: 10%;
+  }
+}
+
+@media (max-width: 680px) {
+  .hero-visual--circle .hero-card {
+    width: min(320px, 90vw);
+    justify-content: center;
+  }
+
+  .hero-visual--circle .hero-badge {
+    width: 96px;
+    height: 96px;
+    right: 6%;
+  }
+
+  .hero-visual--circle .hero-badge strong {
+    font-size: 30px;
   }
 }
 
