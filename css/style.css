@@ -1188,108 +1188,268 @@ html[data-theme='light'] .theme-toggle .icon-moon {
 }
 
 /* ============ 7. Layanan ============ */
+/* Kartu editorial: nomor raksasa, foto transparan, sorot cahaya mengikuti
+   kursor, dan kemiringan 3D tipis. Semua gerakan ada di .service-inner
+   supaya tidak bertabrakan dengan transform milik .reveal di elemen luar. */
 .service-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 20px;
+  gap: 22px;
 }
 
 .service-card {
+  /* --mx/--my: titik sorot cahaya · --rx/--ry: kemiringan dari pointer */
+  --mx: 50%;
+  --my: 0%;
+  --rx: 0deg;
+  --ry: 0deg;
+
+  position: relative;
+  min-height: 322px;
+  border-radius: var(--radius);
+}
+
+.service-inner {
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: 32px 30px;
+  height: 100%;
+  padding: 28px 28px 24px;
   border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: var(--surface);
+  border-radius: inherit;
+  background-color: var(--surface);
+  background:
+    radial-gradient(130% 90% at 15% 0%,
+      color-mix(in srgb, var(--accent) 7%, transparent), transparent 62%),
+    var(--surface);
   overflow: hidden;
-  transition: transform var(--transition), border-color var(--transition),
-    background-color var(--transition), box-shadow var(--transition);
+  transform: perspective(1100px) translate3d(0, var(--lift, 0px), 0)
+    rotateX(var(--rx)) rotateY(var(--ry));
+  transition: transform 0.45s cubic-bezier(0.22, 0.61, 0.36, 1),
+    border-color var(--transition), box-shadow var(--transition);
 }
 
-.service-card::before {
+/* Sorot cahaya yang mengikuti kursor */
+.service-inner::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 30px;
-  right: 30px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(320px circle at var(--mx) var(--my),
+    color-mix(in srgb, var(--accent) 15%, transparent), transparent 72%);
   opacity: 0;
-  transition: opacity var(--transition);
+  pointer-events: none;
+  transition: opacity 0.4s ease;
 }
 
-.service-card:hover {
-  transform: translateY(-6px);
-  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
-  background: var(--surface-2);
-  box-shadow: var(--shadow);
+/* Kilau diagonal yang menyapu kartu saat disentuh kursor */
+.service-inner::after {
+  content: '';
+  position: absolute;
+  top: -30%;
+  bottom: -30%;
+  left: -60%;
+  z-index: 2;
+  width: 45%;
+  background: linear-gradient(90deg, transparent,
+    color-mix(in srgb, var(--text) 8%, transparent), transparent);
+  opacity: 0;
+  pointer-events: none;
+  transform: skewX(-14deg) translateX(0);
+  transition: transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1),
+    opacity 0.3s ease;
 }
 
-.service-card:hover::before {
+/* Foto suasana dengan transparansi: muncul di sisi kanan kartu, melebur
+   ke permukaan kartu lewat mask radial supaya teks tetap nyaman dibaca. */
+.service-photo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.service-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 35%;
+  opacity: 0.4;
+  filter: grayscale(1) contrast(1.05) brightness(0.86);
+  transform: scale(1.03);
+  -webkit-mask-image: radial-gradient(120% 100% at 92% 44%,
+    #000 0%, rgba(0, 0, 0, 0.78) 38%, transparent 72%);
+  mask-image: radial-gradient(120% 100% at 92% 44%,
+    #000 0%, rgba(0, 0, 0, 0.78) 38%, transparent 72%);
+  transition: opacity 0.55s ease,
+    transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1),
+    filter 0.55s ease;
+}
+
+/* Selubung warna permukaan kartu agar area teks tetap solid */
+.service-photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(100deg,
+      var(--surface) 0%,
+      color-mix(in srgb, var(--surface) 70%, transparent) 40%,
+      transparent 74%),
+    linear-gradient(to top,
+      color-mix(in srgb, var(--surface) 68%, transparent) 0%,
+      transparent 44%);
+  pointer-events: none;
+}
+
+html[data-theme='light'] .service-photo img {
+  opacity: 0.28;
+  filter: grayscale(1) contrast(0.98) brightness(1.05);
+}
+
+.service-card:hover .service-photo img,
+.service-card:focus-within .service-photo img {
+  opacity: 0.66;
+  filter: grayscale(0.15) contrast(1.02);
+  transform: scale(1.09);
+}
+
+html[data-theme='light'] .service-card:hover .service-photo img,
+html[data-theme='light'] .service-card:focus-within .service-photo img {
+  opacity: 0.52;
+}
+
+.service-top,
+.service-card h3,
+.service-card p {
+  position: relative;
+  z-index: 1;
+}
+
+.service-card:hover .service-inner,
+.service-card:focus-within .service-inner {
+  --lift: -6px;
+  border-color: color-mix(in srgb, var(--accent) 50%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 20%, transparent),
+    var(--shadow);
+}
+
+.service-card:hover .service-inner::before,
+.service-card:focus-within .service-inner::before {
   opacity: 1;
+}
+
+.service-card:hover .service-inner::after {
+  opacity: 1;
+  transform: skewX(-14deg) translateX(420%);
 }
 
 .service-top {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 24px;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+/* Garis tipis yang memudar dari ikon ke nomor urut */
+.service-rule {
+  flex: 1;
+  height: 1px;
+  background: var(--line-strong);
+  -webkit-mask-image: linear-gradient(90deg, #000, transparent);
+  mask-image: linear-gradient(90deg, #000, transparent);
+  transition: background-color var(--transition);
+}
+
+.service-card:hover .service-rule {
+  background: color-mix(in srgb, var(--accent) 70%, transparent);
 }
 
 .service-icon {
   display: grid;
   place-items: center;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: var(--accent-soft);
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  border: 1px solid color-mix(in srgb, var(--accent) 32%, transparent);
+  border-radius: 13px;
+  background: color-mix(in srgb, var(--accent) 9%, transparent);
   color: var(--accent);
-  transition: background-color var(--transition), color var(--transition);
+  transition: background-color var(--transition), color var(--transition),
+    border-color var(--transition), transform var(--transition);
 }
 
 .service-icon svg {
-  width: 22px;
-  height: 22px;
+  width: 21px;
+  height: 21px;
 }
 
-.service-card:hover .service-icon {
+.service-card:hover .service-icon,
+.service-card:focus-within .service-icon {
   background: var(--accent);
+  border-color: var(--accent);
   color: var(--accent-contrast);
+  transform: translateY(-2px) rotate(-5deg);
 }
 
+/* Nomor urut raksasa bergaya outline di kanan kepala kartu */
 .service-num {
+  position: relative;
+  top: -0.15em;
+  flex-shrink: 0;
   font-family: var(--font-display);
-  font-size: 14px;
+  font-size: clamp(56px, 5.2vw, 74px);
   font-style: italic;
-  letter-spacing: 0.06em;
-  color: var(--muted);
+  font-weight: 400;
+  line-height: 0.75;
+  letter-spacing: -0.04em;
+  color: transparent;
+  -webkit-text-stroke: 1px color-mix(in srgb, var(--text) 26%, transparent);
+  opacity: 0.95;
+  pointer-events: none;
+  user-select: none;
+  transition: color var(--transition), -webkit-text-stroke-color var(--transition),
+    transform var(--transition), opacity var(--transition);
+}
+
+.service-card:hover .service-num,
+.service-card:focus-within .service-num {
+  color: color-mix(in srgb, var(--accent) 13%, transparent);
+  -webkit-text-stroke-color: color-mix(in srgb, var(--accent) 60%, transparent);
+  opacity: 1;
+  transform: translateY(-2px) scale(1.03);
 }
 
 .service-card h3 {
   font-family: var(--font-display);
-  font-size: 1.38rem;
+  font-size: 1.5rem;
   font-weight: 500;
-  line-height: 1.25;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
 }
 
 .service-card p {
-  margin-top: 12px;
+  margin-top: 10px;
+  max-width: 32ch;
   color: var(--muted);
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 300;
-  line-height: 1.78;
+  line-height: 1.75;
 }
 
 .card-link {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  align-self: flex-start;
+  gap: 12px;
   margin-top: auto;
   padding-top: 24px;
-  font-size: 12.5px;
+  font-size: 11.5px;
   font-weight: 500;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
   color: var(--accent);
 }
 
@@ -1298,14 +1458,8 @@ html[data-theme='light'] .theme-toggle .icon-moon {
   content: '';
   position: absolute;
   inset: 0;
-  z-index: 1;
-  border-radius: inherit;
-}
-
-.service-card:focus-within {
-  border-color: var(--accent);
-  background: var(--surface-2);
-  box-shadow: var(--shadow);
+  z-index: 3;
+  border-radius: var(--radius);
 }
 
 .card-link:focus-visible {
@@ -1318,15 +1472,309 @@ html[data-theme='light'] .theme-toggle .icon-moon {
   border-radius: var(--radius);
 }
 
-.card-link svg {
-  width: 14px;
-  height: 14px;
-  transition: transform var(--transition);
+.card-arrow {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid color-mix(in srgb, var(--accent) 34%, transparent);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  transition: background-color var(--transition), border-color var(--transition),
+    color var(--transition), transform var(--transition);
 }
 
-.card-link:hover svg,
-.service-card:hover .card-link svg {
-  transform: translateX(4px);
+.card-arrow svg {
+  width: 13px;
+  height: 13px;
+}
+
+.service-card:hover .card-arrow,
+.card-link:focus-visible .card-arrow {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-contrast);
+  transform: translateX(3px);
+}
+
+/* ============ 7b. Preview Spotlight Stage ============ */
+.stage-section {
+  overflow: hidden;
+}
+
+.stage-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(72% 62% at 50% 0%,
+    color-mix(in srgb, var(--accent) 6%, transparent), transparent 72%);
+  pointer-events: none;
+}
+
+.stage-section > .container {
+  position: relative;
+  z-index: 1;
+}
+
+.stage-preview {
+  display: grid;
+  gap: 12px;
+}
+
+/* Panggung utama: satu foto besar dengan scrim gelap agar teks selalu terbaca */
+.stage-frame {
+  position: relative;
+  aspect-ratio: 16 / 8.5;
+  min-height: 340px;
+  border: 1px solid var(--line);
+  border-radius: calc(var(--radius) + 6px);
+  background: #08080a;
+  overflow: hidden;
+  outline: none;
+}
+
+.stage-frame:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.stage-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1.06);
+  transition: opacity 0.9s ease, transform 1.6s ease;
+}
+
+.stage-img.is-active {
+  opacity: 1;
+  animation: stageKen 16s ease-out forwards;
+}
+
+@keyframes stageKen {
+  from {
+    transform: scale(1.01);
+  }
+  to {
+    transform: scale(1.11);
+  }
+}
+
+.stage-scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top,
+      rgba(6, 6, 8, 0.94) 0%,
+      rgba(6, 6, 8, 0.45) 44%,
+      rgba(6, 6, 8, 0.05) 78%),
+    linear-gradient(100deg,
+      rgba(6, 6, 8, 0.5) 0%,
+      transparent 56%);
+  pointer-events: none;
+}
+
+.stage-badge {
+  position: absolute;
+  top: clamp(16px, 3vw, 28px);
+  left: clamp(16px, 3vw, 28px);
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  background: rgba(10, 10, 12, 0.3);
+  color: #f7f3ea;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  white-space: nowrap;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.stage-badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+.stage-info {
+  position: absolute;
+  left: clamp(20px, 4vw, 48px);
+  bottom: clamp(22px, 4vw, 46px);
+  z-index: 3;
+  max-width: min(560px, 64%);
+  color: #f7f3ea;
+}
+
+.stage-info.is-switching {
+  animation: stageInfoIn 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+@keyframes stageInfoIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.stage-cat {
+  font-size: 9.5px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #e6c76a;
+}
+
+.stage-title {
+  margin-top: 9px;
+  font-family: var(--font-display);
+  font-size: clamp(1.7rem, 3.6vw, 3rem);
+  font-weight: 500;
+  line-height: 1.06;
+  color: #f7f3ea;
+}
+
+.stage-desc {
+  margin-top: 10px;
+  max-width: 460px;
+  color: rgba(247, 243, 234, 0.78);
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.75;
+}
+
+.stage-nav {
+  position: absolute;
+  top: clamp(14px, 3vw, 26px);
+  right: clamp(14px, 3vw, 26px);
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #f7f3ea;
+}
+
+.stage-nav button {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  border-radius: 50%;
+  background: rgba(10, 10, 12, 0.3);
+  color: #f7f3ea;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  transition: background-color 0.3s ease, color 0.3s ease,
+    border-color 0.3s ease, transform 0.3s ease;
+}
+
+.stage-nav button:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-contrast);
+  transform: scale(1.05);
+}
+
+.stage-nav button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.stage-nav svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.stage-count {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  font-variant-numeric: tabular-nums;
+  color: rgba(247, 243, 234, 0.85);
+}
+
+.stage-thumbs {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.stage-thumb {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  opacity: 0.48;
+  transition: opacity 0.35s ease, transform 0.35s ease,
+    border-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+.stage-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.stage-thumb span {
+  position: absolute;
+  left: 9px;
+  bottom: 7px;
+  color: #fff;
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.85);
+}
+
+.stage-thumb:hover {
+  opacity: 0.85;
+  transform: translateY(-3px);
+}
+
+.stage-thumb.is-active {
+  opacity: 1;
+  border-color: var(--accent);
+  box-shadow: 0 12px 26px -14px rgba(212, 175, 55, 0.9);
+}
+
+.stage-thumb:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.stage-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 6px;
+}
+
+.stage-hint {
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: 0.04em;
 }
 
 /* ============ 8. Portofolio & filter ============ */
@@ -1472,6 +1920,206 @@ html[data-theme='light'] .theme-toggle .icon-moon {
 .portfolio-foot p {
   font-size: 13.5px;
   color: var(--muted);
+}
+
+/* ---------- Marquee karya (beranda) ---------- */
+.pf-marquee {
+  --pf-gap: clamp(14px, 1.6vw, 22px);
+  --pf-fade: var(--bg-alt);
+  display: grid;
+  gap: clamp(12px, 1.6vw, 20px);
+  overflow: hidden;
+}
+
+.pf-row {
+  position: relative;
+  overflow: hidden;
+}
+
+.pf-row::before,
+.pf-row::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 3;
+  width: clamp(32px, 8vw, 140px);
+  pointer-events: none;
+}
+
+.pf-row::before {
+  left: 0;
+  background: linear-gradient(to right, var(--pf-fade), transparent);
+}
+
+.pf-row::after {
+  right: 0;
+  background: linear-gradient(to left, var(--pf-fade), transparent);
+}
+
+/* Tanpa JS: baris bisa digeser manual, tanpa animasi */
+.pf-marquee:not(.is-ready) .pf-row {
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.pf-marquee:not(.is-ready) .pf-row::-webkit-scrollbar {
+  display: none;
+}
+
+.pf-track {
+  display: flex;
+  width: max-content;
+}
+
+.pf-marquee.is-ready .pf-track {
+  animation: pfLeft 56s linear infinite;
+  will-change: transform;
+}
+
+.pf-marquee.is-ready .pf-row[data-dir="right"] .pf-track {
+  animation-name: pfRight;
+  animation-duration: 62s;
+}
+
+.pf-marquee.is-ready .pf-row:hover .pf-track,
+.pf-marquee.is-ready .pf-row:focus-within .pf-track {
+  animation-play-state: paused;
+}
+
+@keyframes pfLeft {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes pfRight {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.pf-set {
+  display: flex;
+  gap: var(--pf-gap);
+  padding-right: var(--pf-gap);
+}
+
+.pf-card {
+  position: relative;
+  flex: 0 0 auto;
+  display: block;
+  width: clamp(200px, 21vw, 300px);
+  aspect-ratio: 3 / 4;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--surface);
+  transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+    opacity 0.45s ease, border-color 0.4s ease, box-shadow 0.5s ease,
+    filter 0.45s ease;
+}
+
+.pf-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -3px;
+}
+
+.pf-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1.1s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.pf-row:hover .pf-card {
+  opacity: 0.5;
+  filter: grayscale(0.6);
+}
+
+.pf-row:hover .pf-card:hover {
+  opacity: 1;
+  filter: none;
+  transform: translateY(-6px) scale(1.03);
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  box-shadow: var(--shadow);
+}
+
+.pf-card:hover img {
+  transform: scale(1.06);
+}
+
+.pf-caption {
+  position: absolute;
+  inset: auto 0 0 0;
+  display: grid;
+  gap: 6px;
+  padding: clamp(16px, 2.4vw, 22px);
+  background: linear-gradient(to top, rgba(6, 6, 8, 0.92), transparent);
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+.pf-card:hover .pf-caption,
+.pf-card:focus-visible .pf-caption {
+  opacity: 1;
+  transform: none;
+}
+
+.pf-cat {
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #e6c76a;
+}
+
+.pf-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 500;
+  line-height: 1.25;
+  color: #f7f3ea;
+}
+
+.pf-zoom {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 50%;
+  color: #fff;
+  background: rgba(10, 10, 12, 0.28);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.pf-zoom svg {
+  width: 14px;
+  height: 14px;
+}
+
+.pf-card:hover .pf-zoom,
+.pf-card:focus-visible .pf-zoom {
+  opacity: 1;
+  transform: none;
 }
 
 /* ============ 9. Proses ============ */
@@ -3240,6 +3888,19 @@ html[data-theme='light'] .theme-toggle .icon-moon {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .service-inner {
+    padding: 26px 26px 22px;
+  }
+
+  .stage-frame {
+    aspect-ratio: 16 / 9.6;
+    min-height: 320px;
+  }
+
+  .stage-info {
+    max-width: 74%;
+  }
+
   .process-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 34px 28px;
@@ -3332,6 +3993,19 @@ html[data-theme='light'] .theme-toggle .icon-moon {
     gap: 30px;
   }
 
+  .stage-frame {
+    aspect-ratio: 16 / 11;
+    min-height: 360px;
+  }
+
+  .stage-info {
+    max-width: 82%;
+  }
+
+  .stage-title {
+    font-size: clamp(1.6rem, 4.6vw, 2.4rem);
+  }
+
   .cta-band {
     background-attachment: scroll;
   }
@@ -3343,6 +4017,10 @@ html[data-theme='light'] .theme-toggle .icon-moon {
 }
 
 @media (max-width: 620px) {
+  .pf-card {
+    width: clamp(168px, 52vw, 220px);
+  }
+
   .form-grid {
     grid-template-columns: 1fr;
   }
@@ -3408,6 +4086,75 @@ html[data-theme='light'] .theme-toggle .icon-moon {
 
   .service-grid {
     grid-template-columns: 1fr;
+  }
+
+  .service-card {
+    min-height: 0;
+  }
+
+  .service-inner {
+    padding: 24px 22px 22px;
+  }
+
+  .stage-frame {
+    aspect-ratio: auto;
+    height: 360px;
+    min-height: 0;
+  }
+
+  .stage-badge {
+    display: none;
+  }
+
+  .stage-info {
+    right: 20px;
+    bottom: 20px;
+    left: 20px;
+    max-width: none;
+  }
+
+  .stage-title {
+    font-size: 1.65rem;
+  }
+
+  .stage-desc {
+    margin-top: 8px;
+    font-size: 12.8px;
+    line-height: 1.65;
+  }
+
+  .stage-nav {
+    top: 14px;
+    right: 14px;
+    gap: 8px;
+  }
+
+  .stage-nav button {
+    width: 38px;
+    height: 38px;
+  }
+
+  .stage-thumbs {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .stage-preview {
+    gap: 10px;
+  }
+
+  .stage-foot {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .stage-hint {
+    font-size: 11.5px;
+  }
+
+  .stage-foot .btn {
+    width: 100%;
   }
 
   .process-list {
@@ -3542,11 +4289,69 @@ html[data-theme='light'] .theme-toggle .icon-moon {
   .portfolio-item:hover {
     transform: none;
   }
+
+  .pf-caption,
+  .pf-zoom {
+    opacity: 1;
+    transform: none;
+  }
+
+  .pf-row:hover .pf-card {
+    opacity: 1;
+    filter: none;
+  }
+
+  .pf-row:hover .pf-card:hover {
+    transform: none;
+  }
+
+  /* Kartu layanan: tanpa tilt/sapuan kilau, cukup sorot statis di tengah atas */
+  .service-card:hover .service-inner {
+    --lift: 0px;
+  }
+
+  .service-inner::after {
+    display: none;
+  }
+
+  .service-card:hover .service-num {
+    transform: none;
+  }
+
+  .stage-thumb {
+    opacity: 0.72;
+  }
+
+  .stage-thumb:hover {
+    transform: none;
+  }
+
+  /* Tanpa hover, foto kartu dibuat sedikit lebih terlihat */
+  .service-photo img {
+    opacity: 0.48;
+  }
+
+  html[data-theme='light'] .service-photo img {
+    opacity: 0.34;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  .pf-marquee .pf-track {
+    animation: none !important;
+  }
+
+  .pf-marquee .pf-row {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .pf-marquee .pf-row::-webkit-scrollbar {
+    display: none;
   }
 
   *,
@@ -3561,6 +4366,36 @@ html[data-theme='light'] .theme-toggle .icon-moon {
   .reveal {
     opacity: 1;
     transform: none;
+  }
+
+  .service-card:hover .service-inner,
+  .service-card:focus-within .service-inner {
+    --lift: 0px;
+  }
+
+  .service-inner::after {
+    display: none;
+  }
+
+  .service-card:hover .service-icon,
+  .service-card:focus-within .service-icon,
+  .service-card:hover .service-num,
+  .service-card:focus-within .service-num {
+    transform: none;
+  }
+
+  .service-card:hover .service-photo img,
+  .service-card:focus-within .service-photo img {
+    transform: scale(1.03);
+  }
+
+  .stage-img.is-active {
+    animation: none;
+    transform: none;
+  }
+
+  .stage-info.is-switching {
+    animation: none;
   }
 
   .hero-card {

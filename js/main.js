@@ -258,6 +258,186 @@
   }
 
   /* ---------------------------------------------------------
+     Marquee karya di beranda
+     --------------------------------------------------------- */
+  const marqueeRoot = $('.pf-marquee[data-marquee]');
+
+  if (marqueeRoot) {
+    $$('.pf-track', marqueeRoot).forEach(function (track) {
+      const set = $('.pf-set', track);
+      const dupSet = $('.pf-set--dup', track);
+      if (!set || !dupSet) return;
+
+      const originals = Array.prototype.slice.call(set.children);
+      if (!originals.length) return;
+
+      let copyCount = 0;
+
+      /* Setiap set harus lebih lebar dari layar agar loop tidak bolong,
+         jadi kartu diulang sesuai lebar viewport. */
+      function fit() {
+        const sample = set.firstElementChild;
+        if (!sample) return;
+
+        const cardWidth = sample.getBoundingClientRect().width;
+        const gap = parseFloat(getComputedStyle(set).columnGap) || 0;
+        const singleWidth = (cardWidth + gap) * originals.length;
+        if (!singleWidth) return;
+
+        const needed = Math.ceil((window.innerWidth * 1.15) / singleWidth);
+        const count = Math.min(6, Math.max(1, needed));
+        if (count === copyCount) return;
+
+        set.innerHTML = '';
+        dupSet.innerHTML = '';
+
+        for (let i = 0; i < count; i += 1) {
+          originals.forEach(function (card) {
+            set.appendChild(card.cloneNode(true));
+
+            /* Setiap kartu menuju halaman yang sama, jadi duplikat tetap boleh
+               diklik - hanya dikeluarkan dari urutan fokus dan pembaca layar. */
+            const clone = card.cloneNode(true);
+            if (clone.tagName === 'A') clone.setAttribute('tabindex', '-1');
+            dupSet.appendChild(clone);
+          });
+        }
+
+        copyCount = count;
+      }
+
+      fit();
+
+      let resizeTimer = null;
+      window.addEventListener('resize', function () {
+        window.clearTimeout(resizeTimer);
+        resizeTimer = window.setTimeout(fit, 180);
+      });
+    });
+
+    if (!prefersReducedMotion) {
+      marqueeRoot.classList.add('is-ready');
+    }
+  }
+
+  /* ---------------------------------------------------------
+     Kartu layanan: sorot cahaya & kemiringan 3D tipis
+     --------------------------------------------------------- */
+  const serviceCards = $$('.service-card');
+  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+
+  if (serviceCards.length && finePointer.matches && !prefersReducedMotion) {
+    const MAX_TILT = 5;
+
+    serviceCards.forEach(function (card) {
+      let frame = null;
+      let pointerX = 0;
+      let pointerY = 0;
+
+      function paint() {
+        frame = null;
+        const rect = card.getBoundingClientRect();
+        if (!rect.width || !rect.height) return;
+
+        const x = (pointerX - rect.left) / rect.width;
+        const y = (pointerY - rect.top) / rect.height;
+
+        card.style.setProperty('--mx', (x * 100).toFixed(2) + '%');
+        card.style.setProperty('--my', (y * 100).toFixed(2) + '%');
+        card.style.setProperty('--ry', ((x - 0.5) * MAX_TILT * 2).toFixed(2) + 'deg');
+        card.style.setProperty('--rx', ((0.5 - y) * MAX_TILT * 2).toFixed(2) + 'deg');
+      }
+
+      card.addEventListener('pointermove', function (event) {
+        if (event.pointerType !== 'mouse') return;
+        pointerX = event.clientX;
+        pointerY = event.clientY;
+        if (frame) return;
+        frame = window.requestAnimationFrame(paint);
+      });
+
+      card.addEventListener('pointerleave', function () {
+        if (frame) {
+          window.cancelAnimationFrame(frame);
+          frame = null;
+        }
+        card.style.setProperty('--mx', '50%');
+        card.style.setProperty('--my', '0%');
+        card.style.setProperty('--rx', '0deg');
+        card.style.setProperty('--ry', '0deg');
+      });
+    });
+  }
+
+  /* ---------------------------------------------------------
+     Preview Spotlight Stage (halaman layanan)
+     --------------------------------------------------------- */
+  const stage = $('[data-stage]');
+
+  if (stage) {
+    const stageImgs = $$('.stage-img', stage);
+    const stageThumbs = $$('.stage-thumb', stage);
+    const stageCat = $('[data-stage-cat]', stage);
+    const stageTitle = $('[data-stage-title]', stage);
+    const stageDesc = $('[data-stage-desc]', stage);
+    const stageCount = $('[data-stage-count]', stage);
+    const stageInfo = $('[data-stage-info]', stage);
+    const stageFrame = $('.stage-frame', stage);
+    let stageIndex = 0;
+
+    const pad = (n) => String(n).padStart(2, '0');
+
+    function showStage(next) {
+      if (!stageImgs.length) return;
+      stageIndex = (next + stageImgs.length) % stageImgs.length;
+      const img = stageImgs[stageIndex];
+
+      stageImgs.forEach((el, i) => el.classList.toggle('is-active', i === stageIndex));
+      stageThumbs.forEach((el, i) => {
+        const active = i === stageIndex;
+        el.classList.toggle('is-active', active);
+        el.setAttribute('aria-pressed', String(active));
+      });
+
+      if (stageCat) stageCat.textContent = img.dataset.cat || '';
+      if (stageTitle) stageTitle.textContent = img.dataset.title || '';
+      if (stageDesc) stageDesc.textContent = img.dataset.desc || '';
+      if (stageCount) {
+        stageCount.textContent = pad(stageIndex + 1) + ' / ' + pad(stageImgs.length);
+      }
+
+      if (stageInfo) {
+        stageInfo.classList.remove('is-switching');
+        void stageInfo.offsetWidth;
+        stageInfo.classList.add('is-switching');
+      }
+    }
+
+    stageThumbs.forEach((thumb) => {
+      thumb.addEventListener('click', () => showStage(Number(thumb.dataset.index) || 0));
+    });
+
+    const stagePrev = $('[data-stage-prev]', stage);
+    const stageNext = $('[data-stage-next]', stage);
+    if (stagePrev) stagePrev.addEventListener('click', () => showStage(stageIndex - 1));
+    if (stageNext) stageNext.addEventListener('click', () => showStage(stageIndex + 1));
+
+    if (stageFrame) {
+      stageFrame.addEventListener('keydown', function (event) {
+        if (event.key === 'ArrowLeft') {
+          event.preventDefault();
+          showStage(stageIndex - 1);
+        } else if (event.key === 'ArrowRight') {
+          event.preventDefault();
+          showStage(stageIndex + 1);
+        }
+      });
+    }
+
+    showStage(0);
+  }
+
+  /* ---------------------------------------------------------
      Filter portofolio
      --------------------------------------------------------- */
   const filterButtons = $$('.filter-btn');
