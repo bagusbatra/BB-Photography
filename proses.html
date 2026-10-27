@@ -102,7 +102,7 @@
   <header class="site-header" id="siteHeader">
     <div class="container header-inner">
       <a href="index.html" class="brand" aria-label="BB Photography — Beranda">
-        <span class="brand-mark">BB</span>
+        <span class="brand-mark" aria-hidden="true"><img src="assets/ins-logo.png" alt="" width="1080" height="1080"></span>
         <span class="brand-text">
           <span class="brand-name">BB <em>Photography</em></span>
           <span class="brand-sub">Bali · Since 2014</span>
@@ -136,70 +136,356 @@
   <div class="nav-backdrop" id="navBackdrop" hidden></div>
 
   <main id="main">
-    <section class="page-hero">
+    <section class="page-hero process-hero">
       <div class="container">
         <nav class="breadcrumb" aria-label="Breadcrumb">
           <a href="index.html">Beranda</a>
           <span class="sep" aria-hidden="true">/</span>
           <span aria-current="page">Proses Kerja</span>
         </nav>
+        <p class="eyebrow"><span aria-hidden="true"></span>Proses Kerja</p>
         <h1>Empat langkah menuju cerita yang <em>utuh</em>.</h1>
         <p class="page-hero-sub">Kami membuat proses pemotretan terasa mudah dan menyenangkan, dari chat pertama sampai album di tanganmu.</p>
-      </div>
-    </section>
-<!-- ===== Process ===== -->
-    <section class="section section-alt" id="process">
-      <div class="container">
-        <ol class="process-list">
-          <li class="process-step reveal">
-            <span class="step-num">01</span>
-            <h3>Konsultasi</h3>
-            <p>Ceritakan momen yang ingin diabadikan. Kami bantu menentukan konsep, lokasi, dan waktu terbaik.</p>
-          </li>
-          <li class="process-step reveal">
-            <span class="step-num">02</span>
-            <h3>Persiapan</h3>
-            <p>Moodboard, wardrobe, dan rundown disusun bersama agar hari-H berjalan tenang tanpa drama.</p>
-          </li>
-          <li class="process-step reveal">
-            <span class="step-num">03</span>
-            <h3>Hari Pemotretan</h3>
-            <p>Tim hadir lebih awal, membangun suasana santai, dan menangkap momen tanpa membuatmu merasa dipose.</p>
-          </li>
-          <li class="process-step reveal">
-            <span class="step-num">04</span>
-            <h3>Editing &amp; Serah Terima</h3>
-            <p>Seleksi dan retouch warna khas BB dalam 7–14 hari. File siap dibagikan dan dicetak kapan saja.</p>
-          </li>
-        </ol>
+        <div class="process-hero-meta" role="group" aria-label="Ringkasan proses kerja">
+          <div class="process-hero-stat">
+            <strong>04</strong>
+            <span>Tahap terstruktur</span>
+          </div>
+          <div class="process-hero-stat">
+            <strong>7–14</strong>
+            <span>Hari editing</span>
+          </div>
+          <div class="process-hero-stat">
+            <strong>2×</strong>
+            <span>Revisi minor</span>
+          </div>
+          <div class="process-hero-stat">
+            <strong>Gratis</strong>
+            <span>Konsultasi awal</span>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section class="section">
+    <!-- ===== Process explorer ===== -->
+    <section class="section section-alt" id="process">
       <div class="container">
-        <div class="section-head reveal">
-          <p class="eyebrow"><span aria-hidden="true"></span>Persiapan</p>
-          <h2 class="section-title">Yang perlu kamu <em>siapkan</em>.</h2>
-          <p class="section-sub">Tidak perlu sempurna. Kami bantu menyusun sisanya.</p>
+        <div class="section-head process-head reveal">
+          <p class="eyebrow"><span aria-hidden="true"></span>Alur Kerja</p>
+          <h2 class="section-title">Setiap tahap punya <em>tujuan</em>.</h2>
+          <p class="section-sub">Klik setiap tahap untuk melihat apa yang terjadi, berapa lama prosesnya, dan hasil yang kamu dapatkan.</p>
         </div>
-        <div class="prep-grid">
-          <article class="prep-card reveal">
-            <h3>Sebelum hari-H</h3>
-            <ul class="checklist">
-              <li>Referensi foto atau moodboard favorit</li>
-              <li>Daftar momen penting yang wajib diabadikan</li>
-              <li>Pilihan wardrobe dan aksesori</li>
-              <li>Konfirmasi lokasi, izin, dan waktu terbaik</li>
+
+        <div class="process-explorer reveal" data-process>
+          <div class="process-nav-wrap">
+            <div class="process-nav-label">
+              <span>Alur 01—04</span>
+              <span>Pilih tahap</span>
+            </div>
+            <div class="process-nav" role="tablist" aria-label="Tahapan proses kerja">
+              <button class="process-tab is-active" id="processTab1" type="button" role="tab" aria-selected="true" aria-controls="processPanel1" tabindex="0">
+                <span class="process-tab-num">01</span>
+                <span class="process-tab-copy">
+                  <strong>Konsultasi</strong>
+                  <small>Hari 1 · Gratis</small>
+                </span>
+                <span class="process-tab-arrow" aria-hidden="true">
+                  <svg><use href="#icon-arrow-right"></use></svg>
+                </span>
+              </button>
+              <button class="process-tab" id="processTab2" type="button" role="tab" aria-selected="false" aria-controls="processPanel2" tabindex="-1">
+                <span class="process-tab-num">02</span>
+                <span class="process-tab-copy">
+                  <strong>Persiapan</strong>
+                  <small>H-7 sampai H-1</small>
+                </span>
+                <span class="process-tab-arrow" aria-hidden="true">
+                  <svg><use href="#icon-arrow-right"></use></svg>
+                </span>
+              </button>
+              <button class="process-tab" id="processTab3" type="button" role="tab" aria-selected="false" aria-controls="processPanel3" tabindex="-1">
+                <span class="process-tab-num">03</span>
+                <span class="process-tab-copy">
+                  <strong>Hari Pemotretan</strong>
+                  <small>Hari-H · 2–8 jam</small>
+                </span>
+                <span class="process-tab-arrow" aria-hidden="true">
+                  <svg><use href="#icon-arrow-right"></use></svg>
+                </span>
+              </button>
+              <button class="process-tab" id="processTab4" type="button" role="tab" aria-selected="false" aria-controls="processPanel4" tabindex="-1">
+                <span class="process-tab-num">04</span>
+                <span class="process-tab-copy">
+                  <strong>Editing &amp; Serah Terima</strong>
+                  <small>H+7 sampai H+14</small>
+                </span>
+                <span class="process-tab-arrow" aria-hidden="true">
+                  <svg><use href="#icon-arrow-right"></use></svg>
+                </span>
+              </button>
+            </div>
+            <p class="process-nav-hint">Gunakan tombol panah untuk berpindah tahap.</p>
+          </div>
+
+          <div class="process-stage">
+            <div class="process-panels">
+              <article class="process-panel is-active" id="processPanel1" role="tabpanel" aria-labelledby="processTab1" tabindex="0">
+                <div class="process-panel-media">
+                  <img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&amp;fit=crop&amp;w=900&amp;h=1100&amp;q=80" alt="Dua orang berdiskusi di meja dengan laptop dalam sesi konsultasi" width="900" height="1100" loading="eager" decoding="async">
+                  <span class="process-panel-num" aria-hidden="true">01</span>
+                  <p class="process-panel-caption"><span>Konsultasi</span><span>Hari 1</span></p>
+                </div>
+                <div class="process-panel-body">
+                  <p class="process-kicker">Tahap 01</p>
+                  <h3>Mulai dari ceritamu.</h3>
+                  <p class="process-lead">Kami mendengar dulu: momen apa yang ingin diabadikan, siapa yang akan hadir, dan rasa seperti apa yang ingin kamu bawa pulang.</p>
+                  <dl class="process-facts">
+                    <div>
+                      <dt>Durasi</dt>
+                      <dd>30–45 menit</dd>
+                    </div>
+                    <div>
+                      <dt>Format</dt>
+                      <dd>Online / studio</dd>
+                    </div>
+                    <div>
+                      <dt>Waktu</dt>
+                      <dd>Hari 1</dd>
+                    </div>
+                  </dl>
+                  <div class="process-deliverable">
+                    <span>Yang kamu dapat</span>
+                    <p>Konsep awal, rekomendasi lokasi, dan estimasi jadwal yang jelas.</p>
+                  </div>
+                  <ul class="process-tags" aria-label="Catatan tahap konsultasi">
+                    <li>Gratis</li>
+                    <li>Tanpa komitmen</li>
+                  </ul>
+                </div>
+              </article>
+
+              <article class="process-panel" id="processPanel2" role="tabpanel" aria-labelledby="processTab2" tabindex="0" aria-hidden="true" inert>
+                <div class="process-panel-media">
+                  <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&amp;fit=crop&amp;w=900&amp;h=1100&amp;q=80" alt="Deretan pakaian di rak untuk persiapan wardrobe sesi foto" width="900" height="1100" loading="eager" decoding="async">
+                  <span class="process-panel-num" aria-hidden="true">02</span>
+                  <p class="process-panel-caption"><span>Persiapan</span><span>H-7 — H-1</span></p>
+                </div>
+                <div class="process-panel-body">
+                  <p class="process-kicker">Tahap 02</p>
+                  <h3>Susun detail, tanpa drama.</h3>
+                  <p class="process-lead">Moodboard, wardrobe, dan rundown kita rapikan bersama. Kamu tahu apa yang perlu dibawa, kami tahu apa yang perlu disiapkan.</p>
+                  <dl class="process-facts">
+                    <div>
+                      <dt>Durasi</dt>
+                      <dd>3–7 hari</dd>
+                    </div>
+                    <div>
+                      <dt>Format</dt>
+                      <dd>WhatsApp / board</dd>
+                    </div>
+                    <div>
+                      <dt>Waktu</dt>
+                      <dd>H-7 — H-1</dd>
+                    </div>
+                  </dl>
+                  <div class="process-deliverable">
+                    <span>Yang kamu dapat</span>
+                    <p>Moodboard, panduan wardrobe, dan rundown hari-H yang sudah disepakati.</p>
+                  </div>
+                  <ul class="process-tags" aria-label="Catatan tahap persiapan">
+                    <li>Moodboard</li>
+                    <li>Wardrobe guide</li>
+                  </ul>
+                </div>
+              </article>
+
+              <article class="process-panel" id="processPanel3" role="tabpanel" aria-labelledby="processTab3" tabindex="0" aria-hidden="true" inert>
+                <div class="process-panel-media">
+                  <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&amp;fit=crop&amp;w=900&amp;h=1100&amp;q=80" alt="Pasangan pengantin berjalan di luar ruangan saat sesi foto" width="900" height="1100" loading="eager" decoding="async">
+                  <span class="process-panel-num" aria-hidden="true">03</span>
+                  <p class="process-panel-caption"><span>Hari Pemotretan</span><span>Hari-H</span></p>
+                </div>
+                <div class="process-panel-body">
+                  <p class="process-kicker">Tahap 03</p>
+                  <h3>Nikmati momennya.</h3>
+                  <p class="process-lead">Tim datang lebih awal, membangun suasana, dan mengarahkan dengan lembut. Kamu cukup hadir dan menjadi dirimu.</p>
+                  <dl class="process-facts">
+                    <div>
+                      <dt>Durasi</dt>
+                      <dd>2–8 jam</dd>
+                    </div>
+                    <div>
+                      <dt>Tim</dt>
+                      <dd>2–4 orang</dd>
+                    </div>
+                    <div>
+                      <dt>Waktu</dt>
+                      <dd>Hari-H</dd>
+                    </div>
+                  </dl>
+                  <div class="process-deliverable">
+                    <span>Yang kamu dapat</span>
+                    <p>Preview 5–10 foto pilihan dalam 24 jam untuk kamu bagikan lebih dulu.</p>
+                  </div>
+                  <ul class="process-tags" aria-label="Catatan hari pemotretan">
+                    <li>Preview 24 jam</li>
+                    <li>Pengarah pose</li>
+                  </ul>
+                </div>
+              </article>
+
+              <article class="process-panel" id="processPanel4" role="tabpanel" aria-labelledby="processTab4" tabindex="0" aria-hidden="true" inert>
+                <div class="process-panel-media">
+                  <img src="https://images.unsplash.com/photo-1522542550221-31fd19575a2d?auto=format&amp;fit=crop&amp;w=900&amp;h=1100&amp;q=80" alt="Meja kerja kreatif dengan komputer untuk proses editing foto" width="900" height="1100" loading="eager" decoding="async">
+                  <span class="process-panel-num" aria-hidden="true">04</span>
+                  <p class="process-panel-caption"><span>Editing</span><span>H+7 — H+14</span></p>
+                </div>
+                <div class="process-panel-body">
+                  <p class="process-kicker">Tahap 04</p>
+                  <h3>Hasil yang siap dibagikan.</h3>
+                  <p class="process-lead">Kami seleksi, retouch warna khas BB, dan menyiapkan file untuk media sosial maupun cetak. Semua rapi dalam satu galeri.</p>
+                  <dl class="process-facts">
+                    <div>
+                      <dt>Durasi</dt>
+                      <dd>7–14 hari</dd>
+                    </div>
+                    <div>
+                      <dt>Revisi</dt>
+                      <dd>2× minor</dd>
+                    </div>
+                    <div>
+                      <dt>Waktu</dt>
+                      <dd>H+7 — H+14</dd>
+                    </div>
+                  </dl>
+                  <div class="process-deliverable">
+                    <span>Yang kamu dapat</span>
+                    <p>Galeri online, file resolusi tinggi, dan versi siap cetak.</p>
+                  </div>
+                  <ul class="process-tags" aria-label="Catatan editing dan serah terima">
+                    <li>Warna khas BB</li>
+                    <li>Galeri privat</li>
+                  </ul>
+                </div>
+              </article>
+            </div>
+
+            <div class="process-controls">
+              <button class="process-control" type="button" data-process-prev>
+                <svg aria-hidden="true"><use href="#icon-arrow-right"></use></svg>
+                <span>Sebelumnya</span>
+              </button>
+              <p class="process-counter" aria-hidden="true"><strong data-process-current>01</strong><span>/ 04</span></p>
+              <button class="process-control" type="button" data-process-next>
+                <span>Berikutnya</span>
+                <svg aria-hidden="true"><use href="#icon-arrow-right"></use></svg>
+              </button>
+            </div>
+            <p class="sr-only" data-process-status aria-live="polite"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Persiapan ===== -->
+    <section class="section process-prep" id="persiapan">
+      <div class="container">
+        <div class="prep-layout">
+          <div class="prep-intro reveal">
+            <p class="eyebrow"><span aria-hidden="true"></span>Persiapan</p>
+            <h2 class="section-title">Yang perlu kamu <em>siapkan</em>.</h2>
+            <p class="section-sub">Tidak perlu sempurna. Kami bantu menyusun sisanya, langkah demi langkah.</p>
+
+            <ol class="prep-timeline">
+              <li class="prep-phase">
+                <span class="prep-day">H-7</span>
+                <div>
+                  <h3>Kunci konsep</h3>
+                  <p>Kirim moodboard, pilihan wardrobe, dan daftar momen penting. Kami bantu kurasi.</p>
+                </div>
+              </li>
+              <li class="prep-phase">
+                <span class="prep-day">H-1</span>
+                <div>
+                  <h3>Cek detail terakhir</h3>
+                  <p>Konfirmasi jam, transportasi, dan barang bawaan agar hari-H berjalan tenang.</p>
+                </div>
+              </li>
+              <li class="prep-phase">
+                <span class="prep-day">Hari-H</span>
+                <div>
+                  <h3>Datang dan nikmati</h3>
+                  <p>Tiba 15 menit lebih awal, tarik napas, dan biarkan kami mengarahkan sisanya.</p>
+                </div>
+              </li>
+            </ol>
+          </div>
+
+          <article class="prep-card prep-checklist reveal" data-prep>
+            <div class="prep-checklist-head">
+              <div>
+                <span class="prep-kicker">Checklist interaktif</span>
+                <h3>Siapkan satu per satu.</h3>
+              </div>
+              <p class="prep-progress-text" aria-live="polite"><strong data-prep-count>0</strong><span>/ 8 siap</span></p>
+            </div>
+            <div class="prep-progress" role="progressbar" aria-label="Progres persiapan" aria-valuemin="0" aria-valuemax="8" aria-valuenow="0" data-prep-progress>
+              <span data-prep-bar></span>
+            </div>
+            <ul class="prep-checklist-list">
+              <li>
+                <label>
+                  <input type="checkbox" data-prep-item>
+                  <span>Referensi foto atau moodboard favorit</span>
+                </label>
+              </li>
+              <li>
+                <label>
+                  <input type="checkbox" data-prep-item>
+                  <span>Daftar momen penting yang wajib diabadikan</span>
+                </label>
+              </li>
+              <li>
+                <label>
+                  <input type="checkbox" data-prep-item>
+                  <span>Pilihan wardrobe dan aksesori</span>
+                </label>
+              </li>
+              <li>
+                <label>
+                  <input type="checkbox" data-prep-item>
+                  <span>Konfirmasi lokasi, izin, dan waktu terbaik</span>
+                </label>
+              </li>
+              <li>
+                <label>
+                  <input type="checkbox" data-prep-item>
+                  <span>Datang 15 menit lebih awal</span>
+                </label>
+              </li>
+              <li>
+                <label>
+                  <input type="checkbox" data-prep-item>
+                  <span>Bawa air minum dan camilan ringan</span>
+                </label>
+              </li>
+              <li>
+                <label>
+                  <input type="checkbox" data-prep-item>
+                  <span>Pakai alas kaki yang nyaman</span>
+                </label>
+              </li>
+              <li>
+                <label>
+                  <input type="checkbox" data-prep-item>
+                  <span>Siapkan makeup dan perlengkapan touch-up</span>
+                </label>
+              </li>
             </ul>
-          </article>
-          <article class="prep-card reveal">
-            <h3>Di hari-H</h3>
-            <ul class="checklist">
-              <li>Datang 15 menit lebih awal</li>
-              <li>Bawa air minum dan camilan ringan</li>
-              <li>Pakai alas kaki yang nyaman</li>
-              <li>Cukup rileks — biar kami yang mengarahkan</li>
-            </ul>
+            <p class="prep-hint">
+              <span data-prep-message>Progres tersimpan di browser ini.</span>
+              <button type="button" data-prep-reset>Reset</button>
+            </p>
           </article>
         </div>
       </div>
@@ -222,7 +508,7 @@
     <div class="container footer-grid">
       <div class="footer-brand">
         <a href="index.html" class="brand" aria-label="BB Photography — Beranda">
-          <span class="brand-mark">BB</span>
+          <span class="brand-mark" aria-hidden="true"><img src="assets/ins-logo.png" alt="" width="1080" height="1080"></span>
           <span class="brand-text">
             <span class="brand-name">BB <em>Photography</em></span>
             <span class="brand-sub">Bali · Since 2014</span>

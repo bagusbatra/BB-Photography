@@ -29,7 +29,7 @@
       themeToggle.setAttribute('aria-label', isDark ? 'Ganti ke mode terang' : 'Ganti ke mode gelap');
     }
     if (metaTheme) {
-      metaTheme.setAttribute('content', isDark ? '#0b0b0d' : '#f7f4ee');
+      metaTheme.setAttribute('content', isDark ? '#0b0b0d' : '#eeeef7');
     }
   }
 
@@ -866,6 +866,297 @@
         }
       }, 900);
     });
+  }
+
+  /* ---------------------------------------------------------
+     Instagram Highlight: foto tampil 5 detik
+     --------------------------------------------------------- */
+  const hlItems = $$('.hl-item');
+  const hlViewer = $('#hlViewer');
+  const hlViewerImg = $('#hlViewerImg');
+  const hlViewerCat = $('#hlViewerCat');
+  const hlViewerTitle = $('#hlViewerTitle');
+  const hlViewerCaption = $('#hlViewerCaption');
+  const hlViewerClose = $('#hlViewerClose');
+  const HIGHLIGHT_DURATION = 5000;
+
+  let hlCloseTimer = null;
+  let hlLastFocused = null;
+
+  function closeHighlight() {
+    if (!hlViewer || hlViewer.hidden) return;
+
+    clearTimeout(hlCloseTimer);
+    hlViewer.classList.remove('is-open');
+    hlViewer.hidden = true;
+    document.body.classList.remove('no-scroll');
+
+    if (hlLastFocused && typeof hlLastFocused.focus === 'function') {
+      hlLastFocused.focus();
+    }
+  }
+
+  function openHighlight(item) {
+    if (!hlViewer || !hlViewerImg) return;
+
+    hlViewerImg.src = item.dataset.hlImg;
+    hlViewerImg.alt = item.dataset.hlCat + ' — ' + item.dataset.hlTitle;
+    hlViewerCat.textContent = item.dataset.hlCat;
+    hlViewerTitle.textContent = item.dataset.hlTitle;
+    hlViewerCaption.textContent = item.dataset.hlCaption;
+
+    hlLastFocused = item;
+    hlViewer.hidden = false;
+    document.body.classList.add('no-scroll');
+
+    /* Paksa reflow agar animasi progress dan dialog dimulai dari awal. */
+    void hlViewer.offsetWidth;
+    hlViewer.classList.add('is-open');
+
+    if (hlViewerClose) hlViewerClose.focus();
+
+    clearTimeout(hlCloseTimer);
+    hlCloseTimer = window.setTimeout(closeHighlight, HIGHLIGHT_DURATION);
+  }
+
+  hlItems.forEach(function (item) {
+    item.addEventListener('click', function () {
+      openHighlight(item);
+    });
+  });
+
+  if (hlViewer) {
+    $$('[data-hl-close]', hlViewer).forEach(function (element) {
+      element.addEventListener('click', closeHighlight);
+    });
+
+    if (hlViewerClose) {
+      hlViewerClose.addEventListener('click', closeHighlight);
+    }
+
+    document.addEventListener('keydown', function (event) {
+      if (hlViewer.hidden) return;
+
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closeHighlight();
+        return;
+      }
+
+      /* Dialog hanya punya satu kontrol, jadi fokus ditahan di tombol tutup. */
+      if (event.key === 'Tab') {
+        event.preventDefault();
+        if (hlViewerClose) hlViewerClose.focus();
+      }
+    });
+  }
+
+  /* ---------------------------------------------------------
+     Process explorer halaman proses
+     --------------------------------------------------------- */
+  const processRoot = $('[data-process]');
+
+  if (processRoot) {
+    const processTabs = $$('[role="tab"]', processRoot);
+    const processPanels = $$('[role="tabpanel"]', processRoot);
+    const processNav = $('.process-nav', processRoot);
+    const processPrev = $('[data-process-prev]', processRoot);
+    const processNext = $('[data-process-next]', processRoot);
+    const processCurrent = $('[data-process-current]', processRoot);
+    const processStatus = $('[data-process-status]', processRoot);
+    let processIndex = 0;
+
+    const formatProcessNumber = (number) => String(number).padStart(2, '0');
+
+    function syncProcessOrientation() {
+      if (!processNav) return;
+      const isVertical = getComputedStyle(processNav).flexDirection === 'column';
+      processNav.setAttribute('aria-orientation', isVertical ? 'vertical' : 'horizontal');
+    }
+
+    function showProcessStage(nextIndex, moveFocus) {
+      if (!processTabs.length) return;
+
+      processIndex = (nextIndex + processTabs.length) % processTabs.length;
+
+      processTabs.forEach(function (tab, index) {
+        const active = index === processIndex;
+        tab.classList.toggle('is-active', active);
+        tab.setAttribute('aria-selected', String(active));
+        tab.tabIndex = active ? 0 : -1;
+      });
+
+      processPanels.forEach(function (panel, index) {
+        const active = index === processIndex;
+        panel.classList.toggle('is-active', active);
+
+        if (active) {
+          panel.removeAttribute('aria-hidden');
+          panel.removeAttribute('inert');
+        } else {
+          panel.setAttribute('aria-hidden', 'true');
+          panel.setAttribute('inert', '');
+        }
+      });
+
+      if (processCurrent) {
+        processCurrent.textContent = formatProcessNumber(processIndex + 1);
+      }
+
+      if (processStatus) {
+        const activeTab = processTabs[processIndex];
+        const activeLabel = activeTab ? $('.process-tab-copy strong', activeTab) : null;
+        processStatus.textContent =
+          'Tahap ' + (processIndex + 1) + ' dari ' + processTabs.length + ': ' +
+          (activeLabel ? activeLabel.textContent : '');
+      }
+
+      const activeTab = processTabs[processIndex];
+      if (processNav && activeTab && processNav.scrollWidth > processNav.clientWidth + 1) {
+        const navRect = processNav.getBoundingClientRect();
+        const tabRect = activeTab.getBoundingClientRect();
+
+        if (tabRect.left < navRect.left || tabRect.right > navRect.right) {
+          processNav.scrollTo({
+            left: Math.max(0, processNav.scrollLeft + tabRect.left - navRect.left - 8),
+            behavior: prefersReducedMotion ? 'auto' : 'smooth'
+          });
+        }
+      }
+
+      if (moveFocus && activeTab) activeTab.focus();
+    }
+
+    processTabs.forEach(function (tab, index) {
+      tab.addEventListener('click', function () {
+        showProcessStage(index, false);
+      });
+
+      tab.addEventListener('keydown', function (event) {
+        let targetIndex = null;
+
+        if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+          targetIndex = index + 1;
+        } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+          targetIndex = index - 1;
+        } else if (event.key === 'Home') {
+          targetIndex = 0;
+        } else if (event.key === 'End') {
+          targetIndex = processTabs.length - 1;
+        }
+
+        if (targetIndex === null) return;
+
+        event.preventDefault();
+        showProcessStage(targetIndex, true);
+      });
+    });
+
+    if (processPrev) {
+      processPrev.addEventListener('click', function () {
+        showProcessStage(processIndex - 1, false);
+      });
+    }
+
+    if (processNext) {
+      processNext.addEventListener('click', function () {
+        showProcessStage(processIndex + 1, false);
+      });
+    }
+
+    syncProcessOrientation();
+    window.addEventListener('resize', syncProcessOrientation);
+    showProcessStage(0, false);
+  }
+
+  /* ---------------------------------------------------------
+     Checklist persiapan halaman proses
+     --------------------------------------------------------- */
+  const prepRoot = $('[data-prep]');
+
+  if (prepRoot) {
+    const prepItems = $$('[data-prep-item]', prepRoot);
+    const prepCount = $('[data-prep-count]', prepRoot);
+    const prepBar = $('[data-prep-bar]', prepRoot);
+    const prepProgress = $('[data-prep-progress]', prepRoot);
+    const prepMessage = $('[data-prep-message]', prepRoot);
+    const prepReset = $('[data-prep-reset]', prepRoot);
+    const PREP_STORAGE_KEY = 'bb-prep-checklist';
+
+    function readPrepState() {
+      try {
+        const raw = localStorage.getItem(PREP_STORAGE_KEY);
+        if (!raw) return [];
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function savePrepState() {
+      const state = prepItems.map(function (item) {
+        return Boolean(item.checked);
+      });
+
+      try {
+        localStorage.setItem(PREP_STORAGE_KEY, JSON.stringify(state));
+      } catch (error) {
+        /* localStorage bisa diblokir — checklist tetap berfungsi di sesi ini */
+      }
+    }
+
+    function updatePrepUI() {
+      const total = prepItems.length;
+      const checked = prepItems.filter(function (item) {
+        return item.checked;
+      }).length;
+      const percent = total ? (checked / total) * 100 : 0;
+
+      if (prepCount) prepCount.textContent = String(checked);
+      if (prepBar) prepBar.style.width = percent + '%';
+      if (prepProgress) prepProgress.setAttribute('aria-valuenow', String(checked));
+
+      if (prepMessage) {
+        if (total && checked === total) {
+          prepMessage.textContent = 'Semua siap. Sampai jumpa di hari-H.';
+        } else if (checked === 0) {
+          prepMessage.textContent = 'Progres tersimpan di browser ini.';
+        } else {
+          prepMessage.textContent = 'Sedikit lagi. Progres tersimpan di browser ini.';
+        }
+      }
+
+      prepRoot.classList.toggle('is-complete', total > 0 && checked === total);
+    }
+
+    const savedPrepState = readPrepState();
+
+    prepItems.forEach(function (item, index) {
+      item.checked = Boolean(savedPrepState[index]);
+      item.addEventListener('change', function () {
+        savePrepState();
+        updatePrepUI();
+      });
+    });
+
+    if (prepReset) {
+      prepReset.addEventListener('click', function () {
+        prepItems.forEach(function (item) {
+          item.checked = false;
+        });
+
+        try {
+          localStorage.removeItem(PREP_STORAGE_KEY);
+        } catch (error) {
+          /* abaikan jika localStorage tidak tersedia */
+        }
+
+        updatePrepUI();
+      });
+    }
+
+    updatePrepUI();
   }
 
   /* ---------------------------------------------------------
