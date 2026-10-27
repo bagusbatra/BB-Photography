@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Studio Admin | INS FRAME Photography</title>
+  <meta name="description" content="Panel admin INS FRAME Photography untuk mengelola karya, pesanan, dan profil studio.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0b0b0d">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230b0b0d'/%3E%3Ctext x='50' y='68' font-size='44' font-family='Georgia,serif' fill='%23d4af37' text-anchor='middle'%3EBB%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <script>
+    try {
+      var savedTheme = localStorage.getItem('bb-theme');
+      if (savedTheme) document.documentElement.dataset.theme = savedTheme;
+    } catch (e) {}
+  </script>
+</head>
+<body class="admin-body" data-page="admin">
+  <a class="skip-link" href="#adminMain">Langsung ke konten</a>
+
+  <svg xmlns="http://www.w3.org/2000/svg" class="svg-sprite" aria-hidden="true" focusable="false">
+    <symbol id="i-dashboard" viewBox="0 0 24 24">
+      <rect x="3.5" y="3.5" width="7" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <rect x="13.5" y="3.5" width="7" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <rect x="3.5" y="13.5" width="7" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <rect x="13.5" y="13.5" width="7" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    </symbol>
+    <symbol id="i-image" viewBox="0 0 24 24">
+      <rect x="3.5" y="4.5" width="17" height="15" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <circle cx="8.8" cy="9.4" r="1.6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <path d="m4.5 17 4.7-4.6a1.6 1.6 0 0 1 2.2 0l2.2 2.2 2.5-2.4a1.6 1.6 0 0 1 2.2 0l1.2 1.2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24">
+      <rect x="3.5" y="5" width="17" height="15.5" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <path d="M3.5 9.6h17M8 3v4M16 3v4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <circle cx="8.4" cy="13.8" r="1" fill="currentColor"/>
+      <circle cx="12" cy="13.8" r="1" fill="currentColor"/>
+      <circle cx="15.6" cy="13.8" r="1" fill="currentColor"/>
+    </symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <path d="M19.4 13.5a7.7 7.7 0 0 0 0-3l1.5-1.2-1.7-3-1.9.7a7.6 7.6 0 0 0-2.6-1.5L14.4 3h-3.5l-.3 2a7.6 7.6 0 0 0-2.6 1.5l-1.9-.7-1.7 3 1.5 1.2a7.7 7.7 0 0 0 0 3l-1.5 1.2 1.7 3 1.9-.7a7.6 7.6 0 0 0 2.6 1.5l.3 2h3.5l.3-2a7.6 7.6 0 0 0 2.6-1.5l1.9.7 1.7-3-1.5-1.2Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24">
+      <path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-close" viewBox="0 0 24 24">
+      <path d="m6 6 12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-search" viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+      <path d="m16 16 4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24">
+      <path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24">
+      <path d="M4 20h4l10.5-10.5a2.1 2.1 0 0 0-3-3L5 17v3Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="m13.5 6.5 3 3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24">
+      <path d="M4.5 7h15M9.5 7V4.5h5V7M6.5 7l.9 12.2a1.8 1.8 0 0 0 1.8 1.6h5.6a1.8 1.8 0 0 0 1.8-1.6L17.5 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M10 10.5v6M14 10.5v6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-external" viewBox="0 0 24 24">
+      <path d="M14 4h6v6M20 4l-9 9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M18.5 14.5V19a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 19V7A1.5 1.5 0 0 1 5 5.5h4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.6"/>
+      <path d="M12 2.5v2M12 19.5v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2.5 12h2M19.5 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24">
+      <path d="M20 14.2A8.2 8.2 0 0 1 9.8 4 8.5 8.5 0 1 0 20 14.2Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-check" viewBox="0 0 24 24">
+      <path d="m5 12.5 4.5 4.5L19 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-download" viewBox="0 0 24 24">
+      <path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M4.5 19.5h15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24">
+      <path d="M12 16V5M7.5 9.5 12 5l4.5 4.5M4.5 19.5h15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24">
+      <path d="M19.5 9A8 8 0 1 0 20 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M19.5 4v5h-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-whatsapp" viewBox="0 0 24 24">
+      <path d="M20 11.6a8 8 0 0 1-11.9 7L4 20l1.4-4A8 8 0 1 1 20 11.6Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M9.2 8.4c.3-.1.6 0 .8.3l.7 1.2c.1.3.1.5-.1.7l-.5.5c.5 1 1.3 1.8 2.3 2.3l.5-.5c.2-.2.4-.2.7-.1l1.2.7c.3.2.4.5.3.8-.2.7-.9 1.2-1.6 1.2-2.9-.2-5.2-2.5-5.4-5.4 0-.7.5-1.4 1.1-1.7Z" fill="currentColor"/>
+    </symbol>
+    <symbol id="i-arrow-right" viewBox="0 0 24 24">
+      <path d="M4 12h15M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-camera" viewBox="0 0 24 24">
+      <path d="M4 8.5h2.6L8 6h8l1.4 2.5H20a1 1 0 0 1 1 1V18a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+      <circle cx="12" cy="13.5" r="3.4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    </symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <path d="M12 7v5.3l3.3 2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-wallet" viewBox="0 0 24 24">
+      <path d="M4 7.5A2.5 2.5 0 0 1 6.5 5H18a2 2 0 0 1 2 2v1.5H6.5A2.5 2.5 0 0 0 4 11v6a2 2 0 0 0 2 2h13a1 1 0 0 0 1-1V9.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="16.5" cy="13.5" r="1.1" fill="currentColor"/>
+    </symbol>
+    <symbol id="i-sparkle" viewBox="0 0 24 24">
+      <path d="M12 3.5c.6 4.3 2.2 5.9 6.5 6.5-4.3.6-5.9 2.2-6.5 6.5-.6-4.3-2.2-5.9-6.5-6.5 4.3-.6 5.9-2.2 6.5-6.5Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M18.5 16.5c.3 1.8 1 2.5 2.8 2.8-1.8.3-2.5 1-2.8 2.8-.3-1.8-1-2.5-2.8-2.8 1.8-.3 2.5-1 2.8-2.8Z" fill="currentColor"/>
+    </symbol>
+    <symbol id="i-device" viewBox="0 0 24 24">
+      <rect x="3.5" y="5" width="17" height="12.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <path d="M8 20h8M12 17.5V20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </symbol>
+  </svg>
+
+  <div class="adm-shell">
+    <aside class="adm-sidebar" id="adminSidebar" aria-label="Navigasi admin">
+      <div class="adm-sidebar-head">
+        <a href="index.html" class="adm-brand" aria-label="INS FRAME Photography — Beranda">
+          <span class="adm-brand-mark" aria-hidden="true">
+            <img src="assets/ins-logo.png" alt="" width="1080" height="1080">
+          </span>
+          <span class="adm-brand-text">
+            <span class="adm-brand-name">INS <em>FRAME</em></span>
+            <span class="adm-brand-sub">Studio Admin</span>
+          </span>
+        </a>
+        <button class="adm-icon-btn adm-sidebar-close" id="adminSidebarClose" type="button" aria-label="Tutup menu">
+          <svg aria-hidden="true"><use href="#i-close"></use></svg>
+        </button>
+      </div>
+
+      <nav class="adm-nav">
+        <p class="adm-nav-label">Ruang kerja</p>
+        <a href="#dashboard" class="adm-nav-link is-active" data-view-link="dashboard">
+          <svg aria-hidden="true"><use href="#i-dashboard"></use></svg>
+          <span>Dashboard</span>
+        </a>
+        <a href="#galeri" class="adm-nav-link" data-view-link="galeri">
+          <svg aria-hidden="true"><use href="#i-image"></use></svg>
+          <span>Karya</span>
+          <span class="adm-nav-count" id="navGalleryCount">0</span>
+        </a>
+        <a href="#pesanan" class="adm-nav-link" data-view-link="pesanan">
+          <svg aria-hidden="true"><use href="#i-calendar"></use></svg>
+          <span>Pesanan</span>
+          <span class="adm-nav-count is-accent" id="navOrderCount">0</span>
+        </a>
+        <p class="adm-nav-label adm-nav-label-spaced">Studio</p>
+        <a href="#pengaturan" class="adm-nav-link" data-view-link="pengaturan">
+          <svg aria-hidden="true"><use href="#i-settings"></use></svg>
+          <span>Pengaturan</span>
+        </a>
+      </nav>
+
+      <div class="adm-sidebar-foot">
+        <div class="adm-local-note">
+          <span class="adm-local-dot" aria-hidden="true"></span>
+          <div>
+            <strong>Mode lokal</strong>
+            <span>Data tersimpan di browser</span>
+          </div>
+        </div>
+        <a href="index.html" class="adm-view-site">
+          <span>Lihat situs</span>
+          <svg aria-hidden="true"><use href="#i-external"></use></svg>
+        </a>
+      </div>
+    </aside>
+
+    <div class="adm-backdrop" id="adminBackdrop" hidden></div>
+
+    <div class="adm-main">
+      <header class="adm-topbar">
+        <button class="adm-icon-btn adm-menu-btn" id="adminMenuBtn" type="button" aria-label="Buka menu" aria-expanded="false" aria-controls="adminSidebar">
+          <svg aria-hidden="true"><use href="#i-menu"></use></svg>
+        </button>
+        <div class="adm-topbar-title">
+          <p>INS FRAME Studio</p>
+          <h1 id="adminPageTitle">Dashboard</h1>
+        </div>
+        <div class="adm-topbar-actions">
+          <button class="adm-icon-btn adm-theme-toggle" id="adminThemeToggle" type="button" aria-label="Ganti ke mode terang" aria-pressed="false">
+            <svg class="adm-icon-sun" aria-hidden="true"><use href="#i-sun"></use></svg>
+            <svg class="adm-icon-moon" aria-hidden="true"><use href="#i-moon"></use></svg>
+          </button>
+          <a href="index.html" class="adm-topbar-site">
+            <span>Buka situs</span>
+            <svg aria-hidden="true"><use href="#i-external"></use></svg>
+          </a>
+          <span class="adm-avatar" aria-hidden="true">IF</span>
+        </div>
+      </header>
+
+      <main class="adm-content" id="adminMain" tabindex="-1">
+        <!-- ===== Dashboard ===== -->
+        <section class="adm-view" id="view-dashboard" data-view="dashboard">
+          <div class="adm-view-head">
+            <div>
+              <p class="adm-eyebrow"><span aria-hidden="true"></span>Ringkasan studio</p>
+              <h2 class="adm-page-title">Selamat datang <em>kembali</em>.</h2>
+              <p class="adm-page-sub" id="todayLabel">Memuat tanggal...</p>
+            </div>
+            <div class="adm-head-actions">
+              <button class="adm-btn adm-btn-ghost" type="button" data-action="export">
+                <svg aria-hidden="true"><use href="#i-download"></use></svg>
+                Ekspor
+              </button>
+              <button class="adm-btn adm-btn-primary" type="button" data-open-work>
+                <svg aria-hidden="true"><use href="#i-plus"></use></svg>
+                Tambah karya
+              </button>
+            </div>
+          </div>
+
+          <div class="adm-stats">
+            <article class="adm-stat">
+              <div class="adm-stat-top">
+                <span class="adm-stat-icon"><svg aria-hidden="true"><use href="#i-image"></use></svg></span>
+                <span class="adm-stat-tag" id="statGalleryTag">Galeri</span>
+              </div>
+              <p class="adm-stat-label">Total karya</p>
+              <strong class="adm-stat-value" id="statGallery">0</strong>
+              <p class="adm-stat-meta" id="statGalleryMeta">Belum ada karya</p>
+            </article>
+            <article class="adm-stat">
+              <div class="adm-stat-top">
+                <span class="adm-stat-icon is-blue"><svg aria-hidden="true"><use href="#i-calendar"></use></svg></span>
+                <span class="adm-stat-tag is-blue">Pesanan</span>
+              </div>
+              <p class="adm-stat-label">Pesanan baru</p>
+              <strong class="adm-stat-value" id="statNewOrders">0</strong>
+              <p class="adm-stat-meta" id="statNewOrdersMeta">Semua sudah ditangani</p>
+            </article>
+            <article class="adm-stat">
+              <div class="adm-stat-top">
+                <span class="adm-stat-icon is-green"><svg aria-hidden="true"><use href="#i-clock"></use></svg></span>
+                <span class="adm-stat-tag is-green">Jadwal</span>
+              </div>
+              <p class="adm-stat-label">Sesi mendatang</p>
+              <strong class="adm-stat-value" id="statUpcoming">0</strong>
+              <p class="adm-stat-meta" id="statUpcomingMeta">Belum ada jadwal</p>
+            </article>
+            <article class="adm-stat">
+              <div class="adm-stat-top">
+                <span class="adm-stat-icon is-gold"><svg aria-hidden="true"><use href="#i-wallet"></use></svg></span>
+                <span class="adm-stat-tag is-gold">Pipeline</span>
+              </div>
+              <p class="adm-stat-label">Nilai pesanan aktif</p>
+              <strong class="adm-stat-value adm-stat-value-sm" id="statPipeline">Rp 0</strong>
+              <p class="adm-stat-meta" id="statPipelineMeta">0 pesanan aktif</p>
+            </article>
+          </div>
+
+          <div class="adm-dash-grid">
+            <section class="adm-panel adm-panel-works">
+              <div class="adm-panel-head">
+                <div>
+                  <h3>Karya terbaru</h3>
+                  <p>Empat bingkai terakhir yang masuk ke galeri.</p>
+                </div>
+                <a href="#galeri" class="adm-panel-link">Kelola karya <svg aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
+              </div>
+              <div class="adm-recent-grid" id="recentWorks"></div>
+            </section>
+
+            <section class="adm-panel">
+              <div class="adm-panel-head">
+                <div>
+                  <h3>Pesanan terbaru</h3>
+                  <p>Permintaan yang perlu dilihat.</p>
+                </div>
+                <a href="#pesanan" class="adm-panel-link">Semua <svg aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
+              </div>
+              <ul class="adm-mini-orders" id="recentOrders"></ul>
+            </section>
+
+            <section class="adm-panel">
+              <div class="adm-panel-head">
+                <div>
+                  <h3>Komposisi kategori</h3>
+                  <p>Sebaran karya di galeri.</p>
+                </div>
+              </div>
+              <div class="adm-bars" id="categoryBars"></div>
+            </section>
+
+            <section class="adm-panel">
+              <div class="adm-panel-head">
+                <div>
+                  <h3>Aksi cepat</h3>
+                  <p>Hal yang sering dibutuhkan.</p>
+                </div>
+              </div>
+              <div class="adm-quick-actions">
+                <button type="button" class="adm-quick-action" data-open-work>
+                  <span class="adm-quick-icon"><svg aria-hidden="true"><use href="#i-plus"></use></svg></span>
+                  <span><strong>Tambah karya</strong><small>Masukkan foto baru</small></span>
+                </button>
+                <a href="#pesanan" class="adm-quick-action">
+                  <span class="adm-quick-icon is-blue"><svg aria-hidden="true"><use href="#i-calendar"></use></svg></span>
+                  <span><strong>Tinjau pesanan</strong><small id="quickOrderText">0 pesanan baru</small></span>
+                </a>
+                <a href="index.html" class="adm-quick-action">
+                  <span class="adm-quick-icon is-green"><svg aria-hidden="true"><use href="#i-external"></use></svg></span>
+                  <span><strong>Buka website</strong><small>Lihat tampilan publik</small></span>
+                </a>
+                <button type="button" class="adm-quick-action" data-action="export">
+                  <span class="adm-quick-icon is-gold"><svg aria-hidden="true"><use href="#i-download"></use></svg></span>
+                  <span><strong>Cadangkan data</strong><small>Unduh file JSON</small></span>
+                </button>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <!-- ===== Karya ===== -->
+        <section class="adm-view" id="view-galeri" data-view="galeri" hidden>
+          <div class="adm-view-head">
+            <div>
+              <p class="adm-eyebrow"><span aria-hidden="true"></span>Galeri studio</p>
+              <h2 class="adm-page-title">Kelola <em>karya</em>.</h2>
+              <p class="adm-page-sub">Atur foto, kategori, dan status tampil di galeri.</p>
+            </div>
+            <div class="adm-head-actions">
+              <button class="adm-btn adm-btn-primary" type="button" data-open-work>
+                <svg aria-hidden="true"><use href="#i-plus"></use></svg>
+                Tambah karya
+              </button>
+            </div>
+          </div>
+
+          <div class="adm-toolbar">
+            <label class="adm-search">
+              <svg aria-hidden="true"><use href="#i-search"></use></svg>
+              <input type="search" id="gallerySearch" placeholder="Cari judul atau kategori..." autocomplete="off">
+              <span class="sr-only">Cari karya</span>
+            </label>
+            <div class="adm-toolbar-filters">
+              <label class="adm-select-wrap">
+                <span class="sr-only">Filter kategori</span>
+                <select id="galleryCategoryFilter" class="adm-select">
+                  <option value="all">Semua kategori</option>
+                  <option value="Wedding">Wedding</option>
+                  <option value="Prewedding">Prewedding</option>
+                  <option value="Engagement">Engagement</option>
+                  <option value="Portrait">Portrait</option>
+                  <option value="Event">Event</option>
+                  <option value="Graduation">Graduation</option>
+                  <option value="Personal Branding">Personal Branding</option>
+                  <option value="Couple">Couple</option>
+                  <option value="Family">Family</option>
+                  <option value="Lainnya">Lainnya</option>
+                </select>
+              </label>
+              <label class="adm-select-wrap">
+                <span class="sr-only">Filter status</span>
+                <select id="galleryStatusFilter" class="adm-select">
+                  <option value="all">Semua status</option>
+                  <option value="live">Tayang</option>
+                  <option value="draft">Draf</option>
+                </select>
+              </label>
+            </div>
+            <p class="adm-result-count" id="galleryCount" aria-live="polite">0 karya</p>
+          </div>
+
+          <div class="adm-gallery-grid" id="galleryGrid"></div>
+
+          <div class="adm-empty" id="galleryEmpty" hidden>
+            <span class="adm-empty-icon"><svg aria-hidden="true"><use href="#i-camera"></use></svg></span>
+            <h3>Belum ada karya yang cocok</h3>
+            <p>Ubah filter pencarian atau tambahkan karya baru ke galeri.</p>
+            <button class="adm-btn adm-btn-primary" type="button" data-open-work>
+              <svg aria-hidden="true"><use href="#i-plus"></use></svg>
+              Tambah karya
+            </button>
+          </div>
+        </section>
+
+        <!-- ===== Pesanan ===== -->
+        <section class="adm-view" id="view-pesanan" data-view="pesanan" hidden>
+          <div class="adm-view-head">
+            <div>
+              <p class="adm-eyebrow"><span aria-hidden="true"></span>Buku pesanan</p>
+              <h2 class="adm-page-title">Semua <em>pesanan</em>.</h2>
+              <p class="adm-page-sub">Pantau permintaan masuk dan perbarui status sesi.</p>
+            </div>
+            <div class="adm-head-actions">
+              <a href="kontak.html" class="adm-btn adm-btn-ghost">
+                <svg aria-hidden="true"><use href="#i-external"></use></svg>
+                Form publik
+              </a>
+            </div>
+          </div>
+
+          <div class="adm-order-tools">
+            <div class="adm-chips" id="orderFilters" role="group" aria-label="Filter status pesanan">
+              <button type="button" class="adm-chip is-active" data-order-filter="all">Semua <span class="adm-chip-count" data-count="all">0</span></button>
+              <button type="button" class="adm-chip" data-order-filter="baru">Baru <span class="adm-chip-count" data-count="baru">0</span></button>
+              <button type="button" class="adm-chip" data-order-filter="dikonfirmasi">Dikonfirmasi <span class="adm-chip-count" data-count="dikonfirmasi">0</span></button>
+              <button type="button" class="adm-chip" data-order-filter="selesai">Selesai <span class="adm-chip-count" data-count="selesai">0</span></button>
+              <button type="button" class="adm-chip" data-order-filter="batal">Batal <span class="adm-chip-count" data-count="batal">0</span></button>
+            </div>
+            <label class="adm-search adm-search-sm">
+              <svg aria-hidden="true"><use href="#i-search"></use></svg>
+              <input type="search" id="orderSearch" placeholder="Cari nama atau layanan..." autocomplete="off">
+              <span class="sr-only">Cari pesanan</span>
+            </label>
+          </div>
+
+          <div class="adm-table-card">
+            <table class="adm-table">
+              <thead>
+                <tr>
+                  <th scope="col">Klien</th>
+                  <th scope="col">Layanan</th>
+                  <th scope="col">Tanggal sesi</th>
+                  <th scope="col">Paket</th>
+                  <th scope="col">Status</th>
+                  <th scope="col"><span class="sr-only">Aksi</span></th>
+                </tr>
+              </thead>
+              <tbody id="ordersBody"></tbody>
+            </table>
+            <div class="adm-empty" id="ordersEmpty" hidden>
+              <span class="adm-empty-icon"><svg aria-hidden="true"><use href="#i-calendar"></use></svg></span>
+              <h3>Tidak ada pesanan</h3>
+              <p>Belum ada pesanan yang cocok dengan filter ini.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== Pengaturan ===== -->
+        <section class="adm-view" id="view-pengaturan" data-view="pengaturan" hidden>
+          <div class="adm-view-head">
+            <div>
+              <p class="adm-eyebrow"><span aria-hidden="true"></span>Preferensi</p>
+              <h2 class="adm-page-title">Pengaturan <em>studio</em>.</h2>
+              <p class="adm-page-sub">Profil admin dan cadangan data lokal.</p>
+            </div>
+          </div>
+
+          <div class="adm-settings-grid">
+            <section class="adm-panel">
+              <div class="adm-panel-head">
+                <div>
+                  <h3>Profil studio</h3>
+                  <p>Dipakai sebagai identitas panel admin.</p>
+                </div>
+              </div>
+              <form class="adm-form" id="settingsForm" novalidate>
+                <div class="adm-field">
+                  <label for="studioName">Nama studio</label>
+                  <input type="text" id="studioName" name="studioName" autocomplete="organization" required>
+                  <span class="adm-error" data-error-for="studioName"></span>
+                </div>
+                <div class="adm-field">
+                  <label for="studioOwner">Nama pemilik</label>
+                  <input type="text" id="studioOwner" name="studioOwner" autocomplete="name" required>
+                  <span class="adm-error" data-error-for="studioOwner"></span>
+                </div>
+                <div class="adm-field">
+                  <label for="studioEmail">Email</label>
+                  <input type="email" id="studioEmail" name="studioEmail" autocomplete="email" required>
+                  <span class="adm-error" data-error-for="studioEmail"></span>
+                </div>
+                <div class="adm-field">
+                  <label for="studioPhone">WhatsApp</label>
+                  <input type="tel" id="studioPhone" name="studioPhone" autocomplete="tel" required>
+                  <span class="adm-error" data-error-for="studioPhone"></span>
+                </div>
+                <div class="adm-field">
+                  <label for="studioInstagram">Instagram</label>
+                  <input type="text" id="studioInstagram" name="studioInstagram" placeholder="@insframe" autocomplete="off">
+                </div>
+                <div class="adm-form-actions">
+                  <button type="submit" class="adm-btn adm-btn-primary">
+                    <svg aria-hidden="true"><use href="#i-check"></use></svg>
+                    Simpan profil
+                  </button>
+                </div>
+              </form>
+            </section>
+
+            <section class="adm-panel">
+              <div class="adm-panel-head">
+                <div>
+                  <h3>Data &amp; cadangan</h3>
+                  <p>Semua data tersimpan di browser ini.</p>
+                </div>
+              </div>
+
+              <div class="adm-storage-note">
+                <span class="adm-storage-icon"><svg aria-hidden="true"><use href="#i-device"></use></svg></span>
+                <div>
+                  <strong>Penyimpanan lokal aktif</strong>
+                  <p>Tanpa login dan tanpa server. Data hanya ada di perangkat ini, jadi rutin cadangkan agar aman.</p>
+                </div>
+              </div>
+
+              <dl class="adm-data-list">
+                <div>
+                  <dt>Karya tersimpan</dt>
+                  <dd id="settingsGalleryCount">0</dd>
+                </div>
+                <div>
+                  <dt>Pesanan tersimpan</dt>
+                  <dd id="settingsOrderCount">0</dd>
+                </div>
+                <div>
+                  <dt>Status panel</dt>
+                  <dd>Tanpa login</dd>
+                </div>
+              </dl>
+
+              <div class="adm-data-actions">
+                <button type="button" class="adm-btn adm-btn-ghost" data-action="export">
+                  <svg aria-hidden="true"><use href="#i-download"></use></svg>
+                  Ekspor JSON
+                </button>
+                <button type="button" class="adm-btn adm-btn-ghost" data-action="import">
+                  <svg aria-hidden="true"><use href="#i-upload"></use></svg>
+                  Impor JSON
+                </button>
+                <button type="button" class="adm-btn adm-btn-danger-ghost" data-action="reset">
+                  <svg aria-hidden="true"><use href="#i-refresh"></use></svg>
+                  Reset data demo
+                </button>
+              </div>
+              <input type="file" id="importInput" accept="application/json,.json" aria-label="Pilih file cadangan JSON" hidden>
+            </section>
+          </div>
+        </section>
+      </main>
+
+      <footer class="adm-footer">
+        <p>&copy; <span id="adminYear">2026</span> INS FRAME Photography. Studio Admin.</p>
+        <p>Dibuat untuk bekerja lebih ringkas.</p>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ===== Modal karya ===== -->
+  <div class="adm-modal" id="workModal" hidden>
+    <div class="adm-modal-backdrop" data-close-work></div>
+    <div class="adm-dialog adm-dialog-lg" role="dialog" aria-modal="true" aria-labelledby="workModalTitle">
+      <form id="workForm" novalidate>
+        <header class="adm-dialog-head">
+          <div>
+            <p class="adm-eyebrow"><span aria-hidden="true"></span>Galeri</p>
+            <h2 id="workModalTitle">Tambah karya</h2>
+          </div>
+          <button type="button" class="adm-icon-btn" data-close-work aria-label="Tutup">
+            <svg aria-hidden="true"><use href="#i-close"></use></svg>
+          </button>
+        </header>
+
+        <div class="adm-dialog-body">
+          <div class="adm-work-form">
+            <div class="adm-field">
+              <label for="workTitle">Judul karya</label>
+              <input type="text" id="workTitle" name="title" placeholder="Contoh: Golden Vows" maxlength="80" required>
+              <span class="adm-error" data-error-for="workTitle"></span>
+            </div>
+            <div class="adm-field-row">
+              <div class="adm-field">
+                <label for="workCategory">Kategori</label>
+                <select id="workCategory" name="category" required>
+                  <option value="Wedding">Wedding</option>
+                  <option value="Prewedding">Prewedding</option>
+                  <option value="Engagement">Engagement</option>
+                  <option value="Portrait">Portrait</option>
+                  <option value="Event">Event</option>
+                  <option value="Graduation">Graduation</option>
+                  <option value="Personal Branding">Personal Branding</option>
+                  <option value="Couple">Couple</option>
+                  <option value="Family">Family</option>
+                  <option value="Lainnya">Lainnya</option>
+                </select>
+                <span class="adm-error" data-error-for="workCategory"></span>
+              </div>
+              <div class="adm-field">
+                <label for="workDate">Tanggal</label>
+                <input type="date" id="workDate" name="date" required>
+                <span class="adm-error" data-error-for="workDate"></span>
+              </div>
+            </div>
+            <div class="adm-field">
+              <label for="workImage">URL foto</label>
+              <input type="url" id="workImage" name="image" placeholder="https://... atau assets/foto.jpg" required>
+              <span class="adm-hint">Gunakan URL gambar publik atau path lokal, mis. assets/foto.jpg.</span>
+              <span class="adm-error" data-error-for="workImage"></span>
+            </div>
+            <div class="adm-field">
+              <label for="workAlt">Deskripsi foto <span>(alt text)</span></label>
+              <input type="text" id="workAlt" name="alt" placeholder="Pasangan pengantin di tepi pantai" maxlength="140">
+            </div>
+            <div class="adm-field">
+              <label for="workVisible">Status tampil</label>
+              <select id="workVisible" name="visible">
+                <option value="live">Tayang di galeri</option>
+                <option value="draft">Simpan sebagai draf</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="adm-work-preview">
+            <p class="adm-preview-label">Pratinjau</p>
+            <div class="adm-preview-frame">
+              <img id="workPreviewImg" alt="" hidden>
+              <div class="adm-preview-empty" id="workPreviewEmpty">
+                <svg aria-hidden="true"><use href="#i-image"></use></svg>
+                <span>Masukkan URL foto untuk melihat pratinjau.</span>
+              </div>
+            </div>
+            <p class="adm-preview-caption">Rasio foto galeri 4:5.</p>
+          </div>
+        </div>
+
+        <footer class="adm-dialog-foot">
+          <button type="button" class="adm-btn adm-btn-ghost" data-close-work>Batal</button>
+          <button type="submit" class="adm-btn adm-btn-primary" id="workSubmit">
+            <svg aria-hidden="true"><use href="#i-check"></use></svg>
+            Simpan karya
+          </button>
+        </footer>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== Modal konfirmasi ===== -->
+  <div class="adm-modal" id="confirmModal" hidden>
+    <div class="adm-modal-backdrop" data-confirm-cancel></div>
+    <div class="adm-dialog adm-dialog-sm" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle" aria-describedby="confirmMessage">
+      <header class="adm-dialog-head">
+        <div>
+          <h2 id="confirmTitle">Hapus data?</h2>
+          <p id="confirmMessage">Tindakan ini tidak bisa dibatalkan.</p>
+        </div>
+      </header>
+      <footer class="adm-dialog-foot">
+        <button type="button" class="adm-btn adm-btn-ghost" data-confirm-cancel>Batal</button>
+        <button type="button" class="adm-btn adm-btn-danger" id="confirmAction">Hapus</button>
+      </footer>
+    </div>
+  </div>
+
+  <div class="adm-toast" id="adminToast" role="status" aria-live="polite" hidden>
+    <span class="adm-toast-icon"><svg aria-hidden="true"><use href="#i-check"></use></svg></span>
+    <span id="toastMessage">Tersimpan.</span>
+  </div>
+
+  <script src="js/admin.js" defer></script>
+</body>
+</html>
