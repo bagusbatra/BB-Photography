@@ -57,6 +57,8 @@
 
   function slugify(value) {
     return String(value || '')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-+|-+$/g, '') || 'other';
@@ -159,6 +161,44 @@
     });
   }
 
+  /* Anchor stabil per karya. Algoritme ini juga dipakai
+     scripts/prerender-gallery.js agar URL statis dan hasil JS sama. */
+  function assignAnchors(works) {
+    var used = Object.create(null);
+
+    works.forEach(function (work) {
+      var base = slugify(work.title);
+      if (!base || base === 'other') base = 'karya';
+      var anchor = 'karya-' + base;
+      var index = 2;
+
+      while (used[anchor]) {
+        anchor = 'karya-' + base + '-' + index;
+        index += 1;
+      }
+
+      used[anchor] = true;
+      work.anchor = anchor;
+    });
+
+    return works;
+  }
+
+  /* Filter + normalisasi + urut + anchor. Dipakai renderer dan
+     scripts/prerender-gallery.js supaya keduanya selalu identik. */
+  function prepareWorks(source) {
+    var list = Array.isArray(source) ? source : [];
+    return assignAnchors(sortWorks(list.filter(function (item) {
+      return item && item.visible !== false;
+    }).map(normalizeWork).filter(function (work) {
+      return Boolean(work.image);
+    })));
+  }
+
+  function metaLine(work) {
+    return work.category + (work.location ? ' · ' + work.location : '');
+  }
+
   function emptyNote(message) {
     return '<p class="gallery-empty-note">' +
       '<strong>Belum ada karya yang tayang.</strong>' +
@@ -202,6 +242,57 @@
   /* ---------------------------------------------------------
      Portofolio: filter + grid
      --------------------------------------------------------- */
+  function filterChips(works) {
+    var order = categoryDefs().map(function (entry) { return entry.slug; });
+    var seen = {};
+    var chips = [];
+
+    works.forEach(function (work) {
+      if (seen[work.slug]) return;
+      seen[work.slug] = true;
+      chips.push(work);
+    });
+
+    chips.sort(function (a, b) {
+      var indexA = order.indexOf(a.slug);
+      var indexB = order.indexOf(b.slug);
+      return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB);
+    });
+
+    return '<button class="filter-btn is-active" type="button" data-filter="all" aria-pressed="true">Semua</button>' +
+      chips.map(function (work) {
+        return '<button class="filter-btn" type="button" data-filter="' + escapeHTML(work.slug) + '" aria-pressed="false">' +
+          escapeHTML(work.category) + '</button>';
+      }).join('');
+  }
+
+  function portfolioCard(work) {
+    var title = escapeHTML(work.title);
+    var anchor = escapeHTML(work.anchor || ('karya-' + slugify(work.title)));
+
+    return '<article class="portfolio-item reveal" id="' + anchor + '"' +
+      ' data-category="' + escapeHTML(work.slug) + '"' +
+      ' data-img="' + escapeHTML(work.image) + '"' +
+      ' data-title="' + title + '"' +
+      ' data-meta="' + escapeHTML(metaLine(work)) + '">' +
+      '<button class="portfolio-open" type="button" aria-label="Buka ' + title + ' di tampilan penuh">' +
+      '<img src="' + escapeHTML(work.thumb) + '" alt="' + escapeHTML(work.alt) + '"' +
+      ' loading="lazy" width="600" height="750" decoding="async">' +
+      '<span class="portfolio-overlay">' +
+      '<span class="portfolio-cat">' + escapeHTML(work.category) + '</span>' +
+      '<span class="portfolio-title">' + title + '</span>' +
+      '<span class="portfolio-zoom" aria-hidden="true"><svg><use href="#icon-arrow-up-right"></use></svg></span>' +
+      '</span>' +
+      '</button>' +
+      '<a class="portfolio-anchor" href="#' + anchor + '" aria-label="Tautan permanen ke ' + title + '">' +
+      '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">' +
+      '<path d="M10 13a5 5 0 0 0 7.07 0l2.83-2.83a5 5 0 0 0-7.07-7.07L11 5"></path>' +
+      '<path d="M14 11a5 5 0 0 0-7.07 0L4.1 13.83a5 5 0 0 0 7.07 7.07L13 19"></path>' +
+      '</svg>' +
+      '</a>' +
+      '</article>';
+  }
+
   function renderPortfolio(root, works, preview) {
     var filterBar = document.querySelector('[data-gallery-filters]');
 
@@ -218,46 +309,11 @@
     }
 
     if (filterBar) {
-      var order = categoryDefs().map(function (entry) { return entry.slug; });
-      var seen = {};
-      var chips = [];
-
-      works.forEach(function (work) {
-        if (seen[work.slug]) return;
-        seen[work.slug] = true;
-        chips.push(work);
-      });
-
-      chips.sort(function (a, b) {
-        var indexA = order.indexOf(a.slug);
-        var indexB = order.indexOf(b.slug);
-        return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB);
-      });
-
       filterBar.hidden = false;
-      filterBar.innerHTML =
-        '<button class="filter-btn is-active" type="button" data-filter="all" aria-pressed="true">Semua</button>' +
-        chips.map(function (work) {
-          return '<button class="filter-btn" type="button" data-filter="' + escapeHTML(work.slug) + '" aria-pressed="false">' +
-            escapeHTML(work.category) + '</button>';
-        }).join('');
+      filterBar.innerHTML = filterChips(works);
     }
 
-    root.innerHTML = works.map(function (work) {
-      var meta = work.category + (work.location ? ' · ' + work.location : '');
-      return '<button class="portfolio-item reveal" type="button" data-category="' + escapeHTML(work.slug) + '"' +
-        ' data-img="' + escapeHTML(work.image) + '"' +
-        ' data-title="' + escapeHTML(work.title) + '"' +
-        ' data-meta="' + escapeHTML(meta) + '">' +
-        '<img src="' + escapeHTML(work.thumb) + '" alt="' + escapeHTML(work.alt) + '"' +
-        ' loading="lazy" width="600" height="750" decoding="async">' +
-        '<span class="portfolio-overlay">' +
-        '<span class="portfolio-cat">' + escapeHTML(work.category) + '</span>' +
-        '<span class="portfolio-title">' + escapeHTML(work.title) + '</span>' +
-        '<span class="portfolio-zoom" aria-hidden="true"><svg><use href="#icon-arrow-up-right"></use></svg></span>' +
-        '</span>' +
-        '</button>';
-    }).join('');
+    root.innerHTML = works.map(portfolioCard).join('');
   }
 
   /* ---------------------------------------------------------
@@ -347,6 +403,18 @@
   }
 
   /* ---------------------------------------------------------
+     API build
+     scripts/prerender-gallery.js memakai fungsi yang sama, jadi
+     markup statis dan hasil JavaScript tidak mungkin berbeda.
+     --------------------------------------------------------- */
+  window.INSFRAME_GALLERY_RENDER = {
+    prepareWorks: prepareWorks,
+    portfolioCard: portfolioCard,
+    filterChips: filterChips,
+    categoryDefs: categoryDefs
+  };
+
+  /* ---------------------------------------------------------
      Init
      --------------------------------------------------------- */
   function init() {
@@ -355,11 +423,7 @@
     var hasLocalData = Array.isArray(localWorks);
     var source = hasLocalData ? localWorks : publishedWorks();
 
-    var works = sortWorks(source.filter(function (item) {
-      return item && item.visible !== false;
-    }).map(normalizeWork).filter(function (work) {
-      return Boolean(work.image);
-    }));
+    var works = prepareWorks(source);
 
     var portfolioRoot = document.querySelector('[data-gallery="portfolio"]');
     var marqueeRoot = document.querySelector('[data-gallery="marquee"]');

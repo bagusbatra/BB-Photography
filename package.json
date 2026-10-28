@@ -1,0 +1,13 @@
+{
+  "name": "ins-frame-photography",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Situs INS FRAME Photography. Build ini hanya menjalankan pre-render galeri untuk SEO.",
+  "scripts": {
+    "build": "node scripts/prerender-gallery.js",
+    "check:gallery": "node scripts/prerender-gallery.js --check"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

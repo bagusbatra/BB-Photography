@@ -485,8 +485,42 @@
     lightboxMeta.textContent = item.dataset.meta;
   }
 
-  function openLightbox(item) {
-    if (!lightbox) return;
+  /* Anchor per karya: URL bisa dibagikan dan langsung membuka karya. */
+  function currentGalleryHash() {
+    const hash = window.location.hash || '';
+    return /^#karya-[a-z0-9-]+$/.test(hash) ? hash : '';
+  }
+
+  function setGalleryHash(anchor) {
+    if (!anchor || window.location.hash === '#' + anchor) return;
+    try {
+      history.replaceState(null, '', '#' + anchor);
+    } catch (error) {
+      /* file:// atau mode privasi ketat — abaikan */
+    }
+  }
+
+  function clearGalleryHash() {
+    if (!currentGalleryHash()) return;
+    try {
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+    } catch (error) {
+      /* abaikan */
+    }
+  }
+
+  function revealPortfolioItem(item) {
+    if (!item || !item.classList.contains('is-hidden')) return;
+    const allButton = filterButtons.find(function (button) {
+      return button.dataset.filter === 'all';
+    });
+    if (allButton) allButton.click();
+  }
+
+  function openLightbox(item, options) {
+    if (!lightbox || !item) return;
+
+    revealPortfolioItem(item);
 
     visiblePortfolio = portfolioItems.filter(function (portfolioItem) {
       return !portfolioItem.classList.contains('is-hidden');
@@ -499,35 +533,70 @@
     lightbox.hidden = false;
     document.body.classList.add('no-scroll');
 
+    if (!options || !options.keepHash) setGalleryHash(item.id);
+
     if (lightboxClose) lightboxClose.focus();
   }
 
-  function closeLightbox() {
-    if (!lightbox || lightbox.hidden) return;
+  function closeLightbox(options) {
+    if (!lightbox) return;
 
-    lightbox.hidden = true;
-    document.body.classList.remove('no-scroll');
+    if (!lightbox.hidden) {
+      lightbox.hidden = true;
+      document.body.classList.remove('no-scroll');
 
-    if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
-      lastFocusedElement.focus();
+      if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+        lastFocusedElement.focus();
+      }
     }
+
+    if (!options || !options.keepHash) clearGalleryHash();
+  }
+
+  function openFromGalleryHash() {
+    const hash = currentGalleryHash();
+
+    if (!hash) {
+      if (lightbox && !lightbox.hidden) closeLightbox({ keepHash: true });
+      return;
+    }
+
+    const item = document.getElementById(hash.slice(1));
+    if (!item || !item.classList.contains('portfolio-item')) return;
+
+    openLightbox(item, { keepHash: true });
   }
 
   function stepLightbox(direction) {
     if (!visiblePortfolio.length) return;
     lightboxIndex = (lightboxIndex + direction + visiblePortfolio.length) % visiblePortfolio.length;
     renderLightbox();
+    setGalleryHash(visiblePortfolio[lightboxIndex].id);
   }
 
   portfolioItems.forEach(function (item) {
-    item.addEventListener('click', function () {
+    item.addEventListener('click', function (event) {
+      const target = event.target;
+
+      /* Tautan permanen membiarkan browser mengubah hash; hashchange
+         yang membuka lightbox agar URL tetap bisa dibagikan. */
+      if (target && target.closest && target.closest('.portfolio-anchor')) return;
+      if (target && target.closest && target.closest('.portfolio-open')) {
+        event.preventDefault();
+      }
+
       openLightbox(item);
     });
   });
 
   if (lightbox) {
+    window.addEventListener('hashchange', openFromGalleryHash);
+    openFromGalleryHash();
+
     $$('[data-close]', lightbox).forEach(function (element) {
-      element.addEventListener('click', closeLightbox);
+      element.addEventListener('click', function () {
+        closeLightbox();
+      });
     });
 
     if (lightboxPrev) {

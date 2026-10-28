@@ -677,7 +677,8 @@
         <ol class="adm-publish-steps">
           <li><span aria-hidden="true">1</span><p>Unduh <strong>gallery-data.js</strong> lewat tombol di bawah.</p></li>
           <li><span aria-hidden="true">2</span><p>Ganti file <code>js/gallery-data.js</code> di folder situs dengan file hasil unduhan.</p></li>
-          <li><span aria-hidden="true">3</span><p>Unggah ulang situs, lalu muat ulang halaman publik. Bersihkan cache/CDN bila perlu.</p></li>
+          <li><span aria-hidden="true">3</span><p>Jalankan <code>npm run build</code> (atau biarkan GitHub Action bekerja) agar kartu statis dan JSON-LD galeri ikut diperbarui.</p></li>
+          <li><span aria-hidden="true">4</span><p>Unggah ulang situs, lalu muat ulang halaman publik. Bersihkan cache/CDN bila perlu.</p></li>
         </ol>
 
         <div class="adm-publish-actions">
@@ -698,6 +699,9 @@
         <p class="adm-publish-note">
           Pratinjau hanya membaca data lokal di browser ini. Tombol publikasi tidak bisa menulis file
           ke server, jadi langkah mengganti file tetap diperlukan agar pengunjung melihat karya baru.
+          Setelah data diganti, <code>npm run build</code> menyegarkan kartu galeri dan schema
+          <code>ImageObject</code> untuk mesin pencari; <code>npm run check:gallery</code> memeriksa
+          apakah hasil pre-render sudah sinkron.
         </p>
       </div>
 

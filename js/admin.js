@@ -931,6 +931,8 @@
       '   File ini dihasilkan oleh panel admin (Galeri → Publikasikan).\n' +
       '   Jangan mengedit daftar karya secara manual: ubah lewat admin,\n' +
       '   lalu ganti file ini dengan hasil unduhan "gallery-data.js".\n' +
+      '   Setelah diganti, jalankan `npm run build` agar kartu statis\n' +
+      '   dan JSON-LD portofolio.html ikut diperbarui.\n' +
       '   ========================================================= */\n' +
       'window.INSFRAME_CATEGORIES = ' + JSON.stringify(categories, null, 2) + ';\n\n' +
       'window.INSFRAME_GALLERY = ' + JSON.stringify(payload, null, 2) + ';\n';

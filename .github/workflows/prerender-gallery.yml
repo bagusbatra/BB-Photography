@@ -1,0 +1,45 @@
+name: Pre-render galeri
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'js/gallery-data.js'
+      - 'js/gallery-render.js'
+      - 'scripts/prerender-gallery.js'
+      - 'portofolio.html'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: prerender-gallery
+  cancel-in-progress: true
+
+jobs:
+  prerender:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Siapkan Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Pre-render galeri
+        run: node scripts/prerender-gallery.js
+
+      - name: Commit bila ada perubahan
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "Galeri sudah sinkron."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add portofolio.html
+          git commit -m "chore: pre-render galeri dari gallery-data.js"
+          git push

@@ -10,6 +10,9 @@
    - label   : nilai yang disimpan di data admin
    - display : teks yang tampil di halaman publik
    - slug    : nilai filter di portofolio
+
+   Setelah file ini diganti, jalankan `npm run build` agar kartu
+   statis dan JSON-LD portofolio.html ikut diperbarui.
    ========================================================= */
 window.INSFRAME_CATEGORIES = [
   { label: 'Wedding', slug: 'wedding', display: 'Wedding' },

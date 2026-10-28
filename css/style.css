@@ -2507,8 +2507,14 @@ html[data-theme='light'] .service-card:focus-within .service-photo img {
 }
 
 .portfolio-item:hover img,
-.portfolio-item:focus-visible img {
+.portfolio-item:focus-within img {
   transform: scale(1.06);
+}
+
+.portfolio-item:target {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  box-shadow: var(--shadow);
 }
 
 .portfolio-overlay {
@@ -2524,7 +2530,7 @@ html[data-theme='light'] .service-card:focus-within .service-photo img {
 }
 
 .portfolio-item:hover .portfolio-overlay,
-.portfolio-item:focus-visible .portfolio-overlay {
+.portfolio-item:focus-within .portfolio-overlay {
   opacity: 1;
 }
 
@@ -2564,6 +2570,74 @@ html[data-theme='light'] .service-card:focus-within .service-photo img {
 .portfolio-zoom svg {
   width: 15px;
   height: 15px;
+}
+
+/* Tombol pembuka lightbox menutupi seluruh kartu; tautan permanen
+   diletakkan di atasnya agar tetap bisa diklik dan difokus. */
+.portfolio-open {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: inherit;
+  background: none;
+  color: inherit;
+  cursor: zoom-in;
+  text-align: left;
+}
+
+.portfolio-open:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -4px;
+}
+
+.portfolio-anchor {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: 50%;
+  background: rgba(10, 10, 12, 0.42);
+  color: #fff;
+  opacity: 0;
+  transform: translateY(-4px);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  transition: opacity var(--transition), transform var(--transition),
+    background var(--transition), border-color var(--transition), color var(--transition);
+}
+
+.portfolio-anchor svg {
+  width: 14px;
+  height: 14px;
+}
+
+.portfolio-item:hover .portfolio-anchor,
+.portfolio-item:focus-within .portfolio-anchor {
+  opacity: 1;
+  transform: none;
+}
+
+.portfolio-anchor:hover,
+.portfolio-anchor:focus-visible {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-contrast);
+}
+
+@media (hover: none) {
+  .portfolio-anchor {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .portfolio-item.is-hidden {
