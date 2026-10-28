@@ -1,5 +1,5 @@
 /* =========================================================
-   BB Photography — main.js
+   INS FRAME Photography - main.js
    Semua interaksi halaman: tema, navigasi, reveal, counter,
    filter portofolio, lightbox, slider, accordion, dan form.
    ========================================================= */

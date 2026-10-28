@@ -3,18 +3,66 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portofolio | INS FRAME Photography</title>
-  <meta name="description" content="Lihat kumpulan karya wedding, portrait, produk, dan acara dari BB Photography. Klik foto untuk melihat versi penuh.">
+  <title>Portofolio Fotografi | INS FRAME Photography</title>
+  <meta name="description" content="Lihat karya wedding, portrait, produk, dan acara dari INS FRAME Photography. Pilih kategori dan klik foto untuk melihat versi penuh.">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <link rel="canonical" href="https://bagusbatra.github.io/BB-Photography/portofolio.html">
+  <meta name="author" content="Bagus Batra">
   <meta name="theme-color" content="#0b0b0d">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Portofolio — BB Photography">
-  <meta property="og:description" content="Lihat kumpulan karya wedding, portrait, produk, dan acara dari BB Photography. Klik foto untuk melihat versi penuh.">
-  <meta property="og:image" content="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&amp;fit=crop&amp;w=1200&amp;q=80">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230b0b0d'/%3E%3Ctext x='50' y='68' font-size='44' font-family='Georgia,serif' fill='%23d4af37' text-anchor='middle'%3EBB%3C/text%3E%3C/svg%3E">
+  <meta property="og:site_name" content="INS FRAME Photography">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:title" content="Portofolio Fotografi | INS FRAME Photography">
+  <meta property="og:description" content="Lihat karya wedding, portrait, produk, dan acara dari INS FRAME Photography. Pilih kategori dan klik foto untuk melihat versi penuh.">
+  <meta property="og:url" content="https://bagusbatra.github.io/BB-Photography/portofolio.html">
+  <meta property="og:image" content="https://bagusbatra.github.io/BB-Photography/assets/og-insframe.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="INS FRAME Photography — fotografer wedding dan portrait di Sidoarjo">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Portofolio Fotografi | INS FRAME Photography">
+  <meta name="twitter:description" content="Lihat karya wedding, portrait, produk, dan acara dari INS FRAME Photography. Pilih kategori dan klik foto untuk melihat versi penuh.">
+  <meta name="twitter:image" content="https://bagusbatra.github.io/BB-Photography/assets/og-insframe.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        "@id": "https://bagusbatra.github.io/BB-Photography/portofolio.html#webpage",
+        "url": "https://bagusbatra.github.io/BB-Photography/portofolio.html",
+        "name": "Portofolio Fotografi | INS FRAME Photography",
+        "description": "Karya wedding, portrait, produk, dan acara dari INS FRAME Photography.",
+        "isPartOf": { "@id": "https://bagusbatra.github.io/BB-Photography/#website" },
+        "about": { "@id": "https://bagusbatra.github.io/BB-Photography/#business" },
+        "inLanguage": "id-ID"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Beranda",
+            "item": "https://bagusbatra.github.io/BB-Photography/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Portofolio",
+            "item": "https://bagusbatra.github.io/BB-Photography/portofolio.html"
+          }
+        ]
+      }
+    ]
+  }
+  </script>
   <script>
     try {
       var savedTheme = localStorage.getItem('bb-theme');
@@ -150,118 +198,20 @@
 <!-- ===== Portfolio ===== -->
     <section class="section" id="portfolio">
       <div class="container">
-        <div class="filter-bar reveal" role="group" aria-label="Filter portofolio">
-          <button class="filter-btn is-active" type="button" data-filter="all" aria-pressed="true">Semua</button>
-          <button class="filter-btn" type="button" data-filter="wedding" aria-pressed="false">Wedding</button>
-          <button class="filter-btn" type="button" data-filter="portrait" aria-pressed="false">Portrait</button>
-          <button class="filter-btn" type="button" data-filter="product" aria-pressed="false">Produk</button>
-          <button class="filter-btn" type="button" data-filter="event" aria-pressed="false">Acara</button>
-        </div>
+        <div class="filter-bar reveal" data-gallery-filters role="group" aria-label="Filter portofolio"></div>
 
-        <div class="portfolio-grid" id="portfolioGrid">
-          <button class="portfolio-item reveal" type="button" data-category="wedding"
-            data-img="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&amp;fit=crop&amp;w=1400&amp;q=85"
-            data-title="Sumpah di Bawah Senja" data-meta="Wedding · Uluwatu">
-            <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&amp;fit=crop&amp;w=700&amp;q=80" alt="Pengantin baru berfoto di bawah cahaya senja" loading="lazy" width="600" height="750">
-            <span class="portfolio-overlay">
-              <span class="portfolio-cat">Wedding</span>
-              <span class="portfolio-title">Sumpah di Bawah Senja</span>
-              <span class="portfolio-zoom" aria-hidden="true"><svg><use href="#icon-arrow-up-right"></use></svg></span>
-            </span>
-          </button>
+        <noscript>
+          <p class="gallery-empty-note">
+            <strong>Galeri membutuhkan JavaScript.</strong>
+            <span>Aktifkan JavaScript untuk melihat karya terbaru, atau kunjungi Instagram kami.</span>
+          </p>
+        </noscript>
 
-          <button class="portfolio-item reveal" type="button" data-category="portrait"
-            data-img="https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&amp;fit=crop&amp;w=1400&amp;q=85"
-            data-title="Tenang dalam Cahaya" data-meta="Portrait · Studio">
-            <img src="https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&amp;fit=crop&amp;w=700&amp;q=80" alt="Portrait perempuan dengan cahaya lembut" loading="lazy" width="600" height="750">
-            <span class="portfolio-overlay">
-              <span class="portfolio-cat">Portrait</span>
-              <span class="portfolio-title">Tenang dalam Cahaya</span>
-              <span class="portfolio-zoom" aria-hidden="true"><svg><use href="#icon-arrow-up-right"></use></svg></span>
-            </span>
-          </button>
-
-          <button class="portfolio-item reveal" type="button" data-category="product"
-            data-img="https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&amp;fit=crop&amp;w=1400&amp;q=85"
-            data-title="Botani Series" data-meta="Product · Beauty">
-            <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&amp;fit=crop&amp;w=700&amp;q=80" alt="Foto produk parfum dengan latar minimalis" loading="lazy" width="600" height="750">
-            <span class="portfolio-overlay">
-              <span class="portfolio-cat">Produk</span>
-              <span class="portfolio-title">Botani Series</span>
-              <span class="portfolio-zoom" aria-hidden="true"><svg><use href="#icon-arrow-up-right"></use></svg></span>
-            </span>
-          </button>
-
-          <button class="portfolio-item reveal" type="button" data-category="wedding"
-            data-img="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&amp;fit=crop&amp;w=1400&amp;q=85"
-            data-title="The First Dance" data-meta="Wedding · Ubud">
-            <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&amp;fit=crop&amp;w=700&amp;q=80" alt="Pasangan menari di pesta pernikahan" loading="lazy" width="600" height="750">
-            <span class="portfolio-overlay">
-              <span class="portfolio-cat">Wedding</span>
-              <span class="portfolio-title">The First Dance</span>
-              <span class="portfolio-zoom" aria-hidden="true"><svg><use href="#icon-arrow-up-right"></use></svg></span>
-            </span>
-          </button>
-
-          <button class="portfolio-item reveal" type="button" data-category="event"
-            data-img="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&amp;fit=crop&amp;w=1400&amp;q=85"
-            data-title="Gather &amp; Grow" data-meta="Event · Jakarta">
-            <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&amp;fit=crop&amp;w=700&amp;q=80" alt="Suasana acara komunitas dengan lampu hangat" loading="lazy" width="600" height="750">
-            <span class="portfolio-overlay">
-              <span class="portfolio-cat">Acara</span>
-              <span class="portfolio-title">Gather &amp; Grow</span>
-              <span class="portfolio-zoom" aria-hidden="true"><svg><use href="#icon-arrow-up-right"></use></svg></span>
-            </span>
-          </button>
-
-          <button class="portfolio-item reveal" type="button" data-category="portrait"
-            data-img="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&amp;fit=crop&amp;w=1400&amp;q=85"
-            data-title="Monochrome Mood" data-meta="Portrait · Outdoor">
-            <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&amp;fit=crop&amp;w=700&amp;q=80" alt="Portrait pria dengan ekspresi tenang" loading="lazy" width="600" height="750">
-            <span class="portfolio-overlay">
-              <span class="portfolio-cat">Portrait</span>
-              <span class="portfolio-title">Monochrome Mood</span>
-              <span class="portfolio-zoom" aria-hidden="true"><svg><use href="#icon-arrow-up-right"></use></svg></span>
-            </span>
-          </button>
-
-          <button class="portfolio-item reveal" type="button" data-category="product"
-            data-img="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&amp;fit=crop&amp;w=1400&amp;q=85"
-            data-title="Time, Reframed" data-meta="Product · Lifestyle">
-            <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&amp;fit=crop&amp;w=700&amp;q=80" alt="Foto produk jam tangan di atas permukaan kayu" loading="lazy" width="600" height="750">
-            <span class="portfolio-overlay">
-              <span class="portfolio-cat">Produk</span>
-              <span class="portfolio-title">Time, Reframed</span>
-              <span class="portfolio-zoom" aria-hidden="true"><svg><use href="#icon-arrow-up-right"></use></svg></span>
-            </span>
-          </button>
-
-          <button class="portfolio-item reveal" type="button" data-category="event"
-            data-img="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?auto=format&amp;fit=crop&amp;w=1400&amp;q=85"
-            data-title="Neon Nights" data-meta="Event · Concert">
-            <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?auto=format&amp;fit=crop&amp;w=700&amp;q=80" alt="Konser dengan cahaya panggung berwarna" loading="lazy" width="600" height="750">
-            <span class="portfolio-overlay">
-              <span class="portfolio-cat">Acara</span>
-              <span class="portfolio-title">Neon Nights</span>
-              <span class="portfolio-zoom" aria-hidden="true"><svg><use href="#icon-arrow-up-right"></use></svg></span>
-            </span>
-          </button>
-
-          <button class="portfolio-item reveal" type="button" data-category="wedding"
-            data-img="https://images.unsplash.com/photo-1591604466107-ec97de577aff?auto=format&amp;fit=crop&amp;w=1400&amp;q=85"
-            data-title="Quiet Vows" data-meta="Wedding · Nusa Dua">
-            <img src="https://images.unsplash.com/photo-1591604466107-ec97de577aff?auto=format&amp;fit=crop&amp;w=700&amp;q=80" alt="Pasangan pengantin berpegangan tangan" loading="lazy" width="600" height="750">
-            <span class="portfolio-overlay">
-              <span class="portfolio-cat">Wedding</span>
-              <span class="portfolio-title">Quiet Vows</span>
-              <span class="portfolio-zoom" aria-hidden="true"><svg><use href="#icon-arrow-up-right"></use></svg></span>
-            </span>
-          </button>
-        </div>
+        <div class="portfolio-grid" id="portfolioGrid" data-gallery="portfolio"></div>
 
         <div class="portfolio-foot reveal">
           <p>Masih ingin melihat lebih banyak?</p>
-          <a href="https://instagram.com" target="_blank" rel="noopener" class="link-arrow">
+          <a href="https://instagram.com/insframe" target="_blank" rel="noopener" class="link-arrow">
             Lihat di Instagram <svg aria-hidden="true"><use href="#icon-arrow-up-right"></use></svg>
           </a>
         </div>
@@ -293,14 +243,8 @@
         </a>
         <p>Jasa fotografer Sidoarjo dan sekitarnya dengan kualitas maksimal untuk mengabadikan momen berharga kamu.</p>
         <div class="socials">
-          <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram INS FRAME Photography">
+          <a href="https://instagram.com/insframe" target="_blank" rel="noopener" aria-label="Instagram INS FRAME Photography">
             <svg aria-hidden="true"><use href="#icon-instagram"></use></svg>
-          </a>
-          <a href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook INS FRAME Photography">
-            <svg aria-hidden="true"><use href="#icon-facebook"></use></svg>
-          </a>
-          <a href="https://youtube.com" target="_blank" rel="noopener" aria-label="YouTube INS FRAME Photography">
-            <svg aria-hidden="true"><use href="#icon-youtube"></use></svg>
           </a>
           <a href="https://wa.me/6281234567890" target="_blank" rel="noopener" aria-label="WhatsApp INS FRAME Photography">
             <svg aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
@@ -353,7 +297,7 @@
     </div>
   </footer>
 
-  <a class="whatsapp-float" href="https://wa.me/6281234567890" target="_blank" rel="noopener" aria-label="Chat WhatsApp BB Photography">
+  <a class="whatsapp-float" href="https://wa.me/6281234567890" target="_blank" rel="noopener" aria-label="Chat WhatsApp INS FRAME Photography">
     <svg aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
   </a>
   <button class="to-top" id="toTop" type="button" aria-label="Kembali ke atas">
@@ -379,6 +323,8 @@
     </button>
   </div>
 
+  <script src="js/gallery-data.js" defer></script>
+  <script src="js/gallery-render.js" defer></script>
   <script src="js/main.js" defer></script>
 </body>
 </html>

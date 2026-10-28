@@ -36,10 +36,47 @@
     Custom: 8500000
   };
 
-  const CATEGORIES = [
-    'Wedding', 'Prewedding', 'Engagement', 'Portrait', 'Event',
-    'Graduation', 'Personal Branding', 'Couple', 'Family', 'Lainnya'
+  const CATEGORY_FALLBACK = [
+    { label: 'Wedding', slug: 'wedding', display: 'Wedding' },
+    { label: 'Prewedding', slug: 'prewedding', display: 'Prewedding' },
+    { label: 'Engagement', slug: 'engagement', display: 'Engagement' },
+    { label: 'Portrait', slug: 'portrait', display: 'Portrait' },
+    { label: 'Event', slug: 'event', display: 'Acara' },
+    { label: 'Graduation', slug: 'graduation', display: 'Graduation' },
+    { label: 'Personal Branding', slug: 'personal-branding', display: 'Personal Branding' },
+    { label: 'Couple', slug: 'couple', display: 'Couple' },
+    { label: 'Family', slug: 'family', display: 'Family' },
+    { label: 'Produk', slug: 'product', display: 'Produk' },
+    { label: 'Lainnya', slug: 'other', display: 'Lainnya' }
   ];
+
+  function slugify(value) {
+    return String(value || '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '') || 'other';
+  }
+
+  const CATEGORY_DEFS = (Array.isArray(window.INSFRAME_CATEGORIES) && window.INSFRAME_CATEGORIES.length
+    ? window.INSFRAME_CATEGORIES
+    : CATEGORY_FALLBACK
+  ).map(function (entry) {
+    const item = entry && typeof entry === 'object' ? entry : {};
+    const label = String(item.label || item.display || 'Lainnya');
+    return {
+      label: label,
+      slug: String(item.slug || slugify(label)),
+      display: String(item.display || label)
+    };
+  });
+
+  const CATEGORIES = CATEGORY_DEFS.map(function (entry) { return entry.label; });
+
+  const PUBLISHED_GALLERY = (window.INSFRAME_GALLERY &&
+    typeof window.INSFRAME_GALLERY === 'object' &&
+    Array.isArray(window.INSFRAME_GALLERY.works))
+    ? window.INSFRAME_GALLERY
+    : null;
 
   const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
@@ -70,6 +107,7 @@
     confirmResolve: null,
     workLastFocus: null,
     confirmLastFocus: null,
+    publishLastFocus: null,
     toastTimer: null
   };
 
@@ -166,6 +204,26 @@
     return 'https://wa.me/' + digits;
   }
 
+  function thumbUrl(url) {
+    const value = String(url || '');
+    if (!/^https?:\/\/images\.unsplash\.com\//i.test(value)) return value;
+    return value
+      .replace(/([?&])w=\d+/, '$1w=700')
+      .replace(/([?&])q=\d+/, '$1q=80');
+  }
+
+  function formatPublishedAt(value) {
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return '';
+    return new Intl.DateTimeFormat('id-ID', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    }).format(date);
+  }
+
   /* ---------------------------------------------------------
      Penyimpanan lokal
      --------------------------------------------------------- */
@@ -206,6 +264,21 @@
      Data awal
      --------------------------------------------------------- */
   function seedGallery() {
+    if (PUBLISHED_GALLERY && PUBLISHED_GALLERY.works.length) {
+      return PUBLISHED_GALLERY.works.map(function (item) {
+        return {
+          id: item.id,
+          title: item.title,
+          category: item.category,
+          location: item.location || '',
+          date: item.date,
+          visible: item.visible !== false,
+          image: item.image || item.thumb || '',
+          alt: item.alt || ''
+        };
+      });
+    }
+
     return [
       {
         id: 'work-golden-vows', title: 'Golden Vows', category: 'Wedding',
@@ -315,6 +388,7 @@
       id: source.id ? String(source.id) : makeId('work'),
       title: String(source.title || 'Tanpa judul').slice(0, 80),
       category: CATEGORIES.indexOf(source.category) !== -1 ? source.category : 'Lainnya',
+      location: String(source.location || '').slice(0, 40),
       date: DATE_PATTERN.test(source.date || '') ? source.date : todayISO(),
       image: String(source.image || ''),
       alt: String(source.alt || ''),
@@ -402,11 +476,18 @@
     workCategory: $('#workCategory'),
     workDate: $('#workDate'),
     workImage: $('#workImage'),
+    workLocation: $('#workLocation'),
     workAlt: $('#workAlt'),
     workVisible: $('#workVisible'),
     previewImg: $('#workPreviewImg'),
     previewEmpty: $('#workPreviewEmpty'),
     previewEmptyText: $('#workPreviewEmpty span'),
+    publishStatus: $('#publishStatus'),
+    publishModal: $('#publishModal'),
+    publishStats: $('#publishStats'),
+    publishDiff: $('#publishDiff'),
+    publishDownload: $('[data-publish-download]'),
+    publishCopy: $('[data-publish-copy]'),
     confirmModal: $('#confirmModal'),
     confirmTitle: $('#confirmTitle'),
     confirmMessage: $('#confirmMessage'),
@@ -479,6 +560,7 @@
   function syncBodyLock() {
     const locked = !el.workModal.hidden ||
       !el.confirmModal.hidden ||
+      !el.publishModal.hidden ||
       el.sidebar.classList.contains('is-open');
     document.body.classList.toggle('adm-no-scroll', locked);
   }
@@ -567,7 +649,7 @@
     el.recentWorks.innerHTML = recent.map(function (item) {
       return '<a href="#galeri" class="adm-recent-work">' +
         '<span class="adm-recent-media">' +
-        '<img class="adm-thumb" src="' + escapeHTML(item.image) + '" alt="' + escapeHTML(item.alt || item.title) + '" loading="lazy">' +
+        '<img class="adm-thumb" src="' + escapeHTML(thumbUrl(item.image)) + '" alt="' + escapeHTML(item.alt || item.title) + '" loading="lazy">' +
         '</span>' +
         '<span class="adm-recent-info">' +
         '<strong>' + escapeHTML(item.title) + '</strong>' +
@@ -654,7 +736,8 @@
     return state.gallery.filter(function (item) {
       const matchesQuery = !query ||
         item.title.toLowerCase().indexOf(query) !== -1 ||
-        item.category.toLowerCase().indexOf(query) !== -1;
+        item.category.toLowerCase().indexOf(query) !== -1 ||
+        String(item.location || '').toLowerCase().indexOf(query) !== -1;
       const matchesCategory = state.filters.galleryCategory === 'all' ||
         item.category === state.filters.galleryCategory;
       const matchesStatus = state.filters.galleryStatus === 'all' ||
@@ -675,7 +758,7 @@
     el.galleryGrid.innerHTML = items.map(function (item) {
       return '<article class="adm-work" data-id="' + escapeHTML(item.id) + '">' +
         '<div class="adm-work-media">' +
-        '<img class="adm-thumb" src="' + escapeHTML(item.image) + '" alt="' + escapeHTML(item.alt || item.title) + '" loading="lazy">' +
+        '<img class="adm-thumb" src="' + escapeHTML(thumbUrl(item.image)) + '" alt="' + escapeHTML(item.alt || item.title) + '" loading="lazy">' +
         '<span class="adm-badge ' + (item.visible ? 'is-live' : 'is-draft') + '">' +
         (item.visible ? 'Tayang' : 'Draf') + '</span>' +
         '<div class="adm-work-actions">' +
@@ -692,6 +775,304 @@
         '</div>' +
         '</article>';
     }).join('');
+
+    renderPublishState();
+  }
+
+  /* ---------------------------------------------------------
+     Publikasi ke halaman publik
+     --------------------------------------------------------- */
+  function cleanedWork(item) {
+    return {
+      id: String(item.id || ''),
+      title: String(item.title || ''),
+      category: String(item.category || ''),
+      location: String(item.location || ''),
+      date: DATE_PATTERN.test(item.date || '') ? item.date : '',
+      image: String(item.image || ''),
+      alt: String(item.alt || '')
+    };
+  }
+
+  function compareWorks(a, b) {
+    if (a.date === b.date) return a.id.localeCompare(b.id);
+    if (!a.date) return 1;
+    if (!b.date) return -1;
+    return b.date.localeCompare(a.date);
+  }
+
+  function visibleSequence() {
+    return state.gallery
+      .filter(function (item) { return item.visible; })
+      .map(cleanedWork)
+      .sort(compareWorks);
+  }
+
+  function publishedSequence() {
+    if (!PUBLISHED_GALLERY) return [];
+    return PUBLISHED_GALLERY.works
+      .filter(function (item) { return item.visible !== false; })
+      .map(cleanedWork);
+  }
+
+  function workSignature(item) {
+    return [item.title, item.category, item.location, item.date, item.image, item.alt].join('\u0000');
+  }
+
+  function diffGallery() {
+    const current = visibleSequence();
+    const published = publishedSequence();
+    const currentById = new Map();
+    const publishedById = new Map();
+
+    current.forEach(function (item) { currentById.set(item.id, item); });
+    published.forEach(function (item) { publishedById.set(item.id, item); });
+
+    let added = 0;
+    let removed = 0;
+    let changed = 0;
+
+    current.forEach(function (item) {
+      const match = publishedById.get(item.id);
+      if (!match) {
+        added += 1;
+      } else if (workSignature(match) !== workSignature(item)) {
+        changed += 1;
+      }
+    });
+
+    published.forEach(function (item) {
+      if (!currentById.has(item.id)) removed += 1;
+    });
+
+    const currentOrder = current
+      .map(function (item) { return item.id; })
+      .filter(function (id) { return publishedById.has(id); });
+    const publishedOrder = published
+      .map(function (item) { return item.id; })
+      .filter(function (id) { return currentById.has(id); });
+    const orderChanged = currentOrder.join('|') !== publishedOrder.join('|');
+
+    const drafts = state.gallery.filter(function (item) { return !item.visible; }).length;
+    const categories = {};
+
+    current.forEach(function (item) { categories[item.category] = true; });
+
+    return {
+      added: added,
+      removed: removed,
+      changed: changed,
+      orderChanged: orderChanged,
+      total: added + removed + changed + (orderChanged ? 1 : 0),
+      currentCount: current.length,
+      publishedCount: published.length,
+      draftCount: drafts,
+      categoryCount: Object.keys(categories).length
+    };
+  }
+
+  function renderPublishState() {
+    const diff = diffGallery();
+    const dots = $$('[data-publish-dot]');
+    const parts = [];
+
+    if (diff.added) parts.push(diff.added + ' karya baru');
+    if (diff.changed) parts.push(diff.changed + ' karya diubah');
+    if (diff.removed) parts.push(diff.removed + ' karya dihapus');
+    if (diff.orderChanged) parts.push('urutan berubah');
+
+    dots.forEach(function (dot) { dot.hidden = diff.total === 0; });
+
+    if (!el.publishStatus) return diff;
+
+    if (!diff.total) {
+      el.publishStatus.textContent = 'Halaman publik sudah sinkron · ' +
+        diff.currentCount + ' karya tayang.';
+      el.publishStatus.classList.remove('is-dirty');
+    } else {
+      el.publishStatus.textContent = parts.join(' · ') + ' belum dipublikasikan.';
+      el.publishStatus.classList.add('is-dirty');
+    }
+
+    return diff;
+  }
+
+  function publishableWorks() {
+    return visibleSequence().map(function (item) {
+      return {
+        id: item.id,
+        title: item.title,
+        category: item.category,
+        location: item.location,
+        date: item.date,
+        image: item.image,
+        thumb: thumbUrl(item.image),
+        alt: item.alt || item.title
+      };
+    });
+  }
+
+  function buildGalleryFile() {
+    const currentVersion = PUBLISHED_GALLERY && Number(PUBLISHED_GALLERY.version)
+      ? Number(PUBLISHED_GALLERY.version)
+      : 0;
+    const payload = {
+      version: currentVersion + 1,
+      updatedAt: new Date().toISOString(),
+      works: publishableWorks()
+    };
+    const categories = CATEGORY_DEFS.map(function (entry) {
+      return { label: entry.label, slug: entry.slug, display: entry.display };
+    });
+
+    return '/* =========================================================\n' +
+      '   INS FRAME Photography — gallery-data.js\n' +
+      '   Sumber data galeri untuk halaman publik.\n\n' +
+      '   File ini dihasilkan oleh panel admin (Galeri → Publikasikan).\n' +
+      '   Jangan mengedit daftar karya secara manual: ubah lewat admin,\n' +
+      '   lalu ganti file ini dengan hasil unduhan "gallery-data.js".\n' +
+      '   ========================================================= */\n' +
+      'window.INSFRAME_CATEGORIES = ' + JSON.stringify(categories, null, 2) + ';\n\n' +
+      'window.INSFRAME_GALLERY = ' + JSON.stringify(payload, null, 2) + ';\n';
+  }
+
+  function publishStat(value, label) {
+    return '<div class="adm-publish-stat"><strong>' + escapeHTML(value) + '</strong>' +
+      '<span>' + escapeHTML(label) + '</span></div>';
+  }
+
+  function renderPublishModal(diff) {
+    const stats = diff || diffGallery();
+    const updatedAt = PUBLISHED_GALLERY && PUBLISHED_GALLERY.updatedAt
+      ? formatPublishedAt(PUBLISHED_GALLERY.updatedAt)
+      : '';
+
+    el.publishStats.innerHTML =
+      publishStat(stats.currentCount, 'karya tayang') +
+      publishStat(stats.categoryCount, 'kategori') +
+      publishStat(stats.draftCount, 'draf disembunyikan');
+
+    let diffHTML = '';
+
+    if (!stats.total) {
+      diffHTML = '<div class="adm-publish-sync is-clean">' +
+        '<span class="adm-publish-sync-icon" aria-hidden="true"><svg><use href="#i-check"></use></svg></span>' +
+        '<div><strong>Sudah sinkron</strong>' +
+        '<span>Halaman publik memakai data yang sama dengan panel admin.</span></div>' +
+        '</div>';
+    } else {
+      const rows = [];
+      if (stats.added) rows.push(['+', stats.added + ' karya baru akan ditambahkan']);
+      if (stats.changed) rows.push(['~', stats.changed + ' karya berubah']);
+      if (stats.removed) rows.push(['−', stats.removed + ' karya akan dihapus dari publik']);
+      if (stats.orderChanged) rows.push(['↕', 'Urutan karya berubah']);
+
+      diffHTML = '<div class="adm-publish-sync is-dirty">' +
+        '<span class="adm-publish-sync-icon" aria-hidden="true"><svg><use href="#i-upload"></use></svg></span>' +
+        '<div><strong>' + stats.total + ' perubahan menunggu publikasi</strong>' +
+        '<span>File baru belum menggantikan data yang dipakai pengunjung.</span></div>' +
+        '</div>' +
+        '<ul class="adm-publish-diff-list">' +
+        rows.map(function (row) {
+          return '<li><span aria-hidden="true">' + row[0] + '</span>' + escapeHTML(row[1]) + '</li>';
+        }).join('') +
+        '</ul>';
+    }
+
+    if (updatedAt) {
+      diffHTML += '<p class="adm-publish-updated">Terakhir dipublikasikan: ' + escapeHTML(updatedAt) + '.</p>';
+    } else {
+      diffHTML += '<p class="adm-publish-updated">Belum ada file publik yang terbaca.</p>';
+    }
+
+    el.publishDiff.innerHTML = diffHTML;
+  }
+
+  function openPublishModal() {
+    const diff = renderPublishState();
+
+    renderPublishModal(diff);
+    state.publishLastFocus = document.activeElement;
+    el.publishModal.hidden = false;
+    syncBodyLock();
+
+    window.setTimeout(function () {
+      if (el.publishDownload) el.publishDownload.focus();
+    }, 40);
+  }
+
+  function closePublishModal() {
+    if (el.publishModal.hidden) return;
+
+    el.publishModal.hidden = true;
+    syncBodyLock();
+
+    if (state.publishLastFocus && document.contains(state.publishLastFocus)) {
+      state.publishLastFocus.focus();
+    }
+  }
+
+  function downloadGalleryFile() {
+    const blob = new Blob([buildGalleryFile()], { type: 'text/javascript;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'gallery-data.js';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+
+    showToast('gallery-data.js diunduh. Ganti file lama di folder situs.');
+  }
+
+  function legacyCopy(text) {
+    const area = document.createElement('textarea');
+    area.value = text;
+    area.setAttribute('readonly', '');
+    area.style.position = 'fixed';
+    area.style.top = '-1000px';
+    area.style.opacity = '0';
+    document.body.appendChild(area);
+    area.select();
+    const copied = document.execCommand('copy');
+    area.remove();
+    if (!copied) throw new Error('copy-failed');
+  }
+
+  async function copyGalleryFile() {
+    const content = buildGalleryFile();
+
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        try {
+          await navigator.clipboard.writeText(content);
+        } catch (error) {
+          /* Clipboard API bisa ditolak browser (izin/fokus). Coba cara lama. */
+          legacyCopy(content);
+        }
+      } else {
+        legacyCopy(content);
+      }
+      showToast('Isi gallery-data.js disalin ke clipboard.');
+    } catch (error) {
+      showToast('Tidak bisa menyalin. Gunakan tombol Unduh.', 'error');
+    }
+  }
+
+  function populateCategoryOptions() {
+    if (el.galleryCategory) {
+      el.galleryCategory.innerHTML = '<option value="all">Semua kategori</option>' +
+        CATEGORIES.map(function (category) {
+          return '<option value="' + escapeHTML(category) + '">' + escapeHTML(category) + '</option>';
+        }).join('');
+    }
+
+    if (el.workCategory) {
+      el.workCategory.innerHTML = CATEGORIES.map(function (category) {
+        return '<option value="' + escapeHTML(category) + '">' + escapeHTML(category) + '</option>';
+      }).join('');
+    }
   }
 
   /* ---------------------------------------------------------
@@ -863,6 +1244,7 @@
     el.workTitle.value = item ? item.title : '';
     el.workCategory.value = item ? item.category : 'Wedding';
     el.workDate.value = item ? item.date : todayISO();
+    el.workLocation.value = item ? (item.location || '') : '';
     el.workImage.value = item ? item.image : '';
     el.workAlt.value = item ? item.alt : '';
     el.workVisible.value = item && !item.visible ? 'draft' : 'live';
@@ -902,6 +1284,7 @@
     const title = el.workTitle.value.trim();
     const category = el.workCategory.value;
     const date = el.workDate.value;
+    const location = el.workLocation.value.trim();
     const image = el.workImage.value.trim();
     const alt = el.workAlt.value.trim();
     const visible = el.workVisible.value === 'live';
@@ -943,6 +1326,7 @@
           id: state.gallery[index].id,
           title: title,
           category: category,
+          location: location,
           date: date,
           image: image,
           alt: alt,
@@ -955,6 +1339,7 @@
         id: makeId('work'),
         title: title,
         category: category,
+        location: location,
         date: date,
         image: image,
         alt: alt,
@@ -1195,8 +1580,8 @@
 
   async function resetData() {
     const confirmed = await askConfirm({
-      title: 'Reset data demo?',
-      message: 'Semua perubahan lokal akan dihapus dan diganti dengan data contoh awal.',
+      title: 'Reset data lokal?',
+      message: 'Semua perubahan lokal akan dihapus. Galeri dikembalikan ke data publik terakhir, sedangkan pesanan dan profil ke contoh awal.',
       confirmText: 'Reset data'
     });
 
@@ -1215,7 +1600,7 @@
     renderGallery();
     renderOrders();
     renderSettings();
-    showToast('Data demo berhasil dipulihkan.');
+    showToast('Data lokal direset ke data publik terakhir.');
   }
 
   /* ---------------------------------------------------------
@@ -1294,6 +1679,21 @@
         return;
       }
 
+      if (event.target.closest('[data-close-publish]')) {
+        closePublishModal();
+        return;
+      }
+
+      if (event.target.closest('[data-publish-download]')) {
+        downloadGalleryFile();
+        return;
+      }
+
+      if (event.target.closest('[data-publish-copy]')) {
+        copyGalleryFile();
+        return;
+      }
+
       if (event.target.closest('#confirmAction')) {
         closeConfirm(true);
         return;
@@ -1311,6 +1711,7 @@
       const id = actionElement.dataset.id;
 
       if (action === 'export') exportData();
+      if (action === 'publish') openPublishModal();
       if (action === 'import') el.importInput.click();
       if (action === 'reset') resetData();
       if (action === 'edit-work') openWorkModal(id);
@@ -1331,6 +1732,11 @@
           closeConfirm(false);
           return;
         }
+        if (!el.publishModal.hidden) {
+          event.preventDefault();
+          closePublishModal();
+          return;
+        }
         if (!el.workModal.hidden) {
           event.preventDefault();
           closeWorkModal();
@@ -1346,6 +1752,8 @@
       if (event.key === 'Tab') {
         if (!el.confirmModal.hidden) {
           trapFocus(event, el.confirmModal.querySelector('[role="dialog"]'));
+        } else if (!el.publishModal.hidden) {
+          trapFocus(event, el.publishModal.querySelector('[role="dialog"]'));
         } else if (!el.workModal.hidden) {
           trapFocus(event, el.workModal.querySelector('[role="dialog"]'));
         }
@@ -1442,6 +1850,7 @@
     if (!Array.isArray(storedBookings)) writeStore(STORAGE_KEYS.bookings, state.bookings);
     if (!storedSettings) writeStore(STORAGE_KEYS.settings, state.settings);
 
+    populateCategoryOptions();
     applyTheme(currentTheme());
     bindEvents();
 

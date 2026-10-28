@@ -7,7 +7,8 @@
   <meta name="description" content="Panel admin INS FRAME Photography untuk mengelola karya, pesanan, dan profil studio.">
   <meta name="robots" content="noindex, nofollow">
   <meta name="theme-color" content="#0b0b0d">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230b0b0d'/%3E%3Ctext x='50' y='68' font-size='44' font-family='Georgia,serif' fill='%23d4af37' text-anchor='middle'%3EBB%3C/text%3E%3C/svg%3E">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
@@ -86,6 +87,10 @@
     </symbol>
     <symbol id="i-upload" viewBox="0 0 24 24">
       <path d="M12 16V5M7.5 9.5 12 5l4.5 4.5M4.5 19.5h15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24">
+      <rect x="8.5" y="8.5" width="11" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <path d="M15.5 8.5v-2a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
     </symbol>
     <symbol id="i-refresh" viewBox="0 0 24 24">
       <path d="M19.5 9A8 8 0 1 0 20 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
@@ -209,9 +214,10 @@
               <p class="adm-page-sub" id="todayLabel">Memuat tanggal...</p>
             </div>
             <div class="adm-head-actions">
-              <button class="adm-btn adm-btn-ghost" type="button" data-action="export">
-                <svg aria-hidden="true"><use href="#i-download"></use></svg>
-                Ekspor
+              <button class="adm-btn adm-btn-ghost" type="button" data-action="publish">
+                <svg aria-hidden="true"><use href="#i-upload"></use></svg>
+                Publikasikan
+                <span class="adm-btn-dot" data-publish-dot hidden aria-hidden="true"></span>
               </button>
               <button class="adm-btn adm-btn-primary" type="button" data-open-work>
                 <svg aria-hidden="true"><use href="#i-plus"></use></svg>
@@ -328,8 +334,14 @@
               <p class="adm-eyebrow"><span aria-hidden="true"></span>Galeri studio</p>
               <h2 class="adm-page-title">Kelola <em>karya</em>.</h2>
               <p class="adm-page-sub">Atur foto, kategori, dan status tampil di galeri.</p>
+              <p class="adm-publish-status" id="publishStatus">Memeriksa data publik...</p>
             </div>
             <div class="adm-head-actions">
+              <button class="adm-btn adm-btn-ghost" type="button" data-action="publish">
+                <svg aria-hidden="true"><use href="#i-upload"></use></svg>
+                Publikasikan
+                <span class="adm-btn-dot" data-publish-dot hidden aria-hidden="true"></span>
+              </button>
               <button class="adm-btn adm-btn-primary" type="button" data-open-work>
                 <svg aria-hidden="true"><use href="#i-plus"></use></svg>
                 Tambah karya
@@ -357,6 +369,7 @@
                   <option value="Personal Branding">Personal Branding</option>
                   <option value="Couple">Couple</option>
                   <option value="Family">Family</option>
+                  <option value="Produk">Produk</option>
                   <option value="Lainnya">Lainnya</option>
                 </select>
               </label>
@@ -583,6 +596,7 @@
                   <option value="Personal Branding">Personal Branding</option>
                   <option value="Couple">Couple</option>
                   <option value="Family">Family</option>
+                  <option value="Produk">Produk</option>
                   <option value="Lainnya">Lainnya</option>
                 </select>
                 <span class="adm-error" data-error-for="workCategory"></span>
@@ -592,6 +606,11 @@
                 <input type="date" id="workDate" name="date" required>
                 <span class="adm-error" data-error-for="workDate"></span>
               </div>
+            </div>
+            <div class="adm-field">
+              <label for="workLocation">Lokasi <span>(opsional)</span></label>
+              <input type="text" id="workLocation" name="location" placeholder="Contoh: Sidoarjo" maxlength="40" autocomplete="off">
+              <span class="adm-hint">Tampil sebagai keterangan lokasi di portofolio publik.</span>
             </div>
             <div class="adm-field">
               <label for="workImage">URL foto</label>
@@ -636,6 +655,58 @@
     </div>
   </div>
 
+  <!-- ===== Modal publikasi ===== -->
+  <div class="adm-modal" id="publishModal" hidden>
+    <div class="adm-modal-backdrop" data-close-publish></div>
+    <div class="adm-dialog adm-dialog-md" role="dialog" aria-modal="true" aria-labelledby="publishTitle" aria-describedby="publishDesc">
+      <header class="adm-dialog-head">
+        <div>
+          <p class="adm-eyebrow"><span aria-hidden="true"></span>Galeri → publik</p>
+          <h2 id="publishTitle">Publikasikan galeri</h2>
+          <p id="publishDesc">Unduh file data terbaru, lalu ganti <code>js/gallery-data.js</code> di folder situs.</p>
+        </div>
+        <button type="button" class="adm-icon-btn" data-close-publish aria-label="Tutup">
+          <svg aria-hidden="true"><use href="#i-close"></use></svg>
+        </button>
+      </header>
+
+      <div class="adm-dialog-body adm-publish-body">
+        <div class="adm-publish-stats" id="publishStats"></div>
+        <div class="adm-publish-diff" id="publishDiff"></div>
+
+        <ol class="adm-publish-steps">
+          <li><span aria-hidden="true">1</span><p>Unduh <strong>gallery-data.js</strong> lewat tombol di bawah.</p></li>
+          <li><span aria-hidden="true">2</span><p>Ganti file <code>js/gallery-data.js</code> di folder situs dengan file hasil unduhan.</p></li>
+          <li><span aria-hidden="true">3</span><p>Unggah ulang situs, lalu muat ulang halaman publik. Bersihkan cache/CDN bila perlu.</p></li>
+        </ol>
+
+        <div class="adm-publish-actions">
+          <button type="button" class="adm-btn adm-btn-primary" data-publish-download>
+            <svg aria-hidden="true"><use href="#i-download"></use></svg>
+            Unduh gallery-data.js
+          </button>
+          <button type="button" class="adm-btn adm-btn-ghost" data-publish-copy>
+            <svg aria-hidden="true"><use href="#i-copy"></use></svg>
+            Salin isi file
+          </button>
+          <a class="adm-btn adm-btn-ghost" href="portofolio.html?preview=1" target="_blank" rel="noopener">
+            <svg aria-hidden="true"><use href="#i-external"></use></svg>
+            Pratinjau halaman
+          </a>
+        </div>
+
+        <p class="adm-publish-note">
+          Pratinjau hanya membaca data lokal di browser ini. Tombol publikasi tidak bisa menulis file
+          ke server, jadi langkah mengganti file tetap diperlukan agar pengunjung melihat karya baru.
+        </p>
+      </div>
+
+      <footer class="adm-dialog-foot">
+        <button type="button" class="adm-btn adm-btn-ghost" data-close-publish>Selesai</button>
+      </footer>
+    </div>
+  </div>
+
   <!-- ===== Modal konfirmasi ===== -->
   <div class="adm-modal" id="confirmModal" hidden>
     <div class="adm-modal-backdrop" data-confirm-cancel></div>
@@ -658,6 +729,7 @@
     <span id="toastMessage">Tersimpan.</span>
   </div>
 
+  <script src="js/gallery-data.js" defer></script>
   <script src="js/admin.js" defer></script>
 </body>
 </html>

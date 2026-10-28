@@ -2570,6 +2570,130 @@ html[data-theme='light'] .service-card:focus-within .service-photo img {
   display: none;
 }
 
+/* ---------- Status kosong & pratinjau galeri ---------- */
+.gallery-empty-note {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: clamp(28px, 4vw, 46px);
+  border: 1px dashed var(--line-strong);
+  border-radius: 16px;
+  background: var(--surface);
+  color: var(--muted);
+  text-align: center;
+}
+
+.gallery-empty-note strong {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.gallery-empty-note span {
+  max-width: 54ch;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.pf-marquee .gallery-empty-note {
+  margin: 0 clamp(20px, 5vw, 64px);
+}
+
+.polaroid-board.is-empty {
+  height: auto;
+}
+
+.polaroid-board.is-empty::before {
+  display: none;
+}
+
+.polaroid-board .gallery-empty-note {
+  position: relative;
+  z-index: 1;
+}
+
+.gallery-preview-flag {
+  position: fixed;
+  left: 24px;
+  bottom: 24px;
+  z-index: 96;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: calc(100vw - 48px);
+  padding: 8px 9px 8px 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--surface);
+  box-shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.65);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--text);
+}
+
+.gallery-preview-dot {
+  flex: 0 0 auto;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+  animation: galleryPreviewPulse 2.4s ease-in-out infinite;
+}
+
+.gallery-preview-text {
+  white-space: nowrap;
+}
+
+.gallery-preview-close {
+  flex: 0 0 auto;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  transition: color var(--transition), border-color var(--transition);
+}
+
+.gallery-preview-close:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+@keyframes galleryPreviewPulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.55;
+    transform: scale(0.82);
+  }
+}
+
+@media (max-width: 600px) {
+  .gallery-preview-flag {
+    left: 12px;
+    bottom: 84px;
+    max-width: calc(100vw - 24px);
+    font-size: 10.5px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery-preview-dot {
+    animation: none;
+  }
+}
+
 .portfolio-foot {
   display: flex;
   flex-wrap: wrap;
