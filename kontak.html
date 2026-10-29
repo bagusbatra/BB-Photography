@@ -65,7 +65,7 @@
   </script>
   <script>
     try {
-      var savedTheme = localStorage.getItem('bb-theme');
+      var savedTheme = localStorage.getItem('insframe-theme') || localStorage.getItem('bb-theme');
       if (savedTheme) document.documentElement.dataset.theme = savedTheme;
     } catch (e) {}
   </script>
@@ -200,35 +200,10 @@
       <div class="container">
         <div class="booking-grid">
           <div class="booking-info reveal">
-            <ul class="contact-list">
-              <li>
-                <span class="contact-icon"><svg aria-hidden="true"><use href="#icon-whatsapp"></use></svg></span>
-                <div>
-                  <span>WhatsApp</span>
-                  <a href="https://wa.me/6281234567890" target="_blank" rel="noopener">+62 812 3456 7890</a>
-                </div>
-              </li>
-              <li>
-                <span class="contact-icon"><svg aria-hidden="true"><use href="#icon-mail"></use></svg></span>
-                <div>
-                  <span>Email</span>
-                  <a href="mailto:hello@insframe.studio">hello@insframe.studio</a>
-                </div>
-              </li>
-              <li>
-                <span class="contact-icon"><svg aria-hidden="true"><use href="#icon-pin"></use></svg></span>
-                <div>
-                  <span>Studio</span>
-                  <p>Studio by appointment<br>Sidoarjo, Jawa Timur, Indonesia</p>
-                </div>
-              </li>
-              <li>
-                <span class="contact-icon"><svg aria-hidden="true"><use href="#icon-clock"></use></svg></span>
-                <div>
-                  <span>Jam Operasional</span>
-                  <p>Senin – Sabtu · 09.00 – 19.00 WIB<br>Minggu dengan perjanjian</p>
-                </div>
-              </li>
+                        <ul class="contact-list" data-site="contact-list">
+              <!-- site:contact-list:start -->
+              <li><span class="contact-icon"><svg aria-hidden="true"><use href="#icon-whatsapp"></use></svg></span><div><span>WhatsApp</span><a href="https://wa.me/6281234567890" target="_blank" rel="noopener">+62 812 3456 7890</a></div></li><li><span class="contact-icon"><svg aria-hidden="true"><use href="#icon-mail"></use></svg></span><div><span>Email</span><a href="mailto:hello@insframe.studio">hello@insframe.studio</a></div></li><li><span class="contact-icon"><svg aria-hidden="true"><use href="#icon-pin"></use></svg></span><div><span>Studio</span><p>Studio by appointment<br>Sidoarjo, Jawa Timur, Indonesia</p></div></li><li><span class="contact-icon"><svg aria-hidden="true"><use href="#icon-clock"></use></svg></span><div><span>Jam Operasional</span><p>Senin – Sabtu · 09.00 – 19.00 WIB<br>Minggu dengan perjanjian</p></div></li>
+              <!-- site:contact-list:end -->
             </ul>
 
             <div class="booking-note">
@@ -262,20 +237,10 @@
 
               <div class="field">
                 <label for="service">Jenis sesi</label>
-                <select id="service" name="service" required>
-                  <option value="" selected disabled>Pilih layanan</option>
-                  <option value="Graduation">Graduation</option>
-                  <option value="Couple">Couple</option>
-                  <option value="Personal Branding">Personal Branding</option>
-                  <option value="Beauty">Beauty</option>
-                  <option value="Prewedding">Prewedding</option>
-                  <option value="Wedding">Wedding</option>
-                  <option value="Engagement">Engagement</option>
-                  <option value="Event">Event</option>
-                  <option value="Street">Street</option>
-                  <option value="Architecture">Architecture</option>
-                  <option value="Travel">Travel</option>
-                  <option value="Night">Night</option>
+                <select id="service" name="service" data-site="service-options" required>
+                  <!-- site:service-options:start -->
+                  <option value="" selected disabled>Pilih layanan</option><option value="Graduation">Graduation</option><option value="Couple">Couple</option><option value="Personal Branding">Personal Branding</option><option value="Beauty">Beauty</option><option value="Prewedding">Prewedding</option><option value="Wedding">Wedding</option><option value="Engagement">Engagement</option><option value="Event">Event</option><option value="Street">Street</option><option value="Architecture">Architecture</option><option value="Travel">Travel</option><option value="Night">Night</option>
+                  <!-- site:service-options:end -->
                 </select>
                 <span class="field-error" data-error-for="service"></span>
               </div>
@@ -288,12 +253,10 @@
 
               <div class="field">
                 <label for="package">Paket</label>
-                <select id="package" name="package">
-                  <option value="" selected>Belum tahu / konsultasi dulu</option>
-                  <option value="Silver">Silver — Rp 3,5jt</option>
-                  <option value="Gold">Gold — Rp 6,5jt</option>
-                  <option value="Platinum">Platinum — Rp 12jt</option>
-                  <option value="Custom">Custom</option>
+                <select id="package" name="package" data-site="package-options">
+                  <!-- site:package-options:start -->
+                  <option value="" selected>Belum tahu / konsultasi dulu</option><option value="Silver">Silver — Rp 3,5jt</option><option value="Gold">Gold — Rp 6,5jt</option><option value="Platinum">Platinum — Rp 12jt</option><option value="Custom">Custom — Rp 8,5jt</option>
+                  <!-- site:package-options:end -->
                 </select>
                 <span class="field-error" data-error-for="package"></span>
               </div>
@@ -310,7 +273,7 @@
               <svg aria-hidden="true"><use href="#icon-arrow-right"></use></svg>
             </button>
             <p class="form-note">Dengan mengirim form, kamu setuju dihubungi lewat WhatsApp atau email.</p>
-            <p class="form-success" id="formSuccess" role="status" hidden>Terima kasih! Permintaanmu sudah kami terima. Tim BB akan menghubungimu dalam 1×24 jam kerja.</p>
+            <p class="form-success" id="formSuccess" role="status" hidden>Terima kasih! Permintaanmu sudah kami terima. Tim INS FRAME akan menghubungimu dalam 1×24 jam kerja.</p>
           </form>
         </div>
       </div>
@@ -328,14 +291,7 @@
           </span>
         </a>
         <p>Jasa fotografer Sidoarjo dan sekitarnya dengan kualitas maksimal untuk mengabadikan momen berharga kamu.</p>
-        <div class="socials">
-          <a href="https://instagram.com/insframe" target="_blank" rel="noopener" aria-label="Instagram INS FRAME Photography">
-            <svg aria-hidden="true"><use href="#icon-instagram"></use></svg>
-          </a>
-          <a href="https://wa.me/6281234567890" target="_blank" rel="noopener" aria-label="WhatsApp INS FRAME Photography">
-            <svg aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
-          </a>
-        </div>
+        <div class="socials" data-site="socials"><a href="https://instagram.com/insframe" target="_blank" rel="noopener" aria-label="Instagram INS FRAME Photography"><svg aria-hidden="true"><use href="#icon-instagram"></use></svg></a><a href="https://wa.me/6281234567890" target="_blank" rel="noopener" aria-label="WhatsApp INS FRAME Photography"><svg aria-hidden="true"><use href="#icon-whatsapp"></use></svg></a></div>
       </div>
 
       <div class="footer-col">
@@ -390,6 +346,8 @@
     <svg aria-hidden="true" style="transform: rotate(-90deg)"><use href="#icon-arrow-right"></use></svg>
   </button>
 
+  <script src="js/site-data.js" defer></script>
+  <script src="js/site-render.js" defer></script>
   <script src="js/main.js" defer></script>
 </body>
 </html>

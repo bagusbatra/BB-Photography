@@ -23,7 +23,10 @@
     themeToggle.addEventListener('click', () => {
       const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
       document.documentElement.dataset.theme = next;
-      try { localStorage.setItem('bb-theme', next); } catch (e) { }
+      try {
+        localStorage.setItem('insframe-theme', next);
+        localStorage.removeItem('bb-theme');
+      } catch (e) { }
       syncThemeUI();
     });
   }

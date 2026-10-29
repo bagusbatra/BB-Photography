@@ -593,7 +593,7 @@
   </script>
   <script>
     try {
-      var savedTheme = localStorage.getItem('bb-theme');
+      var savedTheme = localStorage.getItem('insframe-theme') || localStorage.getItem('bb-theme');
       if (savedTheme) document.documentElement.dataset.theme = savedTheme;
     } catch (e) {}
   </script>
@@ -788,14 +788,7 @@
           </span>
         </a>
         <p>Jasa fotografer Sidoarjo dan sekitarnya dengan kualitas maksimal untuk mengabadikan momen berharga kamu.</p>
-        <div class="socials">
-          <a href="https://instagram.com/insframe" target="_blank" rel="noopener" aria-label="Instagram INS FRAME Photography">
-            <svg aria-hidden="true"><use href="#icon-instagram"></use></svg>
-          </a>
-          <a href="https://wa.me/6281234567890" target="_blank" rel="noopener" aria-label="WhatsApp INS FRAME Photography">
-            <svg aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
-          </a>
-        </div>
+        <div class="socials" data-site="socials"><a href="https://instagram.com/insframe" target="_blank" rel="noopener" aria-label="Instagram INS FRAME Photography"><svg aria-hidden="true"><use href="#icon-instagram"></use></svg></a><a href="https://wa.me/6281234567890" target="_blank" rel="noopener" aria-label="WhatsApp INS FRAME Photography"><svg aria-hidden="true"><use href="#icon-whatsapp"></use></svg></a></div>
       </div>
 
       <div class="footer-col">
@@ -869,6 +862,8 @@
     </button>
   </div>
 
+  <script src="js/site-data.js" defer></script>
+  <script src="js/site-render.js" defer></script>
   <script src="js/gallery-data.js" defer></script>
   <script src="js/gallery-render.js" defer></script>
   <script src="js/main.js" defer></script>

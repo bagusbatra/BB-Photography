@@ -65,7 +65,7 @@
   </script>
   <script>
     try {
-      var savedTheme = localStorage.getItem('bb-theme');
+      var savedTheme = localStorage.getItem('insframe-theme') || localStorage.getItem('bb-theme');
       if (savedTheme) document.documentElement.dataset.theme = savedTheme;
     } catch (e) {}
   </script>
@@ -384,7 +384,7 @@
                 <div class="process-panel-body">
                   <p class="process-kicker">Tahap 04</p>
                   <h3>Hasil yang siap dibagikan.</h3>
-                  <p class="process-lead">Kami seleksi, retouch warna khas BB, dan menyiapkan file untuk media sosial maupun cetak. Semua rapi dalam satu galeri.</p>
+                  <p class="process-lead">Kami seleksi, retouch warna khas INS FRAME, dan menyiapkan file untuk media sosial maupun cetak. Semua rapi dalam satu galeri.</p>
                   <dl class="process-facts">
                     <div>
                       <dt>Durasi</dt>
@@ -404,7 +404,7 @@
                     <p>Galeri online, file resolusi tinggi, dan versi siap cetak.</p>
                   </div>
                   <ul class="process-tags" aria-label="Catatan editing dan serah terima">
-                    <li>Warna khas BB</li>
+                    <li>Warna khas INS FRAME</li>
                     <li>Galeri privat</li>
                   </ul>
                 </div>
@@ -554,14 +554,7 @@
           </span>
         </a>
         <p>Jasa fotografer Sidoarjo dan sekitarnya dengan kualitas maksimal untuk mengabadikan momen berharga kamu.</p>
-        <div class="socials">
-          <a href="https://instagram.com/insframe" target="_blank" rel="noopener" aria-label="Instagram INS FRAME Photography">
-            <svg aria-hidden="true"><use href="#icon-instagram"></use></svg>
-          </a>
-          <a href="https://wa.me/6281234567890" target="_blank" rel="noopener" aria-label="WhatsApp INS FRAME Photography">
-            <svg aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
-          </a>
-        </div>
+        <div class="socials" data-site="socials"><a href="https://instagram.com/insframe" target="_blank" rel="noopener" aria-label="Instagram INS FRAME Photography"><svg aria-hidden="true"><use href="#icon-instagram"></use></svg></a><a href="https://wa.me/6281234567890" target="_blank" rel="noopener" aria-label="WhatsApp INS FRAME Photography"><svg aria-hidden="true"><use href="#icon-whatsapp"></use></svg></a></div>
       </div>
 
       <div class="footer-col">
@@ -616,6 +609,8 @@
     <svg aria-hidden="true" style="transform: rotate(-90deg)"><use href="#icon-arrow-right"></use></svg>
   </button>
 
+  <script src="js/site-data.js" defer></script>
+  <script src="js/site-render.js" defer></script>
   <script src="js/main.js" defer></script>
 </body>
 </html>

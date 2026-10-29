@@ -40,7 +40,8 @@
       const nextTheme = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
       document.documentElement.dataset.theme = nextTheme;
       try {
-        localStorage.setItem('bb-theme', nextTheme);
+        localStorage.setItem('insframe-theme', nextTheme);
+        localStorage.removeItem('bb-theme');
       } catch (error) {
         /* localStorage bisa diblokir — abaikan */
       }
@@ -795,36 +796,40 @@
     dateInput.min = localToday;
   }
 
-  /* Preselect layanan / paket dari tautan antarhalaman, mis. kontak.html?layanan=wedding */
-  const serviceMap = {
-    graduation: 'Graduation',
-    couple: 'Couple',
-    'personal-branding': 'Personal Branding',
-    beauty: 'Beauty',
-    prewedding: 'Prewedding',
-    wedding: 'Wedding',
-    engagement: 'Engagement',
-    event: 'Event',
-    street: 'Street',
-    architecture: 'Architecture',
-    travel: 'Travel',
-    night: 'Night'
-  };
+  /* Preselect layanan / paket dari tautan antarhalaman, mis. kontak.html?layanan=wedding
+     Pilihan dicocokkan dengan opsi yang dirender dari js/site-data.js agar item
+     yang ditambahkan lewat panel admin juga bisa ditautkan. */
   const urlParams = new URLSearchParams(window.location.search);
 
+  function optionSlug(value) {
+    return String(value || '')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  }
+
+  function selectOptionBySlug(select, value) {
+    if (!select || !value) return false;
+    const target = optionSlug(value);
+    if (!target) return false;
+
+    const match = Array.from(select.options).find(function (option) {
+      return option.value && (optionSlug(option.value) === target || optionSlug(option.textContent) === target);
+    });
+
+    if (!match) return false;
+    select.value = match.value;
+    return true;
+  }
+
   if (serviceSelect) {
-    const serviceSlug = urlParams.get('layanan');
-    if (serviceSlug && serviceMap[serviceSlug]) {
-      serviceSelect.value = serviceMap[serviceSlug];
-    }
+    selectOptionBySlug(serviceSelect, urlParams.get('layanan'));
   }
 
   if (packageSelect) {
-    const selectedPackage = urlParams.get('paket');
-    const validPackages = ['Silver', 'Gold', 'Platinum', 'Custom'];
-    if (selectedPackage && validPackages.indexOf(selectedPackage) !== -1) {
-      packageSelect.value = selectedPackage;
-    }
+    selectOptionBySlug(packageSelect, urlParams.get('paket'));
   }
 
   function getFieldError(input) {

@@ -1,5 +1,5 @@
 /* =========================================================
-   BB Photography — style.css
+   INS FRAME Photography — style.css
    Struktur:
    1. Tokens & reset
    2. Utilitas & komponen dasar
@@ -1591,7 +1591,8 @@ html[data-theme='light'] .theme-toggle .icon-moon {
   line-height: 1.5;
 }
 
-.about-body > p {
+.about-body > p,
+.about-body [data-site="about-paragraphs"] p {
   margin-top: 16px;
   color: var(--muted);
   font-size: 15px;
@@ -3743,6 +3744,21 @@ html[data-theme='light'] .service-card:focus-within .service-photo img {
   border: 1px solid var(--line-strong);
 }
 
+.slide-avatar {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 50px;
+  height: 50px;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  background: var(--accent-soft);
+  font-family: var(--font-display);
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  color: var(--accent);
+}
+
 .slide figcaption div {
   text-align: left;
 }
@@ -3754,7 +3770,7 @@ html[data-theme='light'] .service-card:focus-within .service-photo img {
   letter-spacing: 0.01em;
 }
 
-.slide figcaption span {
+.slide figcaption div span {
   display: block;
   margin-top: 2px;
   font-size: 11px;

@@ -29,12 +29,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
-  <script type="application/ld+json">
+  <script type="application/ld+json" data-business-schema>
   {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": ["PhotographyBusiness", "LocalBusiness"],
+        "@type": [
+          "PhotographyBusiness",
+          "LocalBusiness"
+        ],
         "@id": "https://bagusbatra.github.io/BB-Photography/#business",
         "name": "INS FRAME Photography",
         "alternateName": "INS FRAME",
@@ -56,21 +59,45 @@
           "addressCountry": "ID"
         },
         "areaServed": [
-          { "@type": "City", "name": "Sidoarjo" },
-          { "@type": "City", "name": "Surabaya" },
-          { "@type": "City", "name": "Mojokerto" },
-          { "@type": "AdministrativeArea", "name": "Bali" },
-          { "@type": "City", "name": "Jakarta" }
+          {
+            "@type": "City",
+            "name": "Sidoarjo"
+          },
+          {
+            "@type": "City",
+            "name": "Surabaya"
+          },
+          {
+            "@type": "City",
+            "name": "Mojokerto"
+          },
+          {
+            "@type": "AdministrativeArea",
+            "name": "Bali"
+          },
+          {
+            "@type": "City",
+            "name": "Jakarta"
+          }
         ],
         "openingHoursSpecification": [
           {
             "@type": "OpeningHoursSpecification",
-            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+            "dayOfWeek": [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday"
+            ],
             "opens": "09:00",
             "closes": "19:00"
           }
         ],
-        "sameAs": ["https://instagram.com/insframe"],
+        "sameAs": [
+          "https://instagram.com/insframe"
+        ],
         "knowsLanguage": "id-ID"
       },
       {
@@ -80,7 +107,9 @@
         "name": "INS FRAME Photography",
         "description": "Fotografer wedding dan portrait di Sidoarjo, Jawa Timur.",
         "inLanguage": "id-ID",
-        "publisher": { "@id": "https://bagusbatra.github.io/BB-Photography/#business" }
+        "publisher": {
+          "@id": "https://bagusbatra.github.io/BB-Photography/#business"
+        }
       },
       {
         "@type": "WebPage",
@@ -88,8 +117,12 @@
         "url": "https://bagusbatra.github.io/BB-Photography/",
         "name": "INS FRAME Photography | Fotografer Wedding & Portrait Sidoarjo",
         "description": "Studio foto di Sidoarjo untuk wedding, prewedding, portrait, produk, dan acara. Melayani Sidoarjo, Surabaya, Mojokerto, Bali, dan Jakarta.",
-        "isPartOf": { "@id": "https://bagusbatra.github.io/BB-Photography/#website" },
-        "about": { "@id": "https://bagusbatra.github.io/BB-Photography/#business" },
+        "isPartOf": {
+          "@id": "https://bagusbatra.github.io/BB-Photography/#website"
+        },
+        "about": {
+          "@id": "https://bagusbatra.github.io/BB-Photography/#business"
+        },
         "inLanguage": "id-ID"
       }
     ]
@@ -97,7 +130,7 @@
   </script>
   <script>
     try {
-      var savedTheme = localStorage.getItem('bb-theme');
+      var savedTheme = localStorage.getItem('insframe-theme') || localStorage.getItem('bb-theme');
       if (savedTheme) document.documentElement.dataset.theme = savedTheme;
     } catch (e) {}
   </script>
@@ -502,6 +535,38 @@
         </div>
       </div>
     </section>
+
+<!-- ===== Testimoni ===== -->
+    <section class="section" id="testimoni">
+      <div class="container">
+        <div class="section-head center reveal">
+          <p class="eyebrow"><span aria-hidden="true"></span>Kata Klien</p>
+          <h2 class="section-title">Cerita dari mereka yang <em>percaya</em>.</h2>
+          <p class="section-sub">Kepercayaan klien adalah bagian terbaik dari pekerjaan ini. Berikut beberapa cerita yang mereka bagikan.</p>
+        </div>
+
+        <div class="slider reveal" id="testimonialSlider">
+          <div class="slider-viewport">
+            <div class="slider-track" id="testimonialTrack">
+              <!-- site:testimonials:start -->
+              <figure class="slide" role="group" aria-roledescription="slide" aria-label="1 dari 3"><span class="quote-mark" aria-hidden="true">“</span><span class="stars" aria-label="5 dari 5 bintang">★★★★★</span><blockquote><p>Kami tidak pernah merasa diarahkan untuk pose yang aneh. Tim INS FRAME lebih banyak mendengar, lalu menangkap momen saat kami benar-benar lupa sedang difoto.</p></blockquote><figcaption><span class="slide-avatar" aria-hidden="true">AR</span><div><strong>Ayu &amp; Reza</strong><span>Wedding · Sidoarjo</span></div></figcaption></figure><figure class="slide" role="group" aria-roledescription="slide" aria-label="2 dari 3"><span class="quote-mark" aria-hidden="true">“</span><span class="stars" aria-label="5 dari 5 bintang">★★★★★</span><blockquote><p>Prosesnya cepat dan santai. Hasil editnya tetap terlihat seperti aku, bukan versi yang berlebihan. Keluarga juga ikut senang dengan fotonya.</p></blockquote><figcaption><span class="slide-avatar" aria-hidden="true">NP</span><div><strong>Nadia Putri</strong><span>Graduation · Surabaya</span></div></figcaption></figure><figure class="slide" role="group" aria-roledescription="slide" aria-label="3 dari 3"><span class="quote-mark" aria-hidden="true">“</span><span class="stars" aria-label="5 dari 5 bintang">★★★★★</span><blockquote><p>Brief-nya dipahami dengan baik. Foto profil dan konten tim sekarang terasa konsisten, dan kami tidak perlu banyak revisi.</p></blockquote><figcaption><span class="slide-avatar" aria-hidden="true">KH</span><div><strong>Kevin Hartono</strong><span>Personal Branding · Jakarta</span></div></figcaption></figure>
+              <!-- site:testimonials:end -->
+            </div>
+          </div>
+
+          <div class="slider-controls">
+            <button class="slider-btn" type="button" data-slide="prev" aria-label="Testimoni sebelumnya">
+              <svg aria-hidden="true" style="transform: rotate(180deg)"><use href="#icon-arrow-right"></use></svg>
+            </button>
+            <div class="slider-dots" id="sliderDots" aria-label="Navigasi testimoni"></div>
+            <button class="slider-btn" type="button" data-slide="next" aria-label="Testimoni berikutnya">
+              <svg aria-hidden="true"><use href="#icon-arrow-right"></use></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
 <!-- ===== CTA ===== -->
     <section class="cta-band">
       <div class="container cta-inner reveal">
@@ -526,14 +591,7 @@
           </span>
         </a>
         <p>Jasa fotografer Sidoarjo dan sekitarnya dengan kualitas maksimal untuk mengabadikan momen berharga kamu.</p>
-        <div class="socials">
-          <a href="https://instagram.com/insframe" target="_blank" rel="noopener" aria-label="Instagram INS FRAME Photography">
-            <svg aria-hidden="true"><use href="#icon-instagram"></use></svg>
-          </a>
-          <a href="https://wa.me/6281234567890" target="_blank" rel="noopener" aria-label="WhatsApp INS FRAME Photography">
-            <svg aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
-          </a>
-        </div>
+        <div class="socials" data-site="socials"><a href="https://instagram.com/insframe" target="_blank" rel="noopener" aria-label="Instagram INS FRAME Photography"><svg aria-hidden="true"><use href="#icon-instagram"></use></svg></a><a href="https://wa.me/6281234567890" target="_blank" rel="noopener" aria-label="WhatsApp INS FRAME Photography"><svg aria-hidden="true"><use href="#icon-whatsapp"></use></svg></a></div>
       </div>
 
       <div class="footer-col">
@@ -615,6 +673,8 @@
     </div>
   </div>
 
+  <script src="js/site-data.js" defer></script>
+  <script src="js/site-render.js" defer></script>
   <script src="js/gallery-data.js" defer></script>
   <script src="js/gallery-render.js" defer></script>
   <script src="js/main.js" defer></script>

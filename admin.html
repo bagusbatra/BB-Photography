@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="css/admin.css">
   <script>
     try {
-      var savedTheme = localStorage.getItem('bb-theme');
+      var savedTheme = localStorage.getItem('insframe-theme') || localStorage.getItem('bb-theme');
       if (savedTheme) document.documentElement.dataset.theme = savedTheme;
     } catch (e) {}
   </script>
@@ -123,6 +123,11 @@
       <rect x="3.5" y="5" width="17" height="12.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
       <path d="M8 20h8M12 17.5V20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
     </symbol>
+    <symbol id="i-content" viewBox="0 0 24 24">
+      <rect x="3.5" y="3.5" width="17" height="5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <rect x="3.5" y="11.5" width="10" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <path d="M17 12.5v7M14.8 14.7h4.4M14.8 17.9h4.4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </symbol>
   </svg>
 
   <div class="adm-shell">
@@ -157,6 +162,11 @@
           <svg aria-hidden="true"><use href="#i-calendar"></use></svg>
           <span>Pesanan</span>
           <span class="adm-nav-count is-accent" id="navOrderCount">0</span>
+        </a>
+        <a href="#konten" class="adm-nav-link" data-view-link="konten">
+          <svg aria-hidden="true"><use href="#i-content"></use></svg>
+          <span>Konten</span>
+          <span class="adm-nav-count" id="navContentCount">0</span>
         </a>
         <p class="adm-nav-label adm-nav-label-spaced">Studio</p>
         <a href="#pengaturan" class="adm-nav-link" data-view-link="pengaturan">
@@ -451,6 +461,204 @@
           </div>
         </section>
 
+        <!-- ===== Konten ===== -->
+        <section class="adm-view" id="view-konten" data-view="konten" hidden>
+          <div class="adm-view-head">
+            <div>
+              <p class="adm-eyebrow"><span aria-hidden="true"></span>Konten situs</p>
+              <h2 class="adm-page-title">Kelola <em>konten</em>.</h2>
+              <p class="adm-page-sub">Layanan, paket, testimoni, FAQ, teks Tentang, kontak, dan tautan sosial yang tampil di halaman publik.</p>
+              <p class="adm-publish-status" id="sitePublishStatus">Memeriksa konten publik...</p>
+            </div>
+            <div class="adm-head-actions">
+              <a class="adm-btn adm-btn-ghost" href="layanan.html?preview=1" target="_blank" rel="noopener">
+                <svg aria-hidden="true"><use href="#i-external"></use></svg>
+                Pratinjau
+              </a>
+              <button class="adm-btn adm-btn-primary" type="button" data-action="publish-site">
+                <svg aria-hidden="true"><use href="#i-upload"></use></svg>
+                Publikasikan konten
+                <span class="adm-btn-dot" data-site-publish-dot hidden aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+
+          <div class="adm-chips adm-content-tabs" id="contentTabs" role="tablist" aria-label="Bagian konten">
+            <button type="button" class="adm-chip is-active" data-content-tab="services" role="tab" aria-selected="true">Layanan <span class="adm-chip-count" id="contentCountServices">0</span></button>
+            <button type="button" class="adm-chip" data-content-tab="packages" role="tab" aria-selected="false">Paket <span class="adm-chip-count" id="contentCountPackages">0</span></button>
+            <button type="button" class="adm-chip" data-content-tab="testimonials" role="tab" aria-selected="false">Testimoni <span class="adm-chip-count" id="contentCountTestimonials">0</span></button>
+            <button type="button" class="adm-chip" data-content-tab="faq" role="tab" aria-selected="false">FAQ <span class="adm-chip-count" id="contentCountFaq">0</span></button>
+            <button type="button" class="adm-chip" data-content-tab="about" role="tab" aria-selected="false">Tentang</button>
+            <button type="button" class="adm-chip" data-content-tab="contact" role="tab" aria-selected="false">Kontak &amp; Sosial</button>
+          </div>
+
+          <div class="adm-content-pane" data-content-pane="services">
+            <section class="adm-panel">
+              <div class="adm-panel-head">
+                <div>
+                  <h3>Layanan</h3>
+                  <p>Kartu di halaman Layanan sekaligus pilihan pada form booking.</p>
+                </div>
+                <button class="adm-btn adm-btn-primary adm-btn-sm" type="button" data-content-add="services">
+                  <svg aria-hidden="true"><use href="#i-plus"></use></svg>
+                  Tambah layanan
+                </button>
+              </div>
+              <div class="adm-content-list" id="contentServices"></div>
+            </section>
+          </div>
+
+          <div class="adm-content-pane" data-content-pane="packages" hidden>
+            <section class="adm-panel">
+              <div class="adm-panel-head">
+                <div>
+                  <h3>Paket harga</h3>
+                  <p>Harga, fitur, dan penanda paket populer di halaman Layanan.</p>
+                </div>
+                <button class="adm-btn adm-btn-primary adm-btn-sm" type="button" data-content-add="packages">
+                  <svg aria-hidden="true"><use href="#i-plus"></use></svg>
+                  Tambah paket
+                </button>
+              </div>
+              <div class="adm-content-list" id="contentPackages"></div>
+            </section>
+          </div>
+
+          <div class="adm-content-pane" data-content-pane="testimonials" hidden>
+            <section class="adm-panel">
+              <div class="adm-panel-head">
+                <div>
+                  <h3>Testimoni</h3>
+                  <p>Kutipan klien pada slider di beranda.</p>
+                </div>
+                <button class="adm-btn adm-btn-primary adm-btn-sm" type="button" data-content-add="testimonials">
+                  <svg aria-hidden="true"><use href="#i-plus"></use></svg>
+                  Tambah testimoni
+                </button>
+              </div>
+              <div class="adm-content-list" id="contentTestimonials"></div>
+            </section>
+          </div>
+
+          <div class="adm-content-pane" data-content-pane="faq" hidden>
+            <section class="adm-panel">
+              <div class="adm-panel-head">
+                <div>
+                  <h3>FAQ</h3>
+                  <p>Pertanyaan dan jawaban pada halaman FAQ serta schema mesin pencari.</p>
+                </div>
+                <button class="adm-btn adm-btn-primary adm-btn-sm" type="button" data-content-add="faq">
+                  <svg aria-hidden="true"><use href="#i-plus"></use></svg>
+                  Tambah FAQ
+                </button>
+              </div>
+              <div class="adm-content-list" id="contentFaq"></div>
+            </section>
+          </div>
+
+          <div class="adm-content-pane" data-content-pane="about" hidden>
+            <form class="adm-panel adm-content-form" id="aboutForm" novalidate>
+              <div class="adm-panel-head">
+                <div>
+                  <h3>Teks Tentang</h3>
+                  <p>Paragraf, poin keunggulan, dan statistik di halaman Tentang.</p>
+                </div>
+                <button type="submit" class="adm-btn adm-btn-primary adm-btn-sm">
+                  <svg aria-hidden="true"><use href="#i-check"></use></svg>
+                  Simpan
+                </button>
+              </div>
+              <div class="adm-field">
+                <label for="aboutParagraphs">Paragraf <span>(satu paragraf per baris)</span></label>
+                <textarea id="aboutParagraphs" name="paragraphs" rows="4"></textarea>
+                <span class="adm-hint">Baris kosong diabaikan. Setiap baris menjadi satu paragraf.</span>
+              </div>
+              <div class="adm-field">
+                <label for="aboutPoints">Poin keunggulan <span>(satu poin per baris)</span></label>
+                <textarea id="aboutPoints" name="points" rows="5"></textarea>
+                <span class="adm-hint">Ditampilkan sebagai daftar centang dengan ikon.</span>
+              </div>
+              <div class="adm-field">
+                <label>Statistik</label>
+                <div class="adm-stat-editor" id="aboutStatsList"></div>
+                <button type="button" class="adm-btn adm-btn-ghost adm-btn-sm adm-stat-add" data-add-stat>
+                  <svg aria-hidden="true"><use href="#i-plus"></use></svg>
+                  Tambah statistik
+                </button>
+                <span class="adm-hint">Angka dianimasikan di halaman publik. Isi desimal 1 untuk nilai seperti 4,9.</span>
+              </div>
+            </form>
+          </div>
+
+          <div class="adm-content-pane" data-content-pane="contact" hidden>
+            <div class="adm-content-grid">
+              <form class="adm-panel adm-content-form" id="contactForm" novalidate>
+                <div class="adm-panel-head">
+                  <div>
+                    <h3>Kontak</h3>
+                    <p>WhatsApp, email, alamat studio, dan jam operasional.</p>
+                  </div>
+                  <button type="submit" class="adm-btn adm-btn-primary adm-btn-sm">
+                    <svg aria-hidden="true"><use href="#i-check"></use></svg>
+                    Simpan
+                  </button>
+                </div>
+                <div class="adm-field-row">
+                  <div class="adm-field">
+                    <label for="contactPhone">Nomor WhatsApp</label>
+                    <input type="tel" id="contactPhone" name="phone" placeholder="+62 812 3456 7890" required>
+                    <span class="adm-error" data-error-for="contactPhone"></span>
+                  </div>
+                  <div class="adm-field">
+                    <label for="contactPhoneDisplay">Tampilan nomor</label>
+                    <input type="text" id="contactPhoneDisplay" name="phoneDisplay" placeholder="+62 812 3456 7890">
+                    <span class="adm-hint">Teks yang terlihat di halaman publik.</span>
+                  </div>
+                </div>
+                <div class="adm-field">
+                  <label for="contactEmail">Email</label>
+                  <input type="email" id="contactEmail" name="email" autocomplete="email" required>
+                  <span class="adm-error" data-error-for="contactEmail"></span>
+                </div>
+                <div class="adm-field">
+                  <label for="contactAddress">Alamat studio <span>(satu baris per baris)</span></label>
+                  <textarea id="contactAddress" name="address" rows="3"></textarea>
+                </div>
+                <div class="adm-field">
+                  <label for="contactHours">Jam operasional <span>(satu baris per baris)</span></label>
+                  <textarea id="contactHours" name="hours" rows="3"></textarea>
+                </div>
+              </form>
+
+              <form class="adm-panel adm-content-form" id="socialForm" novalidate>
+                <div class="adm-panel-head">
+                  <div>
+                    <h3>Tautan sosial</h3>
+                    <p>Ikon di footer seluruh halaman dan referensi schema bisnis.</p>
+                  </div>
+                  <button type="submit" class="adm-btn adm-btn-primary adm-btn-sm">
+                    <svg aria-hidden="true"><use href="#i-check"></use></svg>
+                    Simpan
+                  </button>
+                </div>
+                <div class="adm-field">
+                  <label for="socialInstagram">Instagram</label>
+                  <input type="text" id="socialInstagram" name="instagram" placeholder="@insframe atau https://instagram.com/insframe">
+                </div>
+                <div class="adm-field">
+                  <label for="socialFacebook">Facebook</label>
+                  <input type="url" id="socialFacebook" name="facebook" placeholder="https://facebook.com/...">
+                </div>
+                <div class="adm-field">
+                  <label for="socialYoutube">YouTube</label>
+                  <input type="url" id="socialYoutube" name="youtube" placeholder="https://youtube.com/...">
+                </div>
+                <p class="adm-hint">Kosongkan tautan yang belum dipakai. Ikon WhatsApp otomatis mengikuti nomor di form Kontak.</p>
+              </form>
+            </div>
+          </div>
+        </section>
+
         <!-- ===== Pengaturan ===== -->
         <section class="adm-view" id="view-pengaturan" data-view="pengaturan" hidden>
           <div class="adm-view-head">
@@ -480,20 +688,7 @@
                   <input type="text" id="studioOwner" name="studioOwner" autocomplete="name" required>
                   <span class="adm-error" data-error-for="studioOwner"></span>
                 </div>
-                <div class="adm-field">
-                  <label for="studioEmail">Email</label>
-                  <input type="email" id="studioEmail" name="studioEmail" autocomplete="email" required>
-                  <span class="adm-error" data-error-for="studioEmail"></span>
-                </div>
-                <div class="adm-field">
-                  <label for="studioPhone">WhatsApp</label>
-                  <input type="tel" id="studioPhone" name="studioPhone" autocomplete="tel" required>
-                  <span class="adm-error" data-error-for="studioPhone"></span>
-                </div>
-                <div class="adm-field">
-                  <label for="studioInstagram">Instagram</label>
-                  <input type="text" id="studioInstagram" name="studioInstagram" placeholder="@insframe" autocomplete="off">
-                </div>
+                <p class="adm-hint">WhatsApp, email, dan tautan sosial kini diatur di <a href="#konten">Konten → Kontak &amp; Sosial</a> agar halaman publik ikut berubah.</p>
                 <div class="adm-form-actions">
                   <button type="submit" class="adm-btn adm-btn-primary">
                     <svg aria-hidden="true"><use href="#i-check"></use></svg>
@@ -527,6 +722,10 @@
                 <div>
                   <dt>Pesanan tersimpan</dt>
                   <dd id="settingsOrderCount">0</dd>
+                </div>
+                <div>
+                  <dt>Konten situs</dt>
+                  <dd id="settingsContentCount">0 item</dd>
                 </div>
                 <div>
                   <dt>Status panel</dt>
@@ -711,6 +910,89 @@
     </div>
   </div>
 
+  <!-- ===== Modal item konten ===== -->
+  <div class="adm-modal" id="contentModal" hidden>
+    <div class="adm-modal-backdrop" data-close-content></div>
+    <div class="adm-dialog adm-dialog-md" role="dialog" aria-modal="true" aria-labelledby="contentModalTitle">
+      <form id="contentForm" novalidate>
+        <header class="adm-dialog-head">
+          <div>
+            <p class="adm-eyebrow"><span aria-hidden="true"></span><span id="contentModalEyebrow">Konten</span></p>
+            <h2 id="contentModalTitle">Tambah item</h2>
+          </div>
+          <button type="button" class="adm-icon-btn" data-close-content aria-label="Tutup">
+            <svg aria-hidden="true"><use href="#i-close"></use></svg>
+          </button>
+        </header>
+
+        <div class="adm-dialog-body adm-content-modal-body" id="contentFields"></div>
+
+        <footer class="adm-dialog-foot">
+          <button type="button" class="adm-btn adm-btn-ghost" data-close-content>Batal</button>
+          <button type="submit" class="adm-btn adm-btn-primary" id="contentSubmit">
+            <svg aria-hidden="true"><use href="#i-check"></use></svg>
+            Simpan item
+          </button>
+        </footer>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== Modal publikasi konten ===== -->
+  <div class="adm-modal" id="sitePublishModal" hidden>
+    <div class="adm-modal-backdrop" data-close-site-publish></div>
+    <div class="adm-dialog adm-dialog-md" role="dialog" aria-modal="true" aria-labelledby="sitePublishTitle" aria-describedby="sitePublishDesc">
+      <header class="adm-dialog-head">
+        <div>
+          <p class="adm-eyebrow"><span aria-hidden="true"></span>Konten → publik</p>
+          <h2 id="sitePublishTitle">Publikasikan konten</h2>
+          <p id="sitePublishDesc">Unduh file data terbaru, lalu ganti <code>js/site-data.js</code> di folder situs.</p>
+        </div>
+        <button type="button" class="adm-icon-btn" data-close-site-publish aria-label="Tutup">
+          <svg aria-hidden="true"><use href="#i-close"></use></svg>
+        </button>
+      </header>
+
+      <div class="adm-dialog-body adm-publish-body">
+        <div class="adm-publish-stats" id="sitePublishStats"></div>
+        <div class="adm-publish-diff" id="sitePublishDiff"></div>
+
+        <ol class="adm-publish-steps">
+          <li><span aria-hidden="true">1</span><p>Unduh <strong>site-data.js</strong> lewat tombol di bawah.</p></li>
+          <li><span aria-hidden="true">2</span><p>Ganti file <code>js/site-data.js</code> di folder situs dengan file hasil unduhan.</p></li>
+          <li><span aria-hidden="true">3</span><p>Jalankan <code>npm run build</code> agar kartu statis, pilihan form, dan JSON-LD ikut diperbarui.</p></li>
+          <li><span aria-hidden="true">4</span><p>Unggah ulang situs, lalu muat ulang halaman publik. Bersihkan cache/CDN bila perlu.</p></li>
+        </ol>
+
+        <div class="adm-publish-actions">
+          <button type="button" class="adm-btn adm-btn-primary" data-site-publish-download>
+            <svg aria-hidden="true"><use href="#i-download"></use></svg>
+            Unduh site-data.js
+          </button>
+          <button type="button" class="adm-btn adm-btn-ghost" data-site-publish-copy>
+            <svg aria-hidden="true"><use href="#i-copy"></use></svg>
+            Salin isi file
+          </button>
+          <a class="adm-btn adm-btn-ghost" href="layanan.html?preview=1" target="_blank" rel="noopener">
+            <svg aria-hidden="true"><use href="#i-external"></use></svg>
+            Pratinjau halaman
+          </a>
+        </div>
+
+        <p class="adm-publish-note">
+          Pratinjau hanya membaca data lokal di browser ini. Tombol publikasi tidak bisa menulis file
+          ke server, jadi langkah mengganti file tetap diperlukan agar pengunjung melihat konten baru.
+          Setelah data diganti, <code>npm run build</code> menyegarkan konten statis dan schema
+          mesin pencari; <code>npm run check:site</code> memeriksa apakah hasil pre-render sudah sinkron.
+        </p>
+      </div>
+
+      <footer class="adm-dialog-foot">
+        <button type="button" class="adm-btn adm-btn-ghost" data-close-site-publish>Selesai</button>
+      </footer>
+    </div>
+  </div>
+
   <!-- ===== Modal konfirmasi ===== -->
   <div class="adm-modal" id="confirmModal" hidden>
     <div class="adm-modal-backdrop" data-confirm-cancel></div>
@@ -733,6 +1015,8 @@
     <span id="toastMessage">Tersimpan.</span>
   </div>
 
+  <script src="js/site-data.js" defer></script>
+  <script src="js/site-render.js" defer></script>
   <script src="js/gallery-data.js" defer></script>
   <script src="js/admin.js" defer></script>
 </body>

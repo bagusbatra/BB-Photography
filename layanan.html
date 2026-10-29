@@ -63,9 +63,90 @@
     ]
   }
   </script>
+  <script type="application/ld+json" data-package-schema>
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "OfferCatalog",
+        "@id": "https://bagusbatra.github.io/BB-Photography/layanan.html#paket",
+        "name": "Paket fotografi INS FRAME Photography",
+        "description": "Paket sesi fotografi wedding, prewedding, portrait, produk, dan acara di Sidoarjo dan sekitarnya.",
+        "url": "https://bagusbatra.github.io/BB-Photography/layanan.html#paket",
+        "numberOfItems": 4,
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "name": "Paket Silver",
+            "description": "Untuk sesi personal, couple, atau graduation yang ingin hasil rapi tanpa ribet.",
+            "price": "3500000",
+            "priceCurrency": "IDR",
+            "availability": "https://schema.org/InStock",
+            "url": "https://bagusbatra.github.io/BB-Photography/layanan.html#paket",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Sesi fotografi Silver",
+              "provider": {
+                "@id": "https://bagusbatra.github.io/BB-Photography/#business"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "name": "Paket Gold",
+            "description": "Paling sering dipilih untuk prewedding dan wedding intim dengan cerita yang lebih lengkap.",
+            "price": "6500000",
+            "priceCurrency": "IDR",
+            "availability": "https://schema.org/InStock",
+            "url": "https://bagusbatra.github.io/BB-Photography/layanan.html#paket",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Sesi fotografi Gold",
+              "provider": {
+                "@id": "https://bagusbatra.github.io/BB-Photography/#business"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "name": "Paket Platinum",
+            "description": "Dokumentasi penuh dari persiapan sampai pesta, untuk hari yang tidak ingin terlewat sedikit pun.",
+            "price": "12000000",
+            "priceCurrency": "IDR",
+            "availability": "https://schema.org/InStock",
+            "url": "https://bagusbatra.github.io/BB-Photography/layanan.html#paket",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Sesi fotografi Platinum",
+              "provider": {
+                "@id": "https://bagusbatra.github.io/BB-Photography/#business"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "name": "Paket Custom",
+            "description": "Butuh kombinasi berbeda? Susun paket sesuai kebutuhan brand, acara, atau destinasi.",
+            "price": "8500000",
+            "priceCurrency": "IDR",
+            "availability": "https://schema.org/InStock",
+            "url": "https://bagusbatra.github.io/BB-Photography/layanan.html#paket",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Sesi fotografi Custom",
+              "provider": {
+                "@id": "https://bagusbatra.github.io/BB-Photography/#business"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
   <script>
     try {
-      var savedTheme = localStorage.getItem('bb-theme');
+      var savedTheme = localStorage.getItem('insframe-theme') || localStorage.getItem('bb-theme');
       if (savedTheme) document.documentElement.dataset.theme = savedTheme;
     } catch (e) {}
   </script>
@@ -234,215 +315,48 @@
     <section class="section section-alt" id="services">
       <div class="container">
         <div class="section-head reveal">
-          <h2 class="section-title">Dua belas cara untuk <em>bercerita</em>.</h2>
+          <h2 class="section-title">Layanan untuk setiap <em>cerita</em>.</h2>
           <p class="section-sub">Setiap layanan punya pendekatan dan mood-nya sendiri. Pilih yang paling dekat dengan ceritamu, atau tanyakan langsung — kami bantu arahkan.</p>
         </div>
 
-        <div class="service-grid">
-          <article class="service-card reveal">
-            <div class="service-inner">
-              <span class="service-photo" aria-hidden="true">
-                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&amp;fit=crop&amp;w=640&amp;h=800&amp;q=60"
-                  alt="" width="640" height="800" loading="lazy" decoding="async">
-              </span>
-              <div class="service-top">
-                <span class="service-icon"><svg aria-hidden="true"><use href="#icon-graduation"></use></svg></span>
-                <span class="service-rule" aria-hidden="true"></span>
-                <span class="service-num" aria-hidden="true">01</span>
-              </div>
-              <h3>Graduation</h3>
-              <p>Sesi wisuda untuk merayakan pencapaianmu — dari potret toga di kampus hingga momen kebersamaan dengan keluarga.</p>
-              <a href="kontak.html?layanan=graduation" class="card-link" aria-label="Booking Graduation">Booking sekarang <span class="card-arrow" aria-hidden="true"><svg><use href="#icon-arrow-right"></use></svg></span></a>
-            </div>
-          </article>
-
-          <article class="service-card reveal">
-            <div class="service-inner">
-              <span class="service-photo" aria-hidden="true">
-                <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&amp;fit=crop&amp;w=640&amp;h=800&amp;q=60"
-                  alt="" width="640" height="800" loading="lazy" decoding="async">
-              </span>
-              <div class="service-top">
-                <span class="service-icon"><svg aria-hidden="true"><use href="#icon-heart"></use></svg></span>
-                <span class="service-rule" aria-hidden="true"></span>
-                <span class="service-num" aria-hidden="true">02</span>
-              </div>
-              <h3>Couple</h3>
-              <p>Potret berdua yang natural dan santai, cocok untuk anniversary atau sekadar merayakan kebersamaan.</p>
-              <a href="kontak.html?layanan=couple" class="card-link" aria-label="Booking Couple">Booking sekarang <span class="card-arrow" aria-hidden="true"><svg><use href="#icon-arrow-right"></use></svg></span></a>
-            </div>
-          </article>
-
-          <article class="service-card reveal">
-            <div class="service-inner">
-              <span class="service-photo" aria-hidden="true">
-                <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&amp;fit=crop&amp;w=640&amp;h=800&amp;q=60"
-                  alt="" width="640" height="800" loading="lazy" decoding="async">
-              </span>
-              <div class="service-top">
-                <span class="service-icon"><svg aria-hidden="true"><use href="#icon-user"></use></svg></span>
-                <span class="service-rule" aria-hidden="true"></span>
-                <span class="service-num" aria-hidden="true">03</span>
-              </div>
-              <h3>Personal Branding</h3>
-              <p>Foto profesional untuk profil, website, dan media sosial yang menampilkan karaktermu secara autentik.</p>
-              <a href="kontak.html?layanan=personal-branding" class="card-link" aria-label="Booking Personal Branding">Booking sekarang <span class="card-arrow" aria-hidden="true"><svg><use href="#icon-arrow-right"></use></svg></span></a>
-            </div>
-          </article>
-
-          <article class="service-card reveal">
-            <div class="service-inner">
-              <span class="service-photo" aria-hidden="true">
-                <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&amp;fit=crop&amp;w=640&amp;h=800&amp;q=60"
-                  alt="" width="640" height="800" loading="lazy" decoding="async">
-              </span>
-              <div class="service-top">
-                <span class="service-icon"><svg aria-hidden="true"><use href="#icon-sparkle"></use></svg></span>
-                <span class="service-rule" aria-hidden="true"></span>
-                <span class="service-num" aria-hidden="true">04</span>
-              </div>
-              <h3>Beauty</h3>
-              <p>Beauty shoot dengan pencahayaan lembut untuk menonjolkan detail makeup, kulit, dan karakter wajah.</p>
-              <a href="kontak.html?layanan=beauty" class="card-link" aria-label="Booking Beauty">Booking sekarang <span class="card-arrow" aria-hidden="true"><svg><use href="#icon-arrow-right"></use></svg></span></a>
-            </div>
-          </article>
-
-          <article class="service-card reveal">
-            <div class="service-inner">
-              <span class="service-photo" aria-hidden="true">
-                <img src="https://images.unsplash.com/photo-1507504031003-b417219a0fde?auto=format&amp;fit=crop&amp;w=640&amp;h=800&amp;q=60"
-                  alt="" width="640" height="800" loading="lazy" decoding="async">
-              </span>
-              <div class="service-top">
-                <span class="service-icon"><svg aria-hidden="true"><use href="#icon-camera"></use></svg></span>
-                <span class="service-rule" aria-hidden="true"></span>
-                <span class="service-num" aria-hidden="true">05</span>
-              </div>
-              <h3>Prewedding</h3>
-              <p>Sesi prewedding dengan konsep yang disesuaikan — dari pantai Bali hingga studio minimalis.</p>
-              <a href="kontak.html?layanan=prewedding" class="card-link" aria-label="Booking Prewedding">Booking sekarang <span class="card-arrow" aria-hidden="true"><svg><use href="#icon-arrow-right"></use></svg></span></a>
-            </div>
-          </article>
-
-          <article class="service-card reveal">
-            <div class="service-inner">
-              <span class="service-photo" aria-hidden="true">
-                <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&amp;fit=crop&amp;w=640&amp;h=800&amp;q=60"
-                  alt="" width="640" height="800" loading="lazy" decoding="async">
-              </span>
-              <div class="service-top">
-                <span class="service-icon"><svg aria-hidden="true"><use href="#icon-rings"></use></svg></span>
-                <span class="service-rule" aria-hidden="true"></span>
-                <span class="service-num" aria-hidden="true">06</span>
-              </div>
-              <h3>Wedding</h3>
-              <p>Dokumentasi penuh hari bahagiamu, dari persiapan hingga pesta, dengan pendekatan yang tenang dan personal.</p>
-              <a href="kontak.html?layanan=wedding" class="card-link" aria-label="Booking Wedding">Booking sekarang <span class="card-arrow" aria-hidden="true"><svg><use href="#icon-arrow-right"></use></svg></span></a>
-            </div>
-          </article>
-
-          <article class="service-card reveal">
-            <div class="service-inner">
-              <span class="service-photo" aria-hidden="true">
-                <img src="https://images.unsplash.com/photo-1591604466107-ec97de577aff?auto=format&amp;fit=crop&amp;w=640&amp;h=800&amp;q=60"
-                  alt="" width="640" height="800" loading="lazy" decoding="async">
-              </span>
-              <div class="service-top">
-                <span class="service-icon"><svg aria-hidden="true"><use href="#icon-diamond"></use></svg></span>
-                <span class="service-rule" aria-hidden="true"></span>
-                <span class="service-num" aria-hidden="true">07</span>
-              </div>
-              <h3>Engagement</h3>
-              <p>Abadikan momen lamaran dan pertunangan dengan foto yang hangat, intim, dan penuh cerita.</p>
-              <a href="kontak.html?layanan=engagement" class="card-link" aria-label="Booking Engagement">Booking sekarang <span class="card-arrow" aria-hidden="true"><svg><use href="#icon-arrow-right"></use></svg></span></a>
-            </div>
-          </article>
-
-          <article class="service-card reveal">
-            <div class="service-inner">
-              <span class="service-photo" aria-hidden="true">
-                <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&amp;fit=crop&amp;w=640&amp;h=800&amp;q=60"
-                  alt="" width="640" height="800" loading="lazy" decoding="async">
-              </span>
-              <div class="service-top">
-                <span class="service-icon"><svg aria-hidden="true"><use href="#icon-calendar"></use></svg></span>
-                <span class="service-rule" aria-hidden="true"></span>
-                <span class="service-num" aria-hidden="true">08</span>
-              </div>
-              <h3>Event</h3>
-              <p>Liputan acara perusahaan, seminar, dan perayaan komunitas dengan dokumentasi menyeluruh dan cepat.</p>
-              <a href="kontak.html?layanan=event" class="card-link" aria-label="Booking Event">Booking sekarang <span class="card-arrow" aria-hidden="true"><svg><use href="#icon-arrow-right"></use></svg></span></a>
-            </div>
-          </article>
-
-          <article class="service-card reveal">
-            <div class="service-inner">
-              <span class="service-photo" aria-hidden="true">
-                <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&amp;fit=crop&amp;w=640&amp;h=800&amp;q=60"
-                  alt="" width="640" height="800" loading="lazy" decoding="async">
-              </span>
-              <div class="service-top">
-                <span class="service-icon"><svg aria-hidden="true"><use href="#icon-road"></use></svg></span>
-                <span class="service-rule" aria-hidden="true"></span>
-                <span class="service-num" aria-hidden="true">09</span>
-              </div>
-              <h3>Street</h3>
-              <p>Fotografi jalanan yang menangkap kehidupan kota, cahaya, dan momen spontan di antara keramaian.</p>
-              <a href="kontak.html?layanan=street" class="card-link" aria-label="Booking Street">Booking sekarang <span class="card-arrow" aria-hidden="true"><svg><use href="#icon-arrow-right"></use></svg></span></a>
-            </div>
-          </article>
-
-          <article class="service-card reveal">
-            <div class="service-inner">
-              <span class="service-photo" aria-hidden="true">
-                <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&amp;fit=crop&amp;w=640&amp;h=800&amp;q=60"
-                  alt="" width="640" height="800" loading="lazy" decoding="async">
-              </span>
-              <div class="service-top">
-                <span class="service-icon"><svg aria-hidden="true"><use href="#icon-building"></use></svg></span>
-                <span class="service-rule" aria-hidden="true"></span>
-                <span class="service-num" aria-hidden="true">10</span>
-              </div>
-              <h3>Architecture</h3>
-              <p>Foto arsitektur dan interior dengan komposisi rapi, garis bersih, dan pencahayaan yang menonjolkan detail ruang.</p>
-              <a href="kontak.html?layanan=architecture" class="card-link" aria-label="Booking Architecture">Booking sekarang <span class="card-arrow" aria-hidden="true"><svg><use href="#icon-arrow-right"></use></svg></span></a>
-            </div>
-          </article>
-
-          <article class="service-card reveal">
-            <div class="service-inner">
-              <span class="service-photo" aria-hidden="true">
-                <img src="https://images.unsplash.com/photo-1500048993953-d23a436266cf?auto=format&amp;fit=crop&amp;w=640&amp;h=800&amp;q=60"
-                  alt="" width="640" height="800" loading="lazy" decoding="async">
-              </span>
-              <div class="service-top">
-                <span class="service-icon"><svg aria-hidden="true"><use href="#icon-mountain"></use></svg></span>
-                <span class="service-rule" aria-hidden="true"></span>
-                <span class="service-num" aria-hidden="true">11</span>
-              </div>
-              <h3>Travel</h3>
-              <p>Dokumentasi perjalanan dan destinasi dengan warna khas BB, siap untuk konten maupun kenangan pribadi.</p>
-              <a href="kontak.html?layanan=travel" class="card-link" aria-label="Booking Travel">Booking sekarang <span class="card-arrow" aria-hidden="true"><svg><use href="#icon-arrow-right"></use></svg></span></a>
-            </div>
-          </article>
-
-          <article class="service-card reveal">
-            <div class="service-inner">
-              <span class="service-photo" aria-hidden="true">
-                <img src="https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?auto=format&amp;fit=crop&amp;w=640&amp;h=800&amp;q=60"
-                  alt="" width="640" height="800" loading="lazy" decoding="async">
-              </span>
-              <div class="service-top">
-                <span class="service-icon"><svg aria-hidden="true"><use href="#icon-moon"></use></svg></span>
-                <span class="service-rule" aria-hidden="true"></span>
-                <span class="service-num" aria-hidden="true">12</span>
-              </div>
-              <h3>Night</h3>
-              <p>Sesi malam dengan permainan cahaya kota, neon, dan low light yang dramatis namun tetap natural.</p>
-              <a href="kontak.html?layanan=night" class="card-link" aria-label="Booking Night">Booking sekarang <span class="card-arrow" aria-hidden="true"><svg><use href="#icon-arrow-right"></use></svg></span></a>
-            </div>
-          </article>
+                <div class="service-grid" data-site="services">
+          <!-- site:services:start -->
+          <article class="service-card reveal"><div class="service-inner"><span class="service-photo" aria-hidden="true"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&amp;fit=crop&amp;w=640&amp;h=800&amp;q=60" alt="" width="640" height="800" loading="lazy" decoding="async"></span><div class="service-top"><span class="service-icon"><svg aria-hidden="true"><use href="#icon-graduation"></use></svg></span><span class="service-rule" aria-hidden="true"></span><span class="service-num" aria-hidden="true">01</span></div><h3>Graduation</h3><p>Sesi wisuda untuk merayakan pencapaianmu — dari potret toga di kampus hingga momen kebersamaan dengan keluarga.</p><a href="kontak.html?layanan=graduation" class="card-link" aria-label="Booking Graduation">Booking sekarang <span class="card-arrow" aria-hidden="true"><svg><use href="#icon-arrow-right"></use></svg></span></a></div></article>
+          <article class="service-card reveal"><div class="service-inner"><span class="service-photo" aria-hidden="true"><img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&amp;fit=crop&amp;w=640&amp;h=800&amp;q=60" alt="" width="640" height="800" loading="lazy" decoding="async"></span><div class="service-top"><span class="service-icon"><svg aria-hidden="true"><use href="#icon-heart"></use></svg></span><span class="service-rule" aria-hidden="true"></span><span class="service-num" aria-hidden="true">02</span></div><h3>Couple</h3><p>Potret berdua yang natural dan santai, cocok untuk anniversary atau sekadar merayakan kebersamaan.</p><a href="kontak.html?layanan=couple" class="card-link" aria-label="Booking Couple">Booking sekarang <span class="card-arrow" aria-hidden="true"><svg><use href="#icon-arrow-right"></use></svg></span></a></div></article>
+          <article class="service-card reveal"><div class="service-inner"><span class="service-photo" aria-hidden="true"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&amp;fit=crop&amp;w=640&amp;h=800&amp;q=60" alt="" width="640" height="800" loading="lazy" decoding="async"></span><div class="service-top"><span class="service-icon"><svg aria-hidden="true"><use href="#icon-user"></use></svg></span><span class="service-rule" aria-hidden="true"></span><span class="service-num" aria-hidden="true">03</span></div><h3>Personal Branding</h3><p>Foto profesional untuk profil, website, dan media sosial yang menampilkan karaktermu secara autentik.</p><a href="kontak.html?layanan=personal-branding" class="card-link" aria-label="Booking Personal Branding">Booking sekarang <span class="card-arrow" aria-hidden="true"><svg><use href="#icon-arrow-right"></use></svg></span></a></div></article>
+          <article class="service-card reveal"><div class="service-inner"><span class="service-photo" aria-hidden="true"><img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&amp;fit=crop&amp;w=640&amp;h=800&amp;q=60" alt="" width="640" height="800" loading="lazy" decoding="async"></span><div class="service-top"><span class="service-icon"><svg aria-hidden="true"><use href="#icon-sparkle"></use></svg></span><span class="service-rule" aria-hidden="true"></span><span class="service-num" aria-hidden="true">04</span></div><h3>Beauty</h3><p>Beauty shoot dengan pencahayaan lembut untuk menonjolkan detail makeup, kulit, dan karakter wajah.</p><a href="kontak.html?layanan=beauty" class="card-link" aria-label="Booking Beauty">Booking sekarang <span class="card-arrow" aria-hidden="true"><svg><use href="#icon-arrow-right"></use></svg></span></a></div></article>
+          <article class="service-card reveal"><div class="service-inner"><span class="service-photo" aria-hidden="true"><img src="https://images.unsplash.com/photo-1507504031003-b417219a0fde?auto=format&amp;fit=crop&amp;w=640&amp;h=800&amp;q=60" alt="" width="640" height="800" loading="lazy" decoding="async"></span><div class="service-top"><span class="service-icon"><svg aria-hidden="true"><use href="#icon-camera"></use></svg></span><span class="service-rule" aria-hidden="true"></span><span class="service-num" aria-hidden="true">05</span></div><h3>Prewedding</h3><p>Sesi prewedding dengan konsep yang disesuaikan — dari pantai Bali hingga studio minimalis.</p><a href="kontak.html?layanan=prewedding" class="card-link" aria-label="Booking Prewedding">Booking sekarang <span class="card-arrow" aria-hidden="true"><svg><use href="#icon-arrow-right"></use></svg></span></a></div></article>
+          <article class="service-card reveal"><div class="service-inner"><span class="service-photo" aria-hidden="true"><img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&amp;fit=crop&amp;w=640&amp;h=800&amp;q=60" alt="" width="640" height="800" loading="lazy" decoding="async"></span><div class="service-top"><span class="service-icon"><svg aria-hidden="true"><use href="#icon-rings"></use></svg></span><span class="service-rule" aria-hidden="true"></span><span class="service-num" aria-hidden="true">06</span></div><h3>Wedding</h3><p>Dokumentasi penuh hari bahagiamu, dari persiapan hingga pesta, dengan pendekatan yang tenang dan personal.</p><a href="kontak.html?layanan=wedding" class="card-link" aria-label="Booking Wedding">Booking sekarang <span class="card-arrow" aria-hidden="true"><svg><use href="#icon-arrow-right"></use></svg></span></a></div></article>
+          <article class="service-card reveal"><div class="service-inner"><span class="service-photo" aria-hidden="true"><img src="https://images.unsplash.com/photo-1591604466107-ec97de577aff?auto=format&amp;fit=crop&amp;w=640&amp;h=800&amp;q=60" alt="" width="640" height="800" loading="lazy" decoding="async"></span><div class="service-top"><span class="service-icon"><svg aria-hidden="true"><use href="#icon-diamond"></use></svg></span><span class="service-rule" aria-hidden="true"></span><span class="service-num" aria-hidden="true">07</span></div><h3>Engagement</h3><p>Abadikan momen lamaran dan pertunangan dengan foto yang hangat, intim, dan penuh cerita.</p><a href="kontak.html?layanan=engagement" class="card-link" aria-label="Booking Engagement">Booking sekarang <span class="card-arrow" aria-hidden="true"><svg><use href="#icon-arrow-right"></use></svg></span></a></div></article>
+          <article class="service-card reveal"><div class="service-inner"><span class="service-photo" aria-hidden="true"><img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&amp;fit=crop&amp;w=640&amp;h=800&amp;q=60" alt="" width="640" height="800" loading="lazy" decoding="async"></span><div class="service-top"><span class="service-icon"><svg aria-hidden="true"><use href="#icon-calendar"></use></svg></span><span class="service-rule" aria-hidden="true"></span><span class="service-num" aria-hidden="true">08</span></div><h3>Event</h3><p>Liputan acara perusahaan, seminar, dan perayaan komunitas dengan dokumentasi menyeluruh dan cepat.</p><a href="kontak.html?layanan=event" class="card-link" aria-label="Booking Event">Booking sekarang <span class="card-arrow" aria-hidden="true"><svg><use href="#icon-arrow-right"></use></svg></span></a></div></article>
+          <article class="service-card reveal"><div class="service-inner"><span class="service-photo" aria-hidden="true"><img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&amp;fit=crop&amp;w=640&amp;h=800&amp;q=60" alt="" width="640" height="800" loading="lazy" decoding="async"></span><div class="service-top"><span class="service-icon"><svg aria-hidden="true"><use href="#icon-road"></use></svg></span><span class="service-rule" aria-hidden="true"></span><span class="service-num" aria-hidden="true">09</span></div><h3>Street</h3><p>Fotografi jalanan yang menangkap kehidupan kota, cahaya, dan momen spontan di antara keramaian.</p><a href="kontak.html?layanan=street" class="card-link" aria-label="Booking Street">Booking sekarang <span class="card-arrow" aria-hidden="true"><svg><use href="#icon-arrow-right"></use></svg></span></a></div></article>
+          <article class="service-card reveal"><div class="service-inner"><span class="service-photo" aria-hidden="true"><img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&amp;fit=crop&amp;w=640&amp;h=800&amp;q=60" alt="" width="640" height="800" loading="lazy" decoding="async"></span><div class="service-top"><span class="service-icon"><svg aria-hidden="true"><use href="#icon-building"></use></svg></span><span class="service-rule" aria-hidden="true"></span><span class="service-num" aria-hidden="true">10</span></div><h3>Architecture</h3><p>Foto arsitektur dan interior dengan komposisi rapi, garis bersih, dan pencahayaan yang menonjolkan detail ruang.</p><a href="kontak.html?layanan=architecture" class="card-link" aria-label="Booking Architecture">Booking sekarang <span class="card-arrow" aria-hidden="true"><svg><use href="#icon-arrow-right"></use></svg></span></a></div></article>
+          <article class="service-card reveal"><div class="service-inner"><span class="service-photo" aria-hidden="true"><img src="https://images.unsplash.com/photo-1500048993953-d23a436266cf?auto=format&amp;fit=crop&amp;w=640&amp;h=800&amp;q=60" alt="" width="640" height="800" loading="lazy" decoding="async"></span><div class="service-top"><span class="service-icon"><svg aria-hidden="true"><use href="#icon-mountain"></use></svg></span><span class="service-rule" aria-hidden="true"></span><span class="service-num" aria-hidden="true">11</span></div><h3>Travel</h3><p>Dokumentasi perjalanan dan destinasi dengan warna khas INS FRAME, siap untuk konten maupun kenangan pribadi.</p><a href="kontak.html?layanan=travel" class="card-link" aria-label="Booking Travel">Booking sekarang <span class="card-arrow" aria-hidden="true"><svg><use href="#icon-arrow-right"></use></svg></span></a></div></article>
+          <article class="service-card reveal"><div class="service-inner"><span class="service-photo" aria-hidden="true"><img src="https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?auto=format&amp;fit=crop&amp;w=640&amp;h=800&amp;q=60" alt="" width="640" height="800" loading="lazy" decoding="async"></span><div class="service-top"><span class="service-icon"><svg aria-hidden="true"><use href="#icon-moon"></use></svg></span><span class="service-rule" aria-hidden="true"></span><span class="service-num" aria-hidden="true">12</span></div><h3>Night</h3><p>Sesi malam dengan permainan cahaya kota, neon, dan low light yang dramatis namun tetap natural.</p><a href="kontak.html?layanan=night" class="card-link" aria-label="Booking Night">Booking sekarang <span class="card-arrow" aria-hidden="true"><svg><use href="#icon-arrow-right"></use></svg></span></a></div></article>
+          <!-- site:services:end -->
         </div>
+      </div>
+    </section>
+
+<!-- ===== Paket ===== -->
+    <section class="section" id="paket">
+      <div class="container">
+        <div class="section-head center reveal">
+          <p class="eyebrow"><span aria-hidden="true"></span>Paket Harga</p>
+          <h2 class="section-title">Investasi untuk kenangan yang <em>tinggal</em>.</h2>
+          <p class="section-sub">Semua paket transparan, tanpa biaya tersembunyi. Butuh sesuatu yang berbeda? Kami senang membuat paket custom.</p>
+        </div>
+
+        <div class="pricing-grid" data-site="packages">
+          <!-- site:packages:start -->
+          <article class="price-card reveal"><h3>Silver</h3><p class="price-desc">Untuk sesi personal, couple, atau graduation yang ingin hasil rapi tanpa ribet.</p><div class="price"><span class="currency">Rp</span><span class="price-amount">3,5</span><small>jt / sesi</small></div><ul class="price-features"><li>Sesi 1 jam di satu lokasi</li><li>1 fotografer</li><li>20 foto pilihan sudah diedit</li><li>Galeri online 30 hari</li><li>File JPEG resolusi tinggi</li></ul><a class="btn btn-outline" href="kontak.html?paket=Silver">Pilih paket</a></article>
+          <article class="price-card reveal is-popular"><span class="popular-badge">Paling dipilih</span><h3>Gold</h3><p class="price-desc">Paling sering dipilih untuk prewedding dan wedding intim dengan cerita yang lebih lengkap.</p><div class="price"><span class="currency">Rp</span><span class="price-amount">6,5</span><small>jt / sesi</small></div><ul class="price-features"><li>Sesi 3 jam, maksimal 2 lokasi</li><li>2 fotografer</li><li>60 foto pilihan sudah diedit</li><li>Preview 2–3 hari kerja</li><li>Galeri online 90 hari</li><li>Album cetak 20 × 20 cm</li></ul><a class="btn btn-primary" href="kontak.html?paket=Gold">Pilih paket</a></article>
+          <article class="price-card reveal"><h3>Platinum</h3><p class="price-desc">Dokumentasi penuh dari persiapan sampai pesta, untuk hari yang tidak ingin terlewat sedikit pun.</p><div class="price"><span class="currency">Rp</span><span class="price-amount">12</span><small>jt / sesi</small></div><ul class="price-features"><li>Sesi 8 jam, lokasi fleksibel</li><li>2 fotografer + 1 asisten</li><li>150 foto pilihan sudah diedit</li><li>Timeline dan konsultasi konsep</li><li>Album premium 30 × 30 cm</li><li>Galeri online 180 hari</li></ul><a class="btn btn-outline" href="kontak.html?paket=Platinum">Pilih paket</a></article>
+          <article class="price-card reveal"><h3>Custom</h3><p class="price-desc">Butuh kombinasi berbeda? Susun paket sesuai kebutuhan brand, acara, atau destinasi.</p><div class="price"><span class="currency">Rp</span><span class="price-amount">8,5</span><small>jt / sesi</small></div><ul class="price-features"><li>Konsultasi kebutuhan dan konsep</li><li>Durasi dan tim menyesuaikan</li><li>Jumlah foto fleksibel</li><li>Opsi foto produk dan konten video</li><li>Penawaran tertulis sebelum DP</li></ul><a class="btn btn-outline" href="kontak.html?paket=Custom">Konsultasi paket</a></article>
+          <!-- site:packages:end -->
+        </div>
+
+        <p class="pricing-note">Harga belum termasuk biaya lokasi dan properti khusus. Booking dikonfirmasi dengan DP 30%.</p>
       </div>
     </section>
 
@@ -572,14 +486,7 @@
           </span>
         </a>
         <p>Jasa fotografer Sidoarjo dan sekitarnya dengan kualitas maksimal untuk mengabadikan momen berharga kamu.</p>
-        <div class="socials">
-          <a href="https://instagram.com/insframe" target="_blank" rel="noopener" aria-label="Instagram INS FRAME Photography">
-            <svg aria-hidden="true"><use href="#icon-instagram"></use></svg>
-          </a>
-          <a href="https://wa.me/6281234567890" target="_blank" rel="noopener" aria-label="WhatsApp INS FRAME Photography">
-            <svg aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
-          </a>
-        </div>
+        <div class="socials" data-site="socials"><a href="https://instagram.com/insframe" target="_blank" rel="noopener" aria-label="Instagram INS FRAME Photography"><svg aria-hidden="true"><use href="#icon-instagram"></use></svg></a><a href="https://wa.me/6281234567890" target="_blank" rel="noopener" aria-label="WhatsApp INS FRAME Photography"><svg aria-hidden="true"><use href="#icon-whatsapp"></use></svg></a></div>
       </div>
 
       <div class="footer-col">
@@ -634,6 +541,8 @@
     <svg aria-hidden="true" style="transform: rotate(-90deg)"><use href="#icon-arrow-right"></use></svg>
   </button>
 
+  <script src="js/site-data.js" defer></script>
+  <script src="js/site-render.js" defer></script>
   <script src="js/main.js" defer></script>
 </body>
 </html>

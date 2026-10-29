@@ -12,13 +12,15 @@
   const STORAGE_KEYS = {
     gallery: 'insframe.admin.gallery.v1',
     bookings: 'insframe.admin.bookings.v1',
-    settings: 'insframe.admin.settings.v1'
+    settings: 'insframe.admin.settings.v1',
+    site: 'insframe.admin.site.v1'
   };
 
   const VIEW_TITLES = {
     dashboard: 'Dashboard',
     galeri: 'Kelola Karya',
     pesanan: 'Pesanan',
+    konten: 'Konten Situs',
     pengaturan: 'Pengaturan'
   };
 
@@ -34,6 +36,50 @@
     Gold: 6500000,
     Platinum: 12000000,
     Custom: 8500000
+  };
+
+  const SERVICE_ICONS = [
+    { value: 'camera', label: 'Kamera' },
+    { value: 'heart', label: 'Hati' },
+    { value: 'user', label: 'Profil' },
+    { value: 'box', label: 'Kotak' },
+    { value: 'calendar', label: 'Kalender' },
+    { value: 'film', label: 'Film' },
+    { value: 'graduation', label: 'Wisuda' },
+    { value: 'sparkle', label: 'Kilau' },
+    { value: 'rings', label: 'Cincin' },
+    { value: 'diamond', label: 'Berlian' },
+    { value: 'road', label: 'Jalan' },
+    { value: 'building', label: 'Bangunan' },
+    { value: 'mountain', label: 'Gunung' },
+    { value: 'moon', label: 'Bulan' },
+    { value: 'pin', label: 'Lokasi' },
+    { value: 'mail', label: 'Email' },
+    { value: 'phone', label: 'Telepon' },
+    { value: 'clock', label: 'Jam' }
+  ];
+
+  const CONTENT_KINDS = {
+    services: {
+      label: 'Layanan',
+      singular: 'layanan',
+      collection: 'services'
+    },
+    packages: {
+      label: 'Paket',
+      singular: 'paket',
+      collection: 'packages'
+    },
+    testimonials: {
+      label: 'Testimoni',
+      singular: 'testimoni',
+      collection: 'testimonials'
+    },
+    faq: {
+      label: 'FAQ',
+      singular: 'FAQ',
+      collection: 'faq'
+    }
   };
 
   const CATEGORY_FALLBACK = [
@@ -78,6 +124,14 @@
     ? window.INSFRAME_GALLERY
     : null;
 
+  const SITE_API = window.INSFRAME_SITE_RENDER && typeof window.INSFRAME_SITE_RENDER.prepareSite === 'function'
+    ? window.INSFRAME_SITE_RENDER
+    : null;
+
+  const PUBLISHED_SITE = (window.INSFRAME_SITE && typeof window.INSFRAME_SITE === 'object')
+    ? window.INSFRAME_SITE
+    : null;
+
   const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -95,6 +149,7 @@
     gallery: [],
     bookings: [],
     settings: {},
+    site: null,
     filters: {
       galleryQuery: '',
       galleryCategory: 'all',
@@ -102,12 +157,17 @@
       orderQuery: '',
       orderStatus: 'all'
     },
+    contentTab: 'services',
+    contentKind: null,
+    contentEditingId: null,
     currentView: 'dashboard',
     editingId: null,
     confirmResolve: null,
     workLastFocus: null,
     confirmLastFocus: null,
     publishLastFocus: null,
+    contentLastFocus: null,
+    sitePublishLastFocus: null,
     toastTimer: null
   };
 
@@ -403,7 +463,7 @@
       name: String(source.name || 'Tanpa nama').slice(0, 80),
       service: String(source.service || 'Lainnya').slice(0, 60),
       date: DATE_PATTERN.test(source.date || '') ? source.date : todayISO(),
-      package: Object.prototype.hasOwnProperty.call(PACKAGE_PRICES, source.package) ? source.package : 'Custom',
+      package: String(source.package || 'Custom').slice(0, 60) || 'Custom',
       status: Object.prototype.hasOwnProperty.call(STATUS_LABELS, source.status) ? source.status : 'baru',
       phone: String(source.phone || ''),
       email: String(source.email || ''),
@@ -424,6 +484,93 @@
   }
 
   /* ---------------------------------------------------------
+     Data konten situs
+     --------------------------------------------------------- */
+  function emptySite() {
+    return {
+      version: 1,
+      updatedAt: '',
+      contact: { phone: '', phoneDisplay: '', email: '', address: [], hours: [] },
+      socials: { instagram: '', facebook: '', youtube: '' },
+      services: [],
+      packages: [],
+      testimonials: [],
+      faq: [],
+      about: { paragraphs: [], points: [], stats: [] }
+    };
+  }
+
+  function cloneJSON(value) {
+    return JSON.parse(JSON.stringify(value));
+  }
+
+  function prepareSiteData(source) {
+    if (SITE_API) return SITE_API.prepareSite(source || {});
+
+    const data = source && typeof source === 'object' ? cloneJSON(source) : {};
+    const base = emptySite();
+    const contact = data.contact && typeof data.contact === 'object' ? data.contact : {};
+    const socials = data.socials && typeof data.socials === 'object' ? data.socials : {};
+    const about = data.about && typeof data.about === 'object' ? data.about : {};
+
+    function list(value) {
+      return Array.isArray(value) ? value.filter(function (entry) {
+        return entry && typeof entry === 'object';
+      }) : [];
+    }
+
+    return {
+      version: Number(data.version) || 1,
+      updatedAt: String(data.updatedAt || ''),
+      contact: {
+        phone: String(contact.phone || ''),
+        phoneDisplay: String(contact.phoneDisplay || ''),
+        email: String(contact.email || ''),
+        address: Array.isArray(contact.address) ? contact.address.map(String) : [],
+        hours: Array.isArray(contact.hours) ? contact.hours.map(String) : []
+      },
+      socials: {
+        instagram: String(socials.instagram || ''),
+        facebook: String(socials.facebook || ''),
+        youtube: String(socials.youtube || '')
+      },
+      services: list(data.services),
+      packages: list(data.packages),
+      testimonials: list(data.testimonials),
+      faq: list(data.faq),
+      about: {
+        paragraphs: Array.isArray(about.paragraphs) ? about.paragraphs.map(String) : base.about.paragraphs,
+        points: Array.isArray(about.points) ? about.points.map(String) : base.about.points,
+        stats: Array.isArray(about.stats) ? about.stats : base.about.stats
+      }
+    };
+  }
+
+  function seedSite() {
+    return prepareSiteData(PUBLISHED_SITE || emptySite());
+  }
+
+  function publishedSiteData() {
+    return prepareSiteData(PUBLISHED_SITE || emptySite());
+  }
+
+  function normalizeSiteData(item) {
+    return prepareSiteData(item && typeof item === 'object' ? item : emptySite());
+  }
+
+  function siteItemCount(site) {
+    if (!site) return 0;
+    return site.services.length + site.packages.length + site.testimonials.length + site.faq.length;
+  }
+
+  function packagePrice(name) {
+    const packages = state.site && Array.isArray(state.site.packages) ? state.site.packages : [];
+    const match = packages.find(function (pkg) { return pkg.name === name; });
+    if (match) return Number(match.price) || 0;
+    return PACKAGE_PRICES[name] || 0;
+  }
+
+  /* ---------------------------------------------------------
      Cache DOM
      --------------------------------------------------------- */
   const el = {
@@ -440,6 +587,7 @@
     toastMessage: $('#toastMessage'),
     navGalleryCount: $('#navGalleryCount'),
     navOrderCount: $('#navOrderCount'),
+    navContentCount: $('#navContentCount'),
     quickOrderText: $('#quickOrderText'),
     todayLabel: $('#todayLabel'),
     statGallery: $('#statGallery'),
@@ -467,7 +615,36 @@
     settingsForm: $('#settingsForm'),
     settingsGalleryCount: $('#settingsGalleryCount'),
     settingsOrderCount: $('#settingsOrderCount'),
+    settingsContentCount: $('#settingsContentCount'),
     importInput: $('#importInput'),
+    sitePublishStatus: $('#sitePublishStatus'),
+    sitePublishModal: $('#sitePublishModal'),
+    sitePublishStats: $('#sitePublishStats'),
+    sitePublishDiff: $('#sitePublishDiff'),
+    sitePublishDownload: $('[data-site-publish-download]'),
+    sitePublishCopy: $('[data-site-publish-copy]'),
+    contentTabs: $('#contentTabs'),
+    contentPanels: $$('[data-content-pane]'),
+    contentServices: $('#contentServices'),
+    contentPackages: $('#contentPackages'),
+    contentTestimonials: $('#contentTestimonials'),
+    contentFaq: $('#contentFaq'),
+    contentCountServices: $('#contentCountServices'),
+    contentCountPackages: $('#contentCountPackages'),
+    contentCountTestimonials: $('#contentCountTestimonials'),
+    contentCountFaq: $('#contentCountFaq'),
+    aboutForm: $('#aboutForm'),
+    aboutParagraphs: $('#aboutParagraphs'),
+    aboutPoints: $('#aboutPoints'),
+    aboutStatsList: $('#aboutStatsList'),
+    contactForm: $('#contactForm'),
+    socialForm: $('#socialForm'),
+    contentModal: $('#contentModal'),
+    contentForm: $('#contentForm'),
+    contentFields: $('#contentFields'),
+    contentModalTitle: $('#contentModalTitle'),
+    contentModalEyebrow: $('#contentModalEyebrow'),
+    contentSubmit: $('#contentSubmit'),
     workModal: $('#workModal'),
     workForm: $('#workForm'),
     workModalTitle: $('#workModalTitle'),
@@ -505,7 +682,8 @@
   function applyTheme(theme) {
     document.documentElement.dataset.theme = theme;
     try {
-      localStorage.setItem('bb-theme', theme);
+      localStorage.setItem('insframe-theme', theme);
+      localStorage.removeItem('bb-theme');
     } catch (error) {
       /* abaikan */
     }
@@ -546,6 +724,7 @@
     if (next === 'dashboard') renderDashboard();
     if (next === 'galeri') renderGallery();
     if (next === 'pesanan') renderOrders();
+    if (next === 'konten') renderContent();
     if (next === 'pengaturan') renderSettings();
   }
 
@@ -561,6 +740,8 @@
     const locked = !el.workModal.hidden ||
       !el.confirmModal.hidden ||
       !el.publishModal.hidden ||
+      !el.contentModal.hidden ||
+      !el.sitePublishModal.hidden ||
       el.sidebar.classList.contains('is-open');
     document.body.classList.toggle('adm-no-scroll', locked);
   }
@@ -605,7 +786,7 @@
     const upcoming = upcomingBookings().sort(function (a, b) { return a.date.localeCompare(b.date); });
     const active = activeBookings();
     const pipeline = active.reduce(function (total, booking) {
-      return total + (PACKAGE_PRICES[booking.package] || 0);
+      return total + packagePrice(booking.package);
     }, 0);
 
     el.todayLabel.textContent = 'Hari ini, ' + longToday() + '.';
@@ -725,6 +906,7 @@
 
     if (el.navGalleryCount) el.navGalleryCount.textContent = String(state.gallery.length);
     if (el.navOrderCount) el.navOrderCount.textContent = String(counts.baru);
+    if (el.navContentCount) el.navContentCount.textContent = String(siteItemCount(state.site));
   }
 
   /* ---------------------------------------------------------
@@ -1146,14 +1328,12 @@
     populateSettingsForm();
     el.settingsGalleryCount.textContent = String(state.gallery.length);
     el.settingsOrderCount.textContent = String(state.bookings.length);
+    if (el.settingsContentCount) el.settingsContentCount.textContent = siteItemCount(state.site) + ' item';
   }
 
   function populateSettingsForm() {
     $('#studioName').value = state.settings.studioName || '';
     $('#studioOwner').value = state.settings.owner || '';
-    $('#studioEmail').value = state.settings.email || '';
-    $('#studioPhone').value = state.settings.phone || '';
-    $('#studioInstagram').value = state.settings.instagram || '';
   }
 
   /* ---------------------------------------------------------
@@ -1466,9 +1646,6 @@
 
     const studioName = $('#studioName');
     const owner = $('#studioOwner');
-    const email = $('#studioEmail');
-    const phone = $('#studioPhone');
-    const instagram = $('#studioInstagram');
     let firstInvalid = null;
 
     if (studioName.value.trim().length < 2) {
@@ -1481,15 +1658,577 @@
       firstInvalid = firstInvalid || owner;
     }
 
+    if (firstInvalid) {
+      firstInvalid.focus();
+      return;
+    }
+
+    state.settings.studioName = studioName.value.trim();
+    state.settings.owner = owner.value.trim();
+
+    writeStore(STORAGE_KEYS.settings, state.settings);
+    showToast('Profil studio berhasil disimpan.');
+  }
+
+  /* ---------------------------------------------------------
+     Konten situs: tab & daftar
+     --------------------------------------------------------- */
+  function textLines(value) {
+    return String(value == null ? '' : value)
+      .split(/\r?\n/)
+      .map(function (line) { return line.trim(); })
+      .filter(Boolean);
+  }
+
+  function truncate(value, length) {
+    const text = String(value == null ? '' : value).trim();
+    if (text.length <= length) return text;
+    return text.slice(0, length - 1).trim() + '…';
+  }
+
+  function contentTabIsValid(tab) {
+    return Boolean(CONTENT_KINDS[tab]) || tab === 'about' || tab === 'contact';
+  }
+
+  function setContentTab(tab, focus) {
+    const next = contentTabIsValid(tab) ? tab : 'services';
+    state.contentTab = next;
+
+    $$('[data-content-tab]', el.contentTabs).forEach(function (button) {
+      const active = button.dataset.contentTab === next;
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-selected', String(active));
+      if (active && focus) button.focus();
+    });
+
+    el.contentPanels.forEach(function (pane) {
+      pane.hidden = pane.dataset.contentPane !== next;
+    });
+
+    if (next === 'about') populateAboutForm();
+    if (next === 'contact') populateContactForm();
+  }
+
+  function renderContent() {
+    if (!state.site) return;
+
+    renderContentCounts();
+    if (el.contentServices) el.contentServices.innerHTML = contentListHTML('services');
+    if (el.contentPackages) el.contentPackages.innerHTML = contentListHTML('packages');
+    if (el.contentTestimonials) el.contentTestimonials.innerHTML = contentListHTML('testimonials');
+    if (el.contentFaq) el.contentFaq.innerHTML = contentListHTML('faq');
+
+    renderSitePublishState();
+    setContentTab(state.contentTab, false);
+  }
+
+  function renderContentCounts() {
+    const counts = {
+      services: state.site.services.length,
+      packages: state.site.packages.length,
+      testimonials: state.site.testimonials.length,
+      faq: state.site.faq.length
+    };
+
+    if (el.contentCountServices) el.contentCountServices.textContent = String(counts.services);
+    if (el.contentCountPackages) el.contentCountPackages.textContent = String(counts.packages);
+    if (el.contentCountTestimonials) el.contentCountTestimonials.textContent = String(counts.testimonials);
+    if (el.contentCountFaq) el.contentCountFaq.textContent = String(counts.faq);
+    if (el.navContentCount) el.navContentCount.textContent = String(siteItemCount(state.site));
+  }
+
+  function contentAvatar(kind, item, index) {
+    if (kind === 'packages') {
+      return '<span class="adm-content-avatar is-gold"><svg aria-hidden="true"><use href="#i-wallet"></use></svg></span>';
+    }
+    if (kind === 'faq') {
+      return '<span class="adm-content-avatar">' + pad(index + 1) + '</span>';
+    }
+    return '<span class="adm-content-avatar">' + escapeHTML(initials(item.name)) + '</span>';
+  }
+
+  function contentMeta(kind, item) {
+    if (kind === 'services') {
+      return escapeHTML(truncate(item.description || 'Tanpa deskripsi', 110));
+    }
+    if (kind === 'packages') {
+      const features = item.features.length ? item.features.length + ' fitur' : 'Belum ada fitur';
+      return escapeHTML(shortRupiah(item.price) + ' · ' + features);
+    }
+    if (kind === 'testimonials') {
+      const rating = '★★★★★'.slice(0, item.rating) + '☆☆☆☆☆'.slice(0, 5 - item.rating);
+      return '<span class="adm-content-stars" aria-hidden="true">' + rating + '</span> ' +
+        escapeHTML(item.role || 'Tanpa keterangan');
+    }
+    return escapeHTML(truncate(item.answer || 'Belum ada jawaban', 120));
+  }
+
+  function contentListHTML(kind) {
+    const items = state.site[CONTENT_KINDS[kind].collection];
+    const singular = CONTENT_KINDS[kind].singular;
+
+    if (!items.length) {
+      return '<p class="adm-panel-empty">Belum ada ' + escapeHTML(singular) +
+        '. Gunakan tombol tambah di atas untuk membuat yang pertama.</p>';
+    }
+
+    return items.map(function (item, index) {
+      return '<article class="adm-content-item" data-kind="' + kind + '" data-id="' + escapeHTML(item.id) + '">' +
+        contentAvatar(kind, item, index) +
+        '<div class="adm-content-info">' +
+        '<div class="adm-content-title">' +
+        '<strong>' + escapeHTML(item.name || item.question || 'Tanpa judul') + '</strong>' +
+        '<span class="adm-badge ' + (item.visible !== false ? 'is-live' : 'is-draft') + '">' +
+        (item.visible !== false ? 'Tayang' : 'Draf') + '</span>' +
+        (kind === 'packages' && item.popular ? '<span class="adm-badge is-popular">Populer</span>' : '') +
+        '</div>' +
+        '<p class="adm-content-meta">' + contentMeta(kind, item) + '</p>' +
+        '</div>' +
+        '<div class="adm-content-actions">' +
+        '<button type="button" class="adm-icon-btn" data-action="edit-content" data-kind="' + kind + '" data-id="' + escapeHTML(item.id) + '" aria-label="Edit ' + escapeHTML(item.name || item.question || singular) + '">' +
+        '<svg aria-hidden="true"><use href="#i-edit"></use></svg></button>' +
+        '<button type="button" class="adm-icon-btn is-danger" data-action="delete-content" data-kind="' + kind + '" data-id="' + escapeHTML(item.id) + '" aria-label="Hapus ' + escapeHTML(item.name || item.question || singular) + '">' +
+        '<svg aria-hidden="true"><use href="#i-trash"></use></svg></button>' +
+        '</div>' +
+        '</article>';
+    }).join('');
+  }
+
+  /* ---------------------------------------------------------
+     Konten situs: modal item
+     --------------------------------------------------------- */
+  function iconOptions(selected) {
+    return SERVICE_ICONS.map(function (entry) {
+      return '<option value="' + entry.value + '"' + (entry.value === selected ? ' selected' : '') + '>' +
+        escapeHTML(entry.label) + '</option>';
+    }).join('');
+  }
+
+  function visibleOptions(selected) {
+    return '<option value="live"' + (selected ? ' selected' : '') + '>Tayang di halaman publik</option>' +
+      '<option value="draft"' + (selected ? '' : ' selected') + '>Simpan sebagai draf</option>';
+  }
+
+  function contentFieldsHTML(kind, item) {
+    const source = item || {};
+
+    if (kind === 'services') {
+      return '<div class="adm-field">' +
+        '<label for="contentName">Nama layanan</label>' +
+        '<input type="text" id="contentName" name="name" maxlength="60" value="' + escapeHTML(source.name || '') + '" required>' +
+        '<span class="adm-error" data-error-for="contentName"></span>' +
+        '</div>' +
+        '<div class="adm-field-row">' +
+        '<div class="adm-field"><label for="contentIcon">Ikon</label>' +
+        '<select id="contentIcon" name="icon">' + iconOptions(source.icon || 'camera') + '</select></div>' +
+        '<div class="adm-field"><label for="contentVisible">Status</label>' +
+        '<select id="contentVisible" name="visible">' + visibleOptions(source.visible !== false) + '</select></div>' +
+        '</div>' +
+        '<div class="adm-field">' +
+        '<label for="contentDescription">Deskripsi</label>' +
+        '<textarea id="contentDescription" name="description" rows="4" maxlength="240">' + escapeHTML(source.description || '') + '</textarea>' +
+        '<span class="adm-hint">Kalimat singkat yang tampil di kartu layanan.</span>' +
+        '<span class="adm-error" data-error-for="contentDescription"></span>' +
+        '</div>' +
+        '<div class="adm-field">' +
+        '<label for="contentImage">URL foto <span>(opsional)</span></label>' +
+        '<input type="url" id="contentImage" name="image" value="' + escapeHTML(source.image || '') + '" placeholder="https://... atau assets/foto.jpg">' +
+        '<span class="adm-hint">Kosongkan untuk kartu tanpa foto.</span>' +
+        '</div>';
+    }
+
+    if (kind === 'packages') {
+      return '<div class="adm-field">' +
+        '<label for="contentName">Nama paket</label>' +
+        '<input type="text" id="contentName" name="name" maxlength="40" value="' + escapeHTML(source.name || '') + '" required>' +
+        '<span class="adm-error" data-error-for="contentName"></span>' +
+        '</div>' +
+        '<div class="adm-field-row">' +
+        '<div class="adm-field"><label for="contentPrice">Harga (Rp)</label>' +
+        '<input type="number" id="contentPrice" name="price" min="0" step="50000" value="' + escapeHTML(source.price || '') + '" required>' +
+        '<span class="adm-error" data-error-for="contentPrice"></span></div>' +
+        '<div class="adm-field"><label for="contentPopular">Penanda</label>' +
+        '<select id="contentPopular" name="popular">' +
+        '<option value="no"' + (source.popular ? '' : ' selected') + '>Paket biasa</option>' +
+        '<option value="yes"' + (source.popular ? ' selected' : '') + '>Tandai paling populer</option>' +
+        '</select></div>' +
+        '</div>' +
+        '<div class="adm-field">' +
+        '<label for="contentTagline">Ringkasan</label>' +
+        '<textarea id="contentTagline" name="tagline" rows="3" maxlength="200">' + escapeHTML(source.tagline || '') + '</textarea>' +
+        '<span class="adm-error" data-error-for="contentTagline"></span>' +
+        '</div>' +
+        '<div class="adm-field">' +
+        '<label for="contentFeatures">Fitur <span>(satu per baris)</span></label>' +
+        '<textarea id="contentFeatures" name="features" rows="6">' + escapeHTML((source.features || []).join('\n')) + '</textarea>' +
+        '<span class="adm-hint">Setiap baris menjadi satu poin centang di kartu harga.</span>' +
+        '</div>' +
+        '<div class="adm-field"><label for="contentVisible">Status</label>' +
+        '<select id="contentVisible" name="visible">' + visibleOptions(source.visible !== false) + '</select></div>';
+    }
+
+    if (kind === 'testimonials') {
+      return '<div class="adm-field-row">' +
+        '<div class="adm-field"><label for="contentName">Nama klien</label>' +
+        '<input type="text" id="contentName" name="name" maxlength="60" value="' + escapeHTML(source.name || '') + '" required>' +
+        '<span class="adm-error" data-error-for="contentName"></span></div>' +
+        '<div class="adm-field"><label for="contentRating">Rating</label>' +
+        '<select id="contentRating" name="rating">' +
+        [5, 4, 3, 2, 1].map(function (value) {
+          return '<option value="' + value + '"' + (Number(source.rating || 5) === value ? ' selected' : '') + '>' +
+            value + ' bintang</option>';
+        }).join('') +
+        '</select></div>' +
+        '</div>' +
+        '<div class="adm-field">' +
+        '<label for="contentRole">Keterangan <span>(jenis sesi · kota)</span></label>' +
+        '<input type="text" id="contentRole" name="role" maxlength="60" value="' + escapeHTML(source.role || '') + '">' +
+        '</div>' +
+        '<div class="adm-field">' +
+        '<label for="contentQuote">Kutipan</label>' +
+        '<textarea id="contentQuote" name="quote" rows="5" maxlength="400" required>' + escapeHTML(source.quote || '') + '</textarea>' +
+        '<span class="adm-error" data-error-for="contentQuote"></span>' +
+        '</div>' +
+        '<div class="adm-field"><label for="contentVisible">Status</label>' +
+        '<select id="contentVisible" name="visible">' + visibleOptions(source.visible !== false) + '</select></div>';
+    }
+
+    return '<div class="adm-field">' +
+      '<label for="contentQuestion">Pertanyaan</label>' +
+      '<input type="text" id="contentQuestion" name="question" maxlength="160" value="' + escapeHTML(source.question || '') + '" required>' +
+      '<span class="adm-error" data-error-for="contentQuestion"></span>' +
+      '</div>' +
+      '<div class="adm-field">' +
+      '<label for="contentAnswer">Jawaban</label>' +
+      '<textarea id="contentAnswer" name="answer" rows="6" maxlength="600" required>' + escapeHTML(source.answer || '') + '</textarea>' +
+      '<span class="adm-error" data-error-for="contentAnswer"></span>' +
+      '</div>' +
+      '<div class="adm-field"><label for="contentVisible">Status</label>' +
+      '<select id="contentVisible" name="visible">' + visibleOptions(source.visible !== false) + '</select></div>';
+  }
+
+  function openContentModal(kind, id) {
+    const def = CONTENT_KINDS[kind];
+    if (!def) return;
+
+    const collection = state.site[def.collection];
+    const item = id ? collection.find(function (entry) { return entry.id === id; }) : null;
+
+    state.contentKind = kind;
+    state.contentEditingId = item ? item.id : null;
+    state.contentLastFocus = document.activeElement;
+
+    clearFormErrors(el.contentForm);
+    el.contentFields.innerHTML = contentFieldsHTML(kind, item);
+    el.contentModalEyebrow.textContent = def.label;
+    el.contentModalTitle.textContent = (item ? 'Edit ' : 'Tambah ') + def.singular;
+    el.contentSubmit.innerHTML = '<svg aria-hidden="true"><use href="#i-check"></use></svg>' +
+      (item ? 'Simpan perubahan' : 'Simpan ' + def.singular);
+
+    el.contentModal.hidden = false;
+    syncBodyLock();
+
+    window.setTimeout(function () {
+      const first = $('#contentName', el.contentModal) || $('#contentQuestion', el.contentModal);
+      if (first) first.focus();
+    }, 40);
+  }
+
+  function closeContentModal() {
+    if (el.contentModal.hidden) return;
+
+    el.contentModal.hidden = true;
+    state.contentKind = null;
+    state.contentEditingId = null;
+    el.contentFields.innerHTML = '';
+    syncBodyLock();
+
+    if (state.contentLastFocus && document.contains(state.contentLastFocus)) {
+      state.contentLastFocus.focus();
+    }
+  }
+
+  function handleContentSubmit(event) {
+    event.preventDefault();
+    clearFormErrors(el.contentForm);
+
+    const kind = state.contentKind;
+    const def = CONTENT_KINDS[kind];
+    if (!def) return;
+
+    const visible = $('#contentVisible', el.contentForm).value === 'live';
+    let firstInvalid = null;
+    let record = null;
+
+    if (kind === 'services') {
+      const name = $('#contentName', el.contentForm);
+      const description = $('#contentDescription', el.contentForm);
+      const image = $('#contentImage', el.contentForm);
+
+      if (name.value.trim().length < 2) {
+        setFieldError(name, 'Nama layanan minimal 2 karakter.');
+        firstInvalid = firstInvalid || name;
+      }
+      if (description.value.trim().length < 10) {
+        setFieldError(description, 'Tulis deskripsi minimal 10 karakter.');
+        firstInvalid = firstInvalid || description;
+      }
+      if (image.value.trim() && !/^(https?:\/\/|assets\/|\.{0,2}\/)/i.test(image.value.trim())) {
+        setFieldError(image, 'Gunakan URL http(s) atau path gambar lokal.');
+        firstInvalid = firstInvalid || image;
+      }
+      if (firstInvalid) {
+        firstInvalid.focus();
+        return;
+      }
+
+      record = {
+        id: state.contentEditingId || makeId('service'),
+        name: name.value.trim(),
+        icon: $('#contentIcon', el.contentForm).value,
+        description: description.value.trim(),
+        image: image.value.trim(),
+        visible: visible
+      };
+    }
+
+    if (kind === 'packages') {
+      const name = $('#contentName', el.contentForm);
+      const price = $('#contentPrice', el.contentForm);
+      const tagline = $('#contentTagline', el.contentForm);
+      const priceValue = Number(price.value);
+
+      if (name.value.trim().length < 2) {
+        setFieldError(name, 'Nama paket minimal 2 karakter.');
+        firstInvalid = firstInvalid || name;
+      }
+      if (!Number.isFinite(priceValue) || priceValue < 0) {
+        setFieldError(price, 'Masukkan harga dalam rupiah.');
+        firstInvalid = firstInvalid || price;
+      }
+      if (tagline.value.trim().length < 10) {
+        setFieldError(tagline, 'Tulis ringkasan minimal 10 karakter.');
+        firstInvalid = firstInvalid || tagline;
+      }
+      if (firstInvalid) {
+        firstInvalid.focus();
+        return;
+      }
+
+      record = {
+        id: state.contentEditingId || makeId('package'),
+        name: name.value.trim(),
+        price: Math.round(priceValue),
+        tagline: tagline.value.trim(),
+        features: textLines($('#contentFeatures', el.contentForm).value),
+        popular: $('#contentPopular', el.contentForm).value === 'yes',
+        visible: visible
+      };
+    }
+
+    if (kind === 'testimonials') {
+      const name = $('#contentName', el.contentForm);
+      const quote = $('#contentQuote', el.contentForm);
+
+      if (name.value.trim().length < 2) {
+        setFieldError(name, 'Nama klien minimal 2 karakter.');
+        firstInvalid = firstInvalid || name;
+      }
+      if (quote.value.trim().length < 10) {
+        setFieldError(quote, 'Tulis kutipan minimal 10 karakter.');
+        firstInvalid = firstInvalid || quote;
+      }
+      if (firstInvalid) {
+        firstInvalid.focus();
+        return;
+      }
+
+      record = {
+        id: state.contentEditingId || makeId('testimonial'),
+        name: name.value.trim(),
+        role: $('#contentRole', el.contentForm).value.trim(),
+        quote: quote.value.trim(),
+        rating: Number($('#contentRating', el.contentForm).value) || 5,
+        visible: visible
+      };
+    }
+
+    if (kind === 'faq') {
+      const question = $('#contentQuestion', el.contentForm);
+      const answer = $('#contentAnswer', el.contentForm);
+
+      if (question.value.trim().length < 5) {
+        setFieldError(question, 'Pertanyaan minimal 5 karakter.');
+        firstInvalid = firstInvalid || question;
+      }
+      if (answer.value.trim().length < 10) {
+        setFieldError(answer, 'Jawaban minimal 10 karakter.');
+        firstInvalid = firstInvalid || answer;
+      }
+      if (firstInvalid) {
+        firstInvalid.focus();
+        return;
+      }
+
+      record = {
+        id: state.contentEditingId || makeId('faq'),
+        question: question.value.trim(),
+        answer: answer.value.trim(),
+        visible: visible
+      };
+    }
+
+    if (!record) return;
+
+    const collection = state.site[def.collection];
+    const index = collection.findIndex(function (entry) { return entry.id === record.id; });
+
+    if (index !== -1) {
+      collection[index] = record;
+      showToast('Perubahan ' + def.singular + ' disimpan.');
+    } else {
+      collection.push(record);
+      showToast(def.singular.charAt(0).toUpperCase() + def.singular.slice(1) + ' baru ditambahkan.');
+    }
+
+    persistSite();
+    closeContentModal();
+  }
+
+  async function deleteContent(kind, id) {
+    const def = CONTENT_KINDS[kind];
+    if (!def) return;
+
+    const collection = state.site[def.collection];
+    const item = collection.find(function (entry) { return entry.id === id; });
+    if (!item) return;
+
+    const label = item.name || item.question || def.singular;
+    const confirmed = await askConfirm({
+      title: 'Hapus ' + def.singular + '?',
+      message: '"' + label + '" akan dihapus dari konten situs. Tindakan ini tidak bisa dibatalkan.',
+      confirmText: 'Hapus ' + def.singular
+    });
+
+    if (!confirmed) return;
+
+    state.site[def.collection] = collection.filter(function (entry) { return entry.id !== id; });
+    persistSite();
+    showToast(def.label + ' "' + label + '" dihapus.');
+  }
+
+  function persistSite(message) {
+    state.site = normalizeSiteData(state.site);
+    writeStore(STORAGE_KEYS.site, state.site);
+    renderContent();
+    renderDashboard();
+    if (message) showToast(message);
+  }
+
+  /* ---------------------------------------------------------
+     Konten situs: Tentang
+     --------------------------------------------------------- */
+  function renderStatsEditor(stats) {
+    el.aboutStatsList.innerHTML = stats.map(function (stat, index) {
+      return '<div class="adm-stat-row" data-stat-row>' +
+        '<input type="text" data-stat="label" value="' + escapeHTML(stat.label || '') + '" placeholder="Label" aria-label="Label statistik ' + (index + 1) + '">' +
+        '<input type="number" data-stat="value" value="' + escapeHTML(stat.value == null ? '' : stat.value) + '" step="any" placeholder="Angka" aria-label="Nilai statistik ' + (index + 1) + '">' +
+        '<input type="text" data-stat="suffix" value="' + escapeHTML(stat.suffix || '') + '" placeholder="+" maxlength="6" aria-label="Akhiran statistik ' + (index + 1) + '">' +
+        '<select data-stat="decimals" aria-label="Desimal statistik ' + (index + 1) + '">' +
+        [0, 1, 2, 3].map(function (value) {
+          return '<option value="' + value + '"' + (Number(stat.decimals || 0) === value ? ' selected' : '') + '>' +
+            value + ' desimal</option>';
+        }).join('') +
+        '</select>' +
+        '<button type="button" class="adm-icon-btn is-danger" data-remove-stat aria-label="Hapus statistik ' + (index + 1) + '">' +
+        '<svg aria-hidden="true"><use href="#i-trash"></use></svg></button>' +
+        '</div>';
+    }).join('');
+  }
+
+  function addStatRow() {
+    const row = document.createElement('div');
+    row.className = 'adm-stat-row';
+    row.setAttribute('data-stat-row', '');
+    row.innerHTML =
+      '<input type="text" data-stat="label" value="" placeholder="Label" aria-label="Label statistik baru">' +
+      '<input type="number" data-stat="value" value="" step="any" placeholder="Angka" aria-label="Nilai statistik baru">' +
+      '<input type="text" data-stat="suffix" value="" placeholder="+" maxlength="6" aria-label="Akhiran statistik baru">' +
+      '<select data-stat="decimals" aria-label="Desimal statistik baru">' +
+      '<option value="0">0 desimal</option><option value="1">1 desimal</option>' +
+      '<option value="2">2 desimal</option><option value="3">3 desimal</option></select>' +
+      '<button type="button" class="adm-icon-btn is-danger" data-remove-stat aria-label="Hapus statistik">' +
+      '<svg aria-hidden="true"><use href="#i-trash"></use></svg></button>';
+    el.aboutStatsList.appendChild(row);
+    const input = $('[data-stat="label"]', row);
+    if (input) input.focus();
+  }
+
+  function collectStats() {
+    return $$('[data-stat-row]', el.aboutStatsList).map(function (row) {
+      const label = $('[data-stat="label"]', row).value.trim();
+      if (!label) return null;
+      return {
+        label: label,
+        value: Number($('[data-stat="value"]', row).value) || 0,
+        suffix: $('[data-stat="suffix"]', row).value.trim(),
+        decimals: Number($('[data-stat="decimals"]', row).value) || 0
+      };
+    }).filter(Boolean);
+  }
+
+  function populateAboutForm() {
+    if (!el.aboutForm || !state.site) return;
+    el.aboutParagraphs.value = state.site.about.paragraphs.join('\n');
+    el.aboutPoints.value = state.site.about.points.join('\n');
+    renderStatsEditor(state.site.about.stats);
+  }
+
+  function handleAboutSubmit(event) {
+    event.preventDefault();
+
+    state.site.about.paragraphs = textLines(el.aboutParagraphs.value);
+    state.site.about.points = textLines(el.aboutPoints.value);
+    state.site.about.stats = collectStats();
+
+    persistSite('Teks Tentang disimpan.');
+  }
+
+  /* ---------------------------------------------------------
+     Konten situs: kontak & sosial
+     --------------------------------------------------------- */
+  function populateContactForm() {
+    if (!state.site || !el.contactForm) return;
+
+    $('#contactPhone').value = state.site.contact.phone || '';
+    $('#contactPhoneDisplay').value = state.site.contact.phoneDisplay || '';
+    $('#contactEmail').value = state.site.contact.email || '';
+    $('#contactAddress').value = state.site.contact.address.join('\n');
+    $('#contactHours').value = state.site.contact.hours.join('\n');
+
+    $('#socialInstagram').value = state.site.socials.instagram || '';
+    $('#socialFacebook').value = state.site.socials.facebook || '';
+    $('#socialYoutube').value = state.site.socials.youtube || '';
+  }
+
+  function handleContactSubmit(event) {
+    event.preventDefault();
+    clearFormErrors(el.contactForm);
+
+    const phone = $('#contactPhone');
+    const phoneDisplay = $('#contactPhoneDisplay');
+    const email = $('#contactEmail');
+    let firstInvalid = null;
+    const digits = phone.value.replace(/[^\d]/g, '');
+
+    if (digits.length < 8 || digits.length > 15) {
+      setFieldError(phone, 'Masukkan nomor WhatsApp yang valid.');
+      firstInvalid = firstInvalid || phone;
+    }
+
     if (!EMAIL_PATTERN.test(email.value.trim())) {
       setFieldError(email, 'Masukkan email yang valid.');
       firstInvalid = firstInvalid || email;
-    }
-
-    const phoneDigits = phone.value.replace(/[^\d]/g, '');
-    if (phoneDigits.length < 8 || phoneDigits.length > 15) {
-      setFieldError(phone, 'Masukkan nomor WhatsApp yang valid.');
-      firstInvalid = firstInvalid || phone;
     }
 
     if (firstInvalid) {
@@ -1497,16 +2236,207 @@
       return;
     }
 
-    state.settings = {
-      studioName: studioName.value.trim(),
-      owner: owner.value.trim(),
-      email: email.value.trim(),
-      phone: phone.value.trim(),
-      instagram: instagram.value.trim()
-    };
+    state.site.contact.phone = phone.value.trim();
+    state.site.contact.phoneDisplay = phoneDisplay.value.trim();
+    state.site.contact.email = email.value.trim();
+    state.site.contact.address = textLines($('#contactAddress').value);
+    state.site.contact.hours = textLines($('#contactHours').value);
 
-    writeStore(STORAGE_KEYS.settings, state.settings);
-    showToast('Profil studio berhasil disimpan.');
+    persistSite('Kontak situs disimpan.');
+  }
+
+  function handleSocialSubmit(event) {
+    event.preventDefault();
+    clearFormErrors(el.socialForm);
+
+    state.site.socials.instagram = $('#socialInstagram').value.trim();
+    state.site.socials.facebook = $('#socialFacebook').value.trim();
+    state.site.socials.youtube = $('#socialYoutube').value.trim();
+
+    persistSite('Tautan sosial disimpan.');
+  }
+
+  /* ---------------------------------------------------------
+     Konten situs: publikasi
+     --------------------------------------------------------- */
+  function sitePayload(site) {
+    return {
+      contact: site.contact,
+      socials: site.socials,
+      services: site.services,
+      packages: site.packages,
+      testimonials: site.testimonials,
+      faq: site.faq,
+      about: site.about
+    };
+  }
+
+  function diffSite() {
+    const current = state.site || seedSite();
+    const published = publishedSiteData();
+    const groups = [
+      { key: 'services', label: 'layanan' },
+      { key: 'packages', label: 'paket' },
+      { key: 'testimonials', label: 'testimoni' },
+      { key: 'faq', label: 'FAQ' },
+      { key: 'about', label: 'teks Tentang' },
+      { key: 'contact', label: 'kontak' },
+      { key: 'socials', label: 'tautan sosial' }
+    ];
+
+    const changed = groups.filter(function (group) {
+      return JSON.stringify(current[group.key]) !== JSON.stringify(published[group.key]);
+    }).map(function (group) { return group.label; });
+
+    return {
+      changed: changed,
+      total: changed.length,
+      services: current.services.length,
+      packages: current.packages.length,
+      testimonials: current.testimonials.length,
+      faq: current.faq.length,
+      contentCount: siteItemCount(current)
+    };
+  }
+
+  function renderSitePublishState() {
+    const diff = diffSite();
+    const dots = $$('[data-site-publish-dot]');
+
+    dots.forEach(function (dot) { dot.hidden = diff.total === 0; });
+
+    if (!el.sitePublishStatus) return diff;
+
+    if (!diff.total) {
+      el.sitePublishStatus.textContent = 'Konten publik sudah sinkron · ' +
+        diff.services + ' layanan, ' + diff.packages + ' paket, ' +
+        diff.testimonials + ' testimoni, ' + diff.faq + ' FAQ.';
+      el.sitePublishStatus.classList.remove('is-dirty');
+    } else {
+      el.sitePublishStatus.textContent = diff.changed.join(', ') + ' belum dipublikasikan.';
+      el.sitePublishStatus.classList.add('is-dirty');
+    }
+
+    return diff;
+  }
+
+  function buildSiteFile() {
+    const currentVersion = PUBLISHED_SITE && Number(PUBLISHED_SITE.version)
+      ? Number(PUBLISHED_SITE.version)
+      : 0;
+    const payload = Object.assign({
+      version: currentVersion + 1,
+      updatedAt: new Date().toISOString()
+    }, sitePayload(state.site));
+
+    return '/* =========================================================\n' +
+      '   INS FRAME Photography — site-data.js\n' +
+      '   Sumber data konten situs: kontak, sosial, layanan, paket,\n' +
+      '   testimoni, FAQ, dan teks Tentang.\n\n' +
+      '   File ini dihasilkan oleh panel admin (Konten → Publikasikan).\n' +
+      '   Jangan mengedit daftar konten secara manual: ubah lewat admin,\n' +
+      '   lalu ganti file ini dengan hasil unduhan "site-data.js".\n' +
+      '   Setelah diganti, jalankan `npm run build` agar halaman publik\n' +
+      '   dan JSON-LD ikut diperbarui.\n' +
+      '   ========================================================= */\n' +
+      'window.INSFRAME_SITE = ' + JSON.stringify(payload, null, 2) + ';\n';
+  }
+
+  function renderSitePublishModal(diff) {
+    const stats = diff || diffSite();
+    const updatedAt = PUBLISHED_SITE && PUBLISHED_SITE.updatedAt
+      ? formatPublishedAt(PUBLISHED_SITE.updatedAt)
+      : '';
+
+    el.sitePublishStats.innerHTML =
+      publishStat(stats.services, 'layanan') +
+      publishStat(stats.packages, 'paket') +
+      publishStat(stats.testimonials, 'testimoni') +
+      publishStat(stats.faq, 'FAQ');
+
+    let diffHTML = '';
+
+    if (!stats.total) {
+      diffHTML = '<div class="adm-publish-sync is-clean">' +
+        '<span class="adm-publish-sync-icon" aria-hidden="true"><svg><use href="#i-check"></use></svg></span>' +
+        '<div><strong>Sudah sinkron</strong>' +
+        '<span>Halaman publik memakai data konten yang sama dengan panel admin.</span></div>' +
+        '</div>';
+    } else {
+      diffHTML = '<div class="adm-publish-sync is-dirty">' +
+        '<span class="adm-publish-sync-icon" aria-hidden="true"><svg><use href="#i-upload"></use></svg></span>' +
+        '<div><strong>' + stats.total + ' bagian konten menunggu publikasi</strong>' +
+        '<span>File baru belum menggantikan data yang dipakai pengunjung.</span></div>' +
+        '</div>' +
+        '<ul class="adm-publish-diff-list">' +
+        stats.changed.map(function (label) {
+          return '<li><span aria-hidden="true">~</span>' + escapeHTML(label) + ' berubah</li>';
+        }).join('') +
+        '</ul>';
+    }
+
+    diffHTML += updatedAt
+      ? '<p class="adm-publish-updated">Terakhir dipublikasikan: ' + escapeHTML(updatedAt) + '.</p>'
+      : '<p class="adm-publish-updated">Belum ada file publik yang terbaca.</p>';
+
+    el.sitePublishDiff.innerHTML = diffHTML;
+  }
+
+  function openSitePublishModal() {
+    const diff = renderSitePublishState();
+
+    renderSitePublishModal(diff);
+    state.sitePublishLastFocus = document.activeElement;
+    el.sitePublishModal.hidden = false;
+    syncBodyLock();
+
+    window.setTimeout(function () {
+      if (el.sitePublishDownload) el.sitePublishDownload.focus();
+    }, 40);
+  }
+
+  function closeSitePublishModal() {
+    if (el.sitePublishModal.hidden) return;
+
+    el.sitePublishModal.hidden = true;
+    syncBodyLock();
+
+    if (state.sitePublishLastFocus && document.contains(state.sitePublishLastFocus)) {
+      state.sitePublishLastFocus.focus();
+    }
+  }
+
+  function downloadSiteFile() {
+    const blob = new Blob([buildSiteFile()], { type: 'text/javascript;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'site-data.js';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+
+    showToast('site-data.js diunduh. Ganti file lama di folder situs.');
+  }
+
+  async function copySiteFile() {
+    const content = buildSiteFile();
+
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        try {
+          await navigator.clipboard.writeText(content);
+        } catch (error) {
+          legacyCopy(content);
+        }
+      } else {
+        legacyCopy(content);
+      }
+      showToast('Isi site-data.js disalin ke clipboard.');
+    } catch (error) {
+      showToast('Tidak bisa menyalin. Gunakan tombol Unduh.', 'error');
+    }
   }
 
   /* ---------------------------------------------------------
@@ -1515,11 +2445,12 @@
   function exportData() {
     const payload = {
       app: 'INS FRAME Studio Admin',
-      version: 1,
+      version: 2,
       exportedAt: new Date().toISOString(),
       gallery: state.gallery,
       bookings: state.bookings,
-      settings: state.settings
+      settings: state.settings,
+      site: state.site
     };
 
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
@@ -1547,15 +2478,16 @@
 
     const hasGallery = Array.isArray(data.gallery);
     const hasBookings = Array.isArray(data.bookings);
+    const hasSite = data.site && typeof data.site === 'object';
 
-    if (!hasGallery && !hasBookings) {
+    if (!hasGallery && !hasBookings && !hasSite) {
       showToast('Struktur file tidak dikenali.', 'error');
       return;
     }
 
     const confirmed = await askConfirm({
       title: 'Impor data?',
-      message: 'Galeri dan pesanan saat ini akan diganti dengan isi file cadangan.',
+      message: 'Galeri, pesanan, dan konten situs saat ini akan diganti dengan isi file cadangan.',
       confirmText: 'Impor data',
       danger: false
     });
@@ -1567,15 +2499,18 @@
     if (data.settings && typeof data.settings === 'object') {
       state.settings = normalizeSettings(data.settings);
     }
+    if (hasSite) state.site = normalizeSiteData(data.site);
 
     writeStore(STORAGE_KEYS.gallery, state.gallery);
     writeStore(STORAGE_KEYS.bookings, state.bookings);
     writeStore(STORAGE_KEYS.settings, state.settings);
+    if (hasSite) writeStore(STORAGE_KEYS.site, state.site);
 
     updateCounts();
     renderDashboard();
     renderGallery();
     renderOrders();
+    renderContent();
     renderSettings();
     showToast('Data berhasil diimpor.');
   }
@@ -1583,7 +2518,7 @@
   async function resetData() {
     const confirmed = await askConfirm({
       title: 'Reset data lokal?',
-      message: 'Semua perubahan lokal akan dihapus. Galeri dikembalikan ke data publik terakhir, sedangkan pesanan dan profil ke contoh awal.',
+      message: 'Semua perubahan lokal akan dihapus. Galeri dan konten dikembalikan ke data publik terakhir, sedangkan pesanan dan profil ke contoh awal.',
       confirmText: 'Reset data'
     });
 
@@ -1592,15 +2527,18 @@
     state.gallery = seedGallery().map(normalizeGallery);
     state.bookings = seedBookings().map(normalizeBooking);
     state.settings = seedSettings();
+    state.site = seedSite();
 
     writeStore(STORAGE_KEYS.gallery, state.gallery);
     writeStore(STORAGE_KEYS.bookings, state.bookings);
     writeStore(STORAGE_KEYS.settings, state.settings);
+    writeStore(STORAGE_KEYS.site, state.site);
 
     updateCounts();
     renderDashboard();
     renderGallery();
     renderOrders();
+    renderContent();
     renderSettings();
     showToast('Data lokal direset ke data publik terakhir.');
   }
@@ -1696,6 +2634,44 @@
         return;
       }
 
+      if (event.target.closest('[data-close-content]')) {
+        closeContentModal();
+        return;
+      }
+
+      if (event.target.closest('[data-close-site-publish]')) {
+        closeSitePublishModal();
+        return;
+      }
+
+      if (event.target.closest('[data-site-publish-download]')) {
+        downloadSiteFile();
+        return;
+      }
+
+      if (event.target.closest('[data-site-publish-copy]')) {
+        copySiteFile();
+        return;
+      }
+
+      if (event.target.closest('[data-add-stat]')) {
+        addStatRow();
+        return;
+      }
+
+      const removeStatButton = event.target.closest('[data-remove-stat]');
+      if (removeStatButton) {
+        const row = removeStatButton.closest('[data-stat-row]');
+        if (row) row.remove();
+        return;
+      }
+
+      const addContentButton = event.target.closest('[data-content-add]');
+      if (addContentButton) {
+        openContentModal(addContentButton.dataset.contentAdd);
+        return;
+      }
+
       if (event.target.closest('#confirmAction')) {
         closeConfirm(true);
         return;
@@ -1714,11 +2690,14 @@
 
       if (action === 'export') exportData();
       if (action === 'publish') openPublishModal();
+      if (action === 'publish-site') openSitePublishModal();
       if (action === 'import') el.importInput.click();
       if (action === 'reset') resetData();
       if (action === 'edit-work') openWorkModal(id);
       if (action === 'delete-work') deleteWork(id);
       if (action === 'delete-order') deleteOrder(id);
+      if (action === 'edit-content') openContentModal(actionElement.dataset.kind, id);
+      if (action === 'delete-content') deleteContent(actionElement.dataset.kind, id);
     });
 
     document.addEventListener('change', function (event) {
@@ -1739,6 +2718,16 @@
           closePublishModal();
           return;
         }
+        if (!el.sitePublishModal.hidden) {
+          event.preventDefault();
+          closeSitePublishModal();
+          return;
+        }
+        if (!el.contentModal.hidden) {
+          event.preventDefault();
+          closeContentModal();
+          return;
+        }
         if (!el.workModal.hidden) {
           event.preventDefault();
           closeWorkModal();
@@ -1756,6 +2745,10 @@
           trapFocus(event, el.confirmModal.querySelector('[role="dialog"]'));
         } else if (!el.publishModal.hidden) {
           trapFocus(event, el.publishModal.querySelector('[role="dialog"]'));
+        } else if (!el.sitePublishModal.hidden) {
+          trapFocus(event, el.sitePublishModal.querySelector('[role="dialog"]'));
+        } else if (!el.contentModal.hidden) {
+          trapFocus(event, el.contentModal.querySelector('[role="dialog"]'));
         } else if (!el.workModal.hidden) {
           trapFocus(event, el.workModal.querySelector('[role="dialog"]'));
         }
@@ -1770,6 +2763,28 @@
 
     el.workForm.addEventListener('submit', handleWorkSubmit);
     el.settingsForm.addEventListener('submit', handleSettingsSubmit);
+    el.contentForm.addEventListener('submit', handleContentSubmit);
+    el.aboutForm.addEventListener('submit', handleAboutSubmit);
+    el.contactForm.addEventListener('submit', handleContactSubmit);
+    el.socialForm.addEventListener('submit', handleSocialSubmit);
+
+    el.contentTabs.addEventListener('click', function (event) {
+      const tab = event.target.closest('[data-content-tab]');
+      if (!tab) return;
+      setContentTab(tab.dataset.contentTab, false);
+    });
+
+    el.contentForm.addEventListener('input', function (event) {
+      if (event.target.closest('.adm-field') && event.target.closest('.adm-field').classList.contains('has-error')) {
+        setFieldError(event.target, '');
+      }
+    });
+
+    el.contactForm.addEventListener('input', function (event) {
+      if (event.target.closest('.adm-field') && event.target.closest('.adm-field').classList.contains('has-error')) {
+        setFieldError(event.target, '');
+      }
+    });
 
     el.workImage.addEventListener('input', updatePreview);
     el.workAlt.addEventListener('input', function () {
@@ -1843,14 +2858,19 @@
     const storedGallery = readStore(STORAGE_KEYS.gallery, null);
     const storedBookings = readStore(STORAGE_KEYS.bookings, null);
     const storedSettings = readStore(STORAGE_KEYS.settings, null);
+    const storedSite = readStore(STORAGE_KEYS.site, null);
 
     state.gallery = (Array.isArray(storedGallery) ? storedGallery : seedGallery()).map(normalizeGallery);
     state.bookings = (Array.isArray(storedBookings) ? storedBookings : seedBookings()).map(normalizeBooking);
     state.settings = normalizeSettings(storedSettings);
+    state.site = storedSite && typeof storedSite === 'object'
+      ? normalizeSiteData(storedSite)
+      : seedSite();
 
     if (!Array.isArray(storedGallery)) writeStore(STORAGE_KEYS.gallery, state.gallery);
     if (!Array.isArray(storedBookings)) writeStore(STORAGE_KEYS.bookings, state.bookings);
     if (!storedSettings) writeStore(STORAGE_KEYS.settings, state.settings);
+    if (!storedSite) writeStore(STORAGE_KEYS.site, state.site);
 
     populateCategoryOptions();
     applyTheme(currentTheme());
@@ -1861,6 +2881,7 @@
     renderDashboard();
     renderGallery();
     renderOrders();
+    renderContent();
     renderSettings();
 
     handleRoute();

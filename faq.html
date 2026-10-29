@@ -29,7 +29,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
-  <script type="application/ld+json">
+  <script type="application/ld+json" data-faq-schema>
   {
     "@context": "https://schema.org",
     "@graph": [
@@ -39,8 +39,12 @@
         "url": "https://bagusbatra.github.io/BB-Photography/faq.html",
         "name": "FAQ Booking Foto | INS FRAME Photography",
         "description": "Pertanyaan umum tentang booking, lokasi, editing, file original, pembatalan, dan reschedule sesi foto INS FRAME Photography.",
-        "isPartOf": { "@id": "https://bagusbatra.github.io/BB-Photography/#website" },
-        "about": { "@id": "https://bagusbatra.github.io/BB-Photography/#business" },
+        "isPartOf": {
+          "@id": "https://bagusbatra.github.io/BB-Photography/#website"
+        },
+        "about": {
+          "@id": "https://bagusbatra.github.io/BB-Photography/#business"
+        },
         "inLanguage": "id-ID",
         "mainEntity": [
           {
@@ -107,7 +111,7 @@
   </script>
   <script>
     try {
-      var savedTheme = localStorage.getItem('bb-theme');
+      var savedTheme = localStorage.getItem('insframe-theme') || localStorage.getItem('bb-theme');
       if (savedTheme) document.documentElement.dataset.theme = savedTheme;
     } catch (e) {}
   </script>
@@ -244,56 +248,10 @@
           <p class="section-sub">Tim kami siap membantu lewat WhatsApp atau form booking. Tidak ada pertanyaan yang terlalu kecil.</p>
           <a href="kontak.html" class="btn btn-outline">Tanya langsung</a>
         </div>
-<div class="accordion" id="accordion">
-          <div class="acc-item reveal">
-            <button class="acc-trigger" type="button" aria-expanded="false" aria-controls="acc-panel-1" id="acc-trigger-1">
-              Berapa lama sebelumnya sebaiknya booking?
-              <span class="acc-icon" aria-hidden="true"></span>
-            </button>
-            <div class="acc-panel" id="acc-panel-1" role="region" aria-labelledby="acc-trigger-1">
-              <p>Untuk wedding dan prewedding, idealnya 2–4 bulan sebelumnya, terutama jika tanggal jatuh di musim ramai (Mei–September). Untuk portrait dan produk, 1–2 minggu sebelumnya biasanya sudah cukup.</p>
-            </div>
-          </div>
-
-          <div class="acc-item reveal">
-            <button class="acc-trigger" type="button" aria-expanded="false" aria-controls="acc-panel-2" id="acc-trigger-2">
-              Apakah bisa request lokasi di luar Sidoarjo?
-              <span class="acc-icon" aria-hidden="true"></span>
-            </button>
-            <div class="acc-panel" id="acc-panel-2" role="region" aria-labelledby="acc-trigger-2">
-              <p>Tentu. Kami rutin melakukan sesi di Surabaya, Mojokerto, Bali, Jakarta, dan kota lain. Biaya transportasi dan akomodasi akan diinformasikan terpisah sesuai lokasi dan jumlah tim.</p>
-            </div>
-          </div>
-
-          <div class="acc-item reveal">
-            <button class="acc-trigger" type="button" aria-expanded="false" aria-controls="acc-panel-3" id="acc-trigger-3">
-              Berapa lama proses editing dan pengiriman hasil?
-              <span class="acc-icon" aria-hidden="true"></span>
-            </button>
-            <div class="acc-panel" id="acc-panel-3" role="region" aria-labelledby="acc-trigger-3">
-              <p>Estimasi 7–14 hari kerja tergantung paket. Kami mengirim preview beberapa foto dalam 2–3 hari setelah sesi agar kamu bisa melihat arah editingnya lebih awal.</p>
-            </div>
-          </div>
-
-          <div class="acc-item reveal">
-            <button class="acc-trigger" type="button" aria-expanded="false" aria-controls="acc-panel-4" id="acc-trigger-4">
-              Apakah file original (RAW) diberikan?
-              <span class="acc-icon" aria-hidden="true"></span>
-            </button>
-            <div class="acc-panel" id="acc-panel-4" role="region" aria-labelledby="acc-trigger-4">
-              <p>Yang kami serahkan adalah file JPEG resolusi tinggi yang sudah melalui kurasi dan retouch. File RAW tidak termasuk karena merupakan bagian dari proses kerja kami. File mentah pilihan dapat dibeli terpisah.</p>
-            </div>
-          </div>
-
-          <div class="acc-item reveal">
-            <button class="acc-trigger" type="button" aria-expanded="false" aria-controls="acc-panel-5" id="acc-trigger-5">
-              Bagaimana kebijakan pembatalan dan reschedule?
-              <span class="acc-icon" aria-hidden="true"></span>
-            </button>
-            <div class="acc-panel" id="acc-panel-5" role="region" aria-labelledby="acc-trigger-5">
-              <p>DP 30% mengunci tanggal. Reschedule gratis hingga 14 hari sebelum sesi, satu kali. Pembatalan kurang dari 7 hari membuat DP tidak dapat dikembalikan, tetapi bisa dialihkan ke sesi lain dalam 3 bulan.</p>
-            </div>
-          </div>
+        <div class="accordion" id="accordion" data-site="faq">
+          <!-- site:faq:start -->
+          <div class="acc-item reveal"><button class="acc-trigger" type="button" aria-expanded="false" aria-controls="acc-panel-1" id="acc-trigger-1">Berapa lama sebelumnya sebaiknya booking?<span class="acc-icon" aria-hidden="true"></span></button><div class="acc-panel" id="acc-panel-1" role="region" aria-labelledby="acc-trigger-1"><p>Untuk wedding dan prewedding, idealnya 2–4 bulan sebelumnya, terutama jika tanggal jatuh di musim ramai (Mei–September). Untuk portrait dan produk, 1–2 minggu sebelumnya biasanya sudah cukup.</p></div></div><div class="acc-item reveal"><button class="acc-trigger" type="button" aria-expanded="false" aria-controls="acc-panel-2" id="acc-trigger-2">Apakah bisa request lokasi di luar Sidoarjo?<span class="acc-icon" aria-hidden="true"></span></button><div class="acc-panel" id="acc-panel-2" role="region" aria-labelledby="acc-trigger-2"><p>Tentu. Kami rutin melakukan sesi di Surabaya, Mojokerto, Bali, Jakarta, dan kota lain. Biaya transportasi dan akomodasi akan diinformasikan terpisah sesuai lokasi dan jumlah tim.</p></div></div><div class="acc-item reveal"><button class="acc-trigger" type="button" aria-expanded="false" aria-controls="acc-panel-3" id="acc-trigger-3">Berapa lama proses editing dan pengiriman hasil?<span class="acc-icon" aria-hidden="true"></span></button><div class="acc-panel" id="acc-panel-3" role="region" aria-labelledby="acc-trigger-3"><p>Estimasi 7–14 hari kerja tergantung paket. Kami mengirim preview beberapa foto dalam 2–3 hari setelah sesi agar kamu bisa melihat arah editingnya lebih awal.</p></div></div><div class="acc-item reveal"><button class="acc-trigger" type="button" aria-expanded="false" aria-controls="acc-panel-4" id="acc-trigger-4">Apakah file original (RAW) diberikan?<span class="acc-icon" aria-hidden="true"></span></button><div class="acc-panel" id="acc-panel-4" role="region" aria-labelledby="acc-trigger-4"><p>Yang kami serahkan adalah file JPEG resolusi tinggi yang sudah melalui kurasi dan retouch. File RAW tidak termasuk karena merupakan bagian dari proses kerja kami. File mentah pilihan dapat dibeli terpisah.</p></div></div><div class="acc-item reveal"><button class="acc-trigger" type="button" aria-expanded="false" aria-controls="acc-panel-5" id="acc-trigger-5">Bagaimana kebijakan pembatalan dan reschedule?<span class="acc-icon" aria-hidden="true"></span></button><div class="acc-panel" id="acc-panel-5" role="region" aria-labelledby="acc-trigger-5"><p>DP 30% mengunci tanggal. Reschedule gratis hingga 14 hari sebelum sesi, satu kali. Pembatalan kurang dari 7 hari membuat DP tidak dapat dikembalikan, tetapi bisa dialihkan ke sesi lain dalam 3 bulan.</p></div></div>
+          <!-- site:faq:end -->
         </div>
       </div>
     </section>
@@ -310,14 +268,7 @@
           </span>
         </a>
         <p>Jasa fotografer Sidoarjo dan sekitarnya dengan kualitas maksimal untuk mengabadikan momen berharga kamu.</p>
-        <div class="socials">
-          <a href="https://instagram.com/insframe" target="_blank" rel="noopener" aria-label="Instagram INS FRAME Photography">
-            <svg aria-hidden="true"><use href="#icon-instagram"></use></svg>
-          </a>
-          <a href="https://wa.me/6281234567890" target="_blank" rel="noopener" aria-label="WhatsApp INS FRAME Photography">
-            <svg aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
-          </a>
-        </div>
+        <div class="socials" data-site="socials"><a href="https://instagram.com/insframe" target="_blank" rel="noopener" aria-label="Instagram INS FRAME Photography"><svg aria-hidden="true"><use href="#icon-instagram"></use></svg></a><a href="https://wa.me/6281234567890" target="_blank" rel="noopener" aria-label="WhatsApp INS FRAME Photography"><svg aria-hidden="true"><use href="#icon-whatsapp"></use></svg></a></div>
       </div>
 
       <div class="footer-col">
@@ -372,6 +323,8 @@
     <svg aria-hidden="true" style="transform: rotate(-90deg)"><use href="#icon-arrow-right"></use></svg>
   </button>
 
+  <script src="js/site-data.js" defer></script>
+  <script src="js/site-render.js" defer></script>
   <script src="js/main.js" defer></script>
 </body>
 </html>

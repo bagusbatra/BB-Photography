@@ -65,7 +65,7 @@
   </script>
   <script>
     try {
-      var savedTheme = localStorage.getItem('bb-theme');
+      var savedTheme = localStorage.getItem('insframe-theme') || localStorage.getItem('bb-theme');
       if (savedTheme) document.documentElement.dataset.theme = savedTheme;
     } catch (e) {}
   </script>
@@ -215,14 +215,16 @@
         <div class="about-body reveal">
           <p class="eyebrow">INS FRAME Photography</p>
           <h2 class="section-title">Bukan sekadar foto, tapi <em>rasa</em> yang tersimpan.</h2>
-          <p>Berawal dari satu kamera pinjaman dan kecintaan pada cerita manusia, INS FRAME Photography tumbuh menjadi tim kecil yang percaya bahwa foto terbaik lahir dari koneksi, bukan pose.</p>
-          <p>Kami mendengarkan ceritamu, memahami karakter, lalu membingkainya dalam cahaya yang tepat. Hasilnya bukan hanya album — tapi kenangan yang bisa kamu rasakan kembali.</p>
+          <div data-site="about-paragraphs">
+            <!-- site:about-paragraphs:start -->
+            <p>Berawal dari satu kamera pinjaman dan kecintaan pada cerita manusia, INS FRAME Photography tumbuh menjadi tim kecil yang percaya bahwa foto terbaik lahir dari koneksi, bukan pose.</p><p>Kami mendengarkan ceritamu, memahami karakter, lalu membingkainya dalam cahaya yang tepat. Hasilnya bukan hanya album — tapi kenangan yang bisa kamu rasakan kembali.</p>
+            <!-- site:about-paragraphs:end -->
+          </div>
 
-          <ul class="checklist">
-            <li>Pendekatan personal &amp; santai, tanpa pose kaku</li>
-            <li>Tim fotografer &amp; editor berpengalaman 12 tahun</li>
-            <li>Editing warna khas INS FRAME, halus dan timeless</li>
-            <li>File original &amp; cetak siap pajang</li>
+                    <ul class="checklist" data-site="about-points">
+            <!-- site:about-points:start -->
+            <li>Pendekatan personal &amp; santai, tanpa pose kaku</li><li>Tim fotografer &amp; editor berpengalaman 12 tahun</li><li>Editing warna khas INS FRAME, halus dan timeless</li><li>File original &amp; cetak siap pajang</li>
+            <!-- site:about-points:end -->
           </ul>
 
           <div class="about-actions">
@@ -233,23 +235,10 @@
       </div>
 
       <div class="container">
-        <dl class="stats reveal">
-          <div class="stat">
-            <dt>Pengalaman</dt>
-            <dd><strong class="stat-num" data-count="12" data-suffix="+">0</strong></dd>
-          </div>
-          <div class="stat">
-            <dt>Proyek selesai</dt>
-            <dd><strong class="stat-num" data-count="850" data-suffix="+">0</strong></dd>
-          </div>
-          <div class="stat">
-            <dt>Pasangan bahagia</dt>
-            <dd><strong class="stat-num" data-count="320" data-suffix="+">0</strong></dd>
-          </div>
-          <div class="stat">
-            <dt>Rating klien</dt>
-            <dd><strong class="stat-num" data-count="4.9" data-decimals="1">0</strong></dd>
-          </div>
+                <dl class="stats reveal" data-site="about-stats">
+          <!-- site:about-stats:start -->
+          <div class="stat"><dt>Pengalaman</dt><dd><strong class="stat-num" data-count="12" data-suffix="+">0</strong></dd></div><div class="stat"><dt>Proyek selesai</dt><dd><strong class="stat-num" data-count="850" data-suffix="+">0</strong></dd></div><div class="stat"><dt>Pasangan bahagia</dt><dd><strong class="stat-num" data-count="320" data-suffix="+">0</strong></dd></div><div class="stat"><dt>Rating klien</dt><dd><strong class="stat-num" data-count="4.9" data-decimals="1">0</strong></dd></div>
+          <!-- site:about-stats:end -->
         </dl>
       </div>
     </section>
@@ -258,7 +247,7 @@
     <section class="section section-alt latest-section" id="karya-terbaru" aria-labelledby="karya-title">
       <div class="container">
         <div class="section-head latest-head reveal">
-          <p class="eyebrow"></span>Karya Terbaru</p>
+          <p class="eyebrow"><span aria-hidden="true"></span>Karya Terbaru</p>
           <h2 class="section-title" id="karya-title">Fragmen yang baru saja <em>diabadikan</em>.</h2>
           <p class="section-sub"><span data-gallery-count-word>Delapan</span> bingkai dari sesi paling baru dipilih dari roll kamera, bukan dari pose yang direncanakan.</p>
         </div>
@@ -303,14 +292,7 @@
           </span>
         </a>
         <p>Jasa fotografer Sidoarjo dan sekitarnya dengan kualitas maksimal untuk mengabadikan momen berharga kamu.</p>
-        <div class="socials">
-          <a href="https://instagram.com/insframe" target="_blank" rel="noopener" aria-label="Instagram INS FRAME Photography">
-            <svg aria-hidden="true"><use href="#icon-instagram"></use></svg>
-          </a>
-          <a href="https://wa.me/6281234567890" target="_blank" rel="noopener" aria-label="WhatsApp INS FRAME Photography">
-            <svg aria-hidden="true"><use href="#icon-whatsapp"></use></svg>
-          </a>
-        </div>
+        <div class="socials" data-site="socials"><a href="https://instagram.com/insframe" target="_blank" rel="noopener" aria-label="Instagram INS FRAME Photography"><svg aria-hidden="true"><use href="#icon-instagram"></use></svg></a><a href="https://wa.me/6281234567890" target="_blank" rel="noopener" aria-label="WhatsApp INS FRAME Photography"><svg aria-hidden="true"><use href="#icon-whatsapp"></use></svg></a></div>
       </div>
 
       <div class="footer-col">
@@ -365,6 +347,8 @@
     <svg aria-hidden="true" style="transform: rotate(-90deg)"><use href="#icon-arrow-right"></use></svg>
   </button>
 
+  <script src="js/site-data.js" defer></script>
+  <script src="js/site-render.js" defer></script>
   <script src="js/gallery-data.js" defer></script>
   <script src="js/gallery-render.js" defer></script>
   <script src="js/main.js" defer></script>
